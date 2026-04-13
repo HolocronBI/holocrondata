@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Holocron — Business Intelligence Services</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 2L28 9V23L16 30L4 23V9L16 2Z' fill='%2309090B'/%3E%3Ccircle cx='16' cy='16' r='5' fill='white'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,9 +17,7 @@
   --fg-light: #A1A1AA;
   --border: #E4E4E7;
   --border-hover: #D4D4D8;
-  --ring: #18181B;
-  --blue: #2563EB;
-  --blue-muted: #DBEAFE;
+  --accent: #2563EB;
   --radius: 8px;
   --font: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -27,7 +26,6 @@
 html { scroll-behavior: smooth; }
 body { font-family: var(--font); background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-/* SMOOTH SCROLL SECTIONS */
 .scroll-section {
   opacity: 0; transform: translateY(32px);
   transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
@@ -44,8 +42,18 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-left { display: flex; align-items: center; gap: 1.5rem; }
-.logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); }
-.logo svg { width: 22px; height: 22px; }
+.logo { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; color: var(--fg); }
+.logo-mark {
+  width: 28px; height: 28px;
+  position: relative;
+}
+.logo-mark svg { width: 100%; height: 100%; }
+.logo-mark .logo-ring {
+  transform-origin: center;
+  animation: logo-spin 20s linear infinite;
+}
+@keyframes logo-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.logo-mark:hover .logo-ring { animation-duration: 3s; }
 .logo span { font-weight: 700; font-size: 0.9rem; letter-spacing: -0.02em; }
 .nav-links { display: flex; gap: 0.25rem; }
 .nav-links a {
@@ -57,7 +65,7 @@ nav {
 .lang-toggle {
   display: flex; align-items: center;
   border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
-  font-size: 0.75rem; font-weight: 600;
+  font-size: 0.75rem;
 }
 .lang-btn {
   padding: 0.3rem 0.6rem; cursor: pointer; background: none; border: none;
@@ -69,60 +77,44 @@ nav {
   background: var(--fg); color: white; border: none;
   padding: 0.4rem 1rem; border-radius: 6px;
   font-family: var(--font); font-size: 0.8rem; font-weight: 600;
-  cursor: pointer; text-decoration: none;
-  transition: opacity 0.15s;
+  cursor: pointer; text-decoration: none; transition: opacity 0.15s;
 }
 .nav-cta:hover { opacity: 0.85; }
 
 /* HERO */
 .hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
+  min-height: 100vh; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  text-align: center;
-  padding: 7rem 1.5rem 5rem;
-  position: relative;
+  text-align: center; padding: 7rem 1.5rem 5rem;
 }
 .hero-announce {
   display: inline-flex; align-items: center; gap: 0.4rem;
   border: 1px solid var(--border); border-radius: 100px;
-  padding: 0.3rem 0.85rem;
-  font-size: 0.78rem; font-weight: 500; color: var(--fg-muted);
-  margin-bottom: 2rem;
-  transition: border-color 0.2s;
+  padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500;
+  color: var(--fg-muted); margin-bottom: 2rem;
 }
-.hero-announce:hover { border-color: var(--border-hover); }
 .hero-announce .badge {
   background: var(--fg); color: white;
   font-size: 0.65rem; font-weight: 700;
   padding: 0.1rem 0.45rem; border-radius: 100px;
-  letter-spacing: 0.02em;
 }
 .hero h1 {
-  font-size: clamp(2.4rem, 5.5vw, 3.8rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  max-width: 700px;
+  font-size: clamp(2.4rem, 5.5vw, 3.8rem); font-weight: 800;
+  letter-spacing: -0.04em; line-height: 1.12; max-width: 720px;
 }
-.hero h1 .shuffle-word {
+.shuffle-block {
+  display: inline;
+}
+.shuffle-word {
+  display: inline-block; position: relative; overflow: hidden;
+  vertical-align: bottom; color: var(--accent);
+}
+.shuffle-inner {
   display: inline-block;
-  position: relative;
-  overflow: hidden;
-  vertical-align: bottom;
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.25s;
 }
-.hero h1 .shuffle-inner {
-  display: inline-block;
-  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.3s;
-}
-.hero h1 .shuffle-inner.exit {
-  transform: translateY(-110%);
-  opacity: 0;
-}
-.hero h1 .shuffle-inner.enter {
-  transform: translateY(110%);
-  opacity: 0;
-}
+.shuffle-inner.exit { transform: translateY(-110%); opacity: 0; }
+.shuffle-inner.enter { transform: translateY(110%); opacity: 0; }
 .hero-sub {
   max-width: 500px; margin: 1.5rem auto 0;
   font-size: 1rem; color: var(--fg-muted); font-weight: 400;
@@ -133,50 +125,39 @@ nav {
   padding: 0.65rem 1.6rem; border-radius: 6px;
   text-decoration: none; font-weight: 600; font-size: 0.875rem;
   transition: opacity 0.15s;
-  display: inline-flex; align-items: center; gap: 0.4rem;
 }
 .btn-dark:hover { opacity: 0.85; }
 .btn-outline {
   background: white; color: var(--fg);
   padding: 0.65rem 1.6rem; border-radius: 6px;
   text-decoration: none; font-weight: 600; font-size: 0.875rem;
-  border: 1px solid var(--border);
-  transition: background 0.15s, border-color 0.15s;
+  border: 1px solid var(--border); transition: background 0.15s;
 }
-.btn-outline:hover { background: var(--bg-muted); border-color: var(--border-hover); }
+.btn-outline:hover { background: var(--bg-muted); }
 
 /* SECTIONS */
 section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
-section.full-width { max-width: none; }
 .section-header { text-align: center; margin-bottom: 3rem; }
 .section-label {
   font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
   text-transform: uppercase; letter-spacing: 0.1em;
   color: var(--fg-muted); margin-bottom: 0.75rem;
 }
-.section-title {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 700; letter-spacing: -0.03em; line-height: 1.2;
-}
-.section-desc {
-  color: var(--fg-muted); margin-top: 0.6rem; font-size: 0.95rem;
-  max-width: 500px; margin-inline: auto;
-}
-
-/* DIVIDER */
+.section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
+.section-desc { color: var(--fg-muted); margin-top: 0.6rem; font-size: 0.95rem; max-width: 500px; margin-inline: auto; }
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
-/* SERVICES */
+/* SERVICES — equal height */
 .services-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 0; border: 1px solid var(--border); border-radius: 12px;
-  overflow: hidden;
+  gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
 }
 .service-item {
   padding: 2rem 1.75rem;
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   transition: background 0.2s;
+  display: flex; flex-direction: column;
 }
 .service-item:nth-child(3n) { border-right: none; }
 .service-item:nth-child(n+4) { border-bottom: none; }
@@ -185,103 +166,54 @@ section.full-width { max-width: none; }
   width: 36px; height: 36px;
   border: 1px solid var(--border); border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 1rem;
-  font-size: 1rem;
+  margin-bottom: 1rem; font-size: 1rem; flex-shrink: 0;
 }
-.service-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; letter-spacing: -0.01em; }
-.service-item p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; }
+.service-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+.service-item p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; flex: 1; }
 
 /* PROCESS */
-.process-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-}
+.process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
 .process-card {
   border: 1px solid var(--border); border-radius: 12px;
-  padding: 1.75rem 1.5rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  position: relative;
+  padding: 1.75rem 1.5rem; transition: border-color 0.2s, box-shadow 0.2s;
+  display: flex; flex-direction: column;
 }
-.process-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-}
-.process-num {
-  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
-  color: var(--fg-light); margin-bottom: 1rem;
-}
+.process-card:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+.process-num { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--fg-light); margin-bottom: 1rem; }
 .process-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.35rem; }
-.process-card p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; }
+.process-card p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; flex: 1; }
 
-/* PRICING */
-.pricing-toggle {
-  display: flex; align-items: center; justify-content: center;
-  gap: 0.75rem; margin-bottom: 3rem;
-}
-.pricing-toggle span { font-size: 0.85rem; font-weight: 500; color: var(--fg-muted); }
-.pricing-toggle span.active-label { color: var(--fg); font-weight: 600; }
-.toggle-switch {
-  width: 44px; height: 24px;
-  background: var(--border); border-radius: 100px;
-  position: relative; cursor: pointer;
-  transition: background 0.2s;
-}
-.toggle-switch.on { background: var(--fg); }
-.toggle-knob {
-  width: 18px; height: 18px;
-  background: white; border-radius: 50%;
-  position: absolute; top: 3px; left: 3px;
-  transition: left 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-}
-.toggle-switch.on .toggle-knob { left: 23px; }
-.pricing-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
+/* PRICING — equal height */
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; }
 .pricing-card {
   border: 1px solid var(--border); border-radius: 12px;
-  padding: 2rem 1.75rem;
-  display: flex; flex-direction: column;
+  padding: 2rem 1.75rem; display: flex; flex-direction: column;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.pricing-card.featured {
-  border-color: var(--fg);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-  position: relative;
-}
+.pricing-card.featured { border-color: var(--fg); box-shadow: 0 4px 24px rgba(0,0,0,0.06); position: relative; }
 .pricing-card.featured::before {
-  content: 'Beliebt';
+  content: attr(data-badge);
   position: absolute; top: -10px; right: 1.5rem;
   background: var(--fg); color: white;
   font-size: 0.68rem; font-weight: 700;
   padding: 0.2rem 0.6rem; border-radius: 100px;
-  letter-spacing: 0.02em;
 }
 .pricing-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
 .pricing-desc { font-size: 0.82rem; color: var(--fg-muted); margin-bottom: 1.25rem; }
 .pricing-price { margin-bottom: 1.5rem; }
-.pricing-price .amount {
-  font-size: 2.4rem; font-weight: 800; letter-spacing: -0.04em;
-}
-.pricing-price .period { font-size: 0.85rem; color: var(--fg-muted); font-weight: 400; }
+.pricing-price .amount { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.04em; }
+.pricing-price .period { font-size: 0.85rem; color: var(--fg-muted); }
 .pricing-features { list-style: none; margin-bottom: 2rem; flex: 1; }
 .pricing-features li {
-  font-size: 0.84rem; color: var(--fg-muted);
-  padding: 0.35rem 0;
+  font-size: 0.84rem; color: var(--fg-muted); padding: 0.35rem 0;
   display: flex; align-items: center; gap: 0.5rem;
 }
-.pricing-features li::before {
-  content: '✓'; font-weight: 700; color: var(--fg);
-  font-size: 0.8rem;
-}
+.pricing-features li::before { content: '✓'; font-weight: 700; color: var(--fg); font-size: 0.8rem; }
 .pricing-btn {
-  width: 100%; padding: 0.6rem;
-  border-radius: 6px; font-family: var(--font);
-  font-size: 0.85rem; font-weight: 600; cursor: pointer;
-  text-align: center; text-decoration: none;
-  transition: opacity 0.15s;
-  display: block;
+  width: 100%; padding: 0.6rem; border-radius: 6px;
+  font-family: var(--font); font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; text-align: center; text-decoration: none; display: block;
+  transition: opacity 0.15s; margin-top: auto;
 }
 .pricing-btn-dark { background: var(--fg); color: white; border: none; }
 .pricing-btn-dark:hover { opacity: 0.85; }
@@ -289,48 +221,27 @@ section.full-width { max-width: none; }
 .pricing-btn-outline:hover { background: var(--bg-muted); }
 
 /* PORTFOLIO */
-.portfolio-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
+.portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .portfolio-card {
-  border: 1px solid var(--border); border-radius: 12px;
-  overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s;
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
 }
-.portfolio-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-}
-.portfolio-vis {
-  height: 180px; background: var(--bg-muted);
-  position: relative; overflow: hidden;
-}
+.portfolio-card:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+.portfolio-vis { height: 180px; background: var(--bg-muted); position: relative; overflow: hidden; }
 .portfolio-vis canvas { width: 100%; height: 100%; display: block; }
-.portfolio-body { padding: 1.25rem 1.5rem; }
-.portfolio-tag {
-  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--fg-light); margin-bottom: 0.35rem;
-}
+.portfolio-body { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+.portfolio-tag { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-light); margin-bottom: 0.35rem; }
 .portfolio-body h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
-.portfolio-body p { font-size: 0.82rem; color: var(--fg-muted); }
+.portfolio-body p { font-size: 0.82rem; color: var(--fg-muted); flex: 1; }
 
 /* TESTIMONIALS */
-.testimonial-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
+.testimonial-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 .testimonial-card {
-  border: 1px solid var(--border); border-radius: 12px;
-  padding: 1.75rem;
-  transition: border-color 0.2s;
+  border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem;
+  transition: border-color 0.2s; display: flex; flex-direction: column;
 }
 .testimonial-card:hover { border-color: var(--border-hover); }
-.testimonial-card blockquote {
-  font-size: 0.88rem; color: var(--fg-muted);
-  line-height: 1.65; font-style: italic;
-  margin-bottom: 1rem;
-}
+.testimonial-card blockquote { font-size: 0.88rem; color: var(--fg-muted); line-height: 1.65; font-style: italic; margin-bottom: 1rem; flex: 1; }
 .testimonial-author { font-size: 0.82rem; font-weight: 600; }
 .testimonial-role { font-size: 0.75rem; color: var(--fg-light); }
 
@@ -339,20 +250,15 @@ section.full-width { max-width: none; }
 .contact-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
 .form-row { display: flex; gap: 0.75rem; }
 .form-row > * { flex: 1; }
-.contact-form label {
-  font-size: 0.8rem; font-weight: 600;
-  display: block; margin-bottom: 0.35rem;
-}
+.contact-form label { font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.35rem; }
 .contact-form input, .contact-form select, .contact-form textarea {
   width: 100%; padding: 0.6rem 0.75rem;
   border: 1px solid var(--border); border-radius: 6px;
   font-family: var(--font); font-size: 0.85rem;
-  background: var(--bg); color: var(--fg);
-  transition: border-color 0.15s, box-shadow 0.15s; outline: none;
+  background: var(--bg); color: var(--fg); transition: border-color 0.15s, box-shadow 0.15s; outline: none;
 }
 .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus {
-  border-color: var(--ring);
-  box-shadow: 0 0 0 2px rgba(9,9,11,0.08);
+  border-color: var(--fg); box-shadow: 0 0 0 2px rgba(9,9,11,0.08);
 }
 .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--fg-light); }
 .contact-form textarea { min-height: 100px; resize: vertical; }
@@ -364,22 +270,18 @@ section.full-width { max-width: none; }
 }
 .form-submit:hover { opacity: 0.85; }
 
-/* FOOTER */
 footer {
-  border-top: 1px solid var(--border);
-  padding: 2rem 1.5rem;
+  border-top: 1px solid var(--border); padding: 2rem 1.5rem;
   display: flex; justify-content: space-between; align-items: center;
-  max-width: 1100px; margin: 0 auto;
-  font-size: 0.78rem; color: var(--fg-light);
+  max-width: 1100px; margin: 0 auto; font-size: 0.78rem; color: var(--fg-light);
 }
 
-/* RESPONSIVE */
 @media(max-width:900px){
   .services-grid, .pricing-grid, .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   .process-grid { grid-template-columns: repeat(2, 1fr); }
   .service-item:nth-child(2n) { border-right: none; }
-  .service-item:nth-child(n+5) { border-bottom: none; }
-  .service-item:nth-child(3), .service-item:nth-child(4) { border-bottom: 1px solid var(--border); }
+  .service-item { border-bottom: 1px solid var(--border) !important; }
+  .service-item:nth-last-child(-n+2) { border-bottom: none !important; }
 }
 @media(max-width:640px){
   .nav-links { display: none; }
@@ -394,11 +296,16 @@ footer {
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-left">
     <a href="#" class="logo">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+      <div class="logo-mark">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 1L26 8V20L14 27L2 20V8L14 1Z" fill="#09090B"/>
+          <circle class="logo-ring" cx="14" cy="14" r="8" stroke="white" stroke-width="1.2" fill="none" stroke-dasharray="4 3"/>
+          <circle cx="14" cy="14" r="3" fill="white"/>
+        </svg>
+      </div>
       <span>Holocron</span>
     </a>
     <div class="nav-links">
@@ -417,15 +324,11 @@ footer {
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-announce">
-    <span class="badge">Neu</span>
-    <span data-de="Verfügbar für Projekte" data-en="Available for projects">Verfügbar für Projekte</span>
-  </div>
+  <div class="hero-announce"><span class="badge">Neu</span><span data-de="Verfügbar für Projekte" data-en="Available for projects">Verfügbar für Projekte</span></div>
   <h1>
-    <span data-de="Entdecken Sie das" data-en="Unlock the">Entdecken Sie das</span><br>
-    <span class="shuffle-word"><span class="shuffle-inner" id="shuffleWord">Potenzial</span></span><br>
+    <span data-de="Entdecken Sie" data-en="Unlock the">Entdecken Sie</span><br>
+    <span class="shuffle-block"><span id="shufflePrefix" data-de-0="das" data-de-1="den" data-de-2="die" data-en-0="the" data-en-1="the" data-en-2="the">das</span> <span class="shuffle-word"><span class="shuffle-inner" id="shuffleWord">Potenzial</span></span></span><br>
     <span data-de="Ihrer Daten" data-en="of your data">Ihrer Daten</span>
   </h1>
   <p class="hero-sub" data-de="Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt." data-en="Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.">Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt.</p>
@@ -437,7 +340,6 @@ footer {
 
 <hr class="divider">
 
-<!-- SERVICES -->
 <section id="services" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Leistungen" data-en="Services">Leistungen</div>
@@ -445,18 +347,17 @@ footer {
     <p class="section-desc" data-de="Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen für Ihr Unternehmen." data-en="From raw data to actionable insights — tailored BI solutions for your business.">Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen für Ihr Unternehmen.</p>
   </div>
   <div class="services-grid">
-    <div class="service-item"><div class="service-icon">📊</div><h3 data-de="Power BI Reports & Dashboards" data-en="Power BI Reports & Dashboards">Power BI Reports & Dashboards</h3><p data-de="Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen, keine Fragen." data-en="Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.">Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen, keine Fragen.</p></div>
+    <div class="service-item"><div class="service-icon">📊</div><h3 data-de="Power BI Reports & Dashboards" data-en="Power BI Reports & Dashboards">Power BI Reports & Dashboards</h3><p data-de="Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen." data-en="Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.">Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen.</p></div>
     <div class="service-item"><div class="service-icon">⚙️</div><h3 data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</h3><p data-de="Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand." data-en="Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.">Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand.</p></div>
-    <div class="service-item"><div class="service-icon">🧹</div><h3 data-de="Datenbereinigung & Transformation" data-en="Data Cleaning & Transformation">Datenbereinigung & Transformation</h3><p data-de="Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige analytische Grundlage überführt." data-en="Messy data cleaned, standardized, and structured into a reliable analytical foundation.">Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige analytische Grundlage überführt.</p></div>
-    <div class="service-item"><div class="service-icon">🗄️</div><h3 data-de="Datenmodellierung & Architektur" data-en="Data Modeling & Architecture">Datenmodellierung & Architektur</h3><p data-de="Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports." data-en="Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.">Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports.</p></div>
-    <div class="service-item"><div class="service-icon">🔗</div><h3 data-de="Systemintegration" data-en="System Integration">Systemintegration</h3><p data-de="SAP, Oracle, SQL, SharePoint — alles in einer einheitlichen Reporting-Schicht vereint." data-en="Connect SAP, Oracle, SQL, SharePoint into a unified reporting layer — no more siloed data.">SAP, Oracle, SQL, SharePoint — alles in einer einheitlichen Reporting-Schicht vereint.</p></div>
-    <div class="service-item"><div class="service-icon">🎯</div><h3 data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</h3><p data-de="Nicht nur Dashboards — eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen." data-en="Not just dashboards — a roadmap for data-driven decisions, plus hands-on training.">Nicht nur Dashboards — eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen.</p></div>
+    <div class="service-item"><div class="service-icon">🧹</div><h3 data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</h3><p data-de="Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige Grundlage überführt." data-en="Messy data cleaned, standardized, and structured into a reliable analytical foundation.">Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige Grundlage überführt.</p></div>
+    <div class="service-item"><div class="service-icon">🗄️</div><h3 data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</h3><p data-de="Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports." data-en="Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.">Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports.</p></div>
+    <div class="service-item"><div class="service-icon">🔗</div><h3 data-de="Systemintegration" data-en="System Integration">Systemintegration</h3><p data-de="SAP, Oracle, SQL, SharePoint — alles in einer einheitlichen Reporting-Schicht vereint." data-en="Connect SAP, Oracle, SQL, SharePoint into a unified reporting layer.">SAP, Oracle, SQL, SharePoint — alles in einer einheitlichen Reporting-Schicht vereint.</p></div>
+    <div class="service-item"><div class="service-icon">🎯</div><h3 data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</h3><p data-de="Eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen für Ihr Team." data-en="A roadmap for data-driven decisions, plus hands-on training for your team.">Eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen für Ihr Team.</p></div>
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- PROCESS -->
 <section id="process" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Ablauf" data-en="Process">Ablauf</div>
@@ -473,7 +374,6 @@ footer {
 
 <hr class="divider">
 
-<!-- PRICING -->
 <section id="pricing" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Preise" data-en="Pricing">Preise</div>
@@ -482,11 +382,11 @@ footer {
   </div>
   <div class="pricing-grid">
     <div class="pricing-card">
-      <div class="pricing-name" data-de="Starter" data-en="Starter">Starter</div>
+      <div class="pricing-name">Starter</div>
       <div class="pricing-desc" data-de="Einzelnes Dashboard oder Report" data-en="Single dashboard or report">Einzelnes Dashboard oder Report</div>
       <div class="pricing-price"><span class="amount">€1.500</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
       <ul class="pricing-features">
-        <li data-de="1 Power BI Dashboard" data-en="1 Power BI Dashboard">1 Power BI Dashboard</li>
+        <li data-de="1 Power BI Dashboard" data-en="1 Power BI dashboard">1 Power BI Dashboard</li>
         <li data-de="Bis zu 3 Datenquellen" data-en="Up to 3 data sources">Bis zu 3 Datenquellen</li>
         <li data-de="Datenbereinigung inkl." data-en="Data cleaning included">Datenbereinigung inkl.</li>
         <li data-de="2 Revisionsrunden" data-en="2 revision rounds">2 Revisionsrunden</li>
@@ -494,8 +394,8 @@ footer {
       </ul>
       <a href="#contact" class="pricing-btn pricing-btn-outline" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
-    <div class="pricing-card featured">
-      <div class="pricing-name" data-de="Professional" data-en="Professional">Professional</div>
+    <div class="pricing-card featured" data-badge="Beliebt">
+      <div class="pricing-name">Professional</div>
       <div class="pricing-desc" data-de="Komplettes Reporting-Setup" data-en="Complete reporting setup">Komplettes Reporting-Setup</div>
       <div class="pricing-price"><span class="amount">€4.500</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
       <ul class="pricing-features">
@@ -510,7 +410,7 @@ footer {
       <a href="#contact" class="pricing-btn pricing-btn-dark" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
     <div class="pricing-card">
-      <div class="pricing-name" data-de="Enterprise" data-en="Enterprise">Enterprise</div>
+      <div class="pricing-name">Enterprise</div>
       <div class="pricing-desc" data-de="Maßgeschneiderte BI-Lösung" data-en="Tailored BI solution">Maßgeschneiderte BI-Lösung</div>
       <div class="pricing-price"><span class="amount" data-de="Individuell" data-en="Custom">Individuell</span></div>
       <ul class="pricing-features">
@@ -528,7 +428,6 @@ footer {
 
 <hr class="divider">
 
-<!-- PORTFOLIO -->
 <section id="portfolio" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Projekte" data-en="Portfolio">Projekte</div>
@@ -537,47 +436,45 @@ footer {
   <div class="portfolio-grid">
     <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart1"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Finance</div><h3 data-de="Financial Reporting Cockpit" data-en="Financial Reporting Cockpit">Financial Reporting Cockpit</h3><p data-de="Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich." data-en="Consolidated financial reports with automated budget-vs-actuals tracking.">Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich.</p></div></div>
     <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart2"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Operations</div><h3 data-de="KPI Performance Dashboard" data-en="KPI Performance Dashboard">KPI Performance Dashboard</h3><p data-de="Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts." data-en="Real-time KPIs with trend analysis and threshold alerts.">Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts.</p></div></div>
-    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart3"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Automation</div><h3 data-de="Automatisierter Rolling Forecast" data-en="Automated Rolling Forecast">Automatisierter Rolling Forecast</h3><p data-de="Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich." data-en="Self-refreshing forecast replacing 12+ hours of monthly manual work.">Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich.</p></div></div>
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart3"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Automation</div><h3 data-de="Rolling Forecast" data-en="Rolling Forecast">Rolling Forecast</h3><p data-de="Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich." data-en="Self-refreshing forecast replacing 12+ hours of monthly manual work.">Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich.</p></div></div>
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- TESTIMONIALS -->
 <section class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Referenzen" data-en="Testimonials">Referenzen</div>
     <h2 class="section-title" data-de="Das sagen Kunden" data-en="What clients say">Das sagen Kunden</h2>
   </div>
   <div class="testimonial-grid">
-    <div class="testimonial-card"><blockquote data-de="„Wir sind von zwei Tagen monatlicher Reportarbeit zu vollständig automatisierten Updates gewechselt. Der ROI war sofort spürbar."" data-en=""We went from spending two days on monthly reports to having everything update automatically. The ROI was immediate."">„Wir sind von zwei Tagen monatlicher Reportarbeit zu vollständig automatisierten Updates gewechselt. Der ROI war sofort spürbar."</blockquote><div class="testimonial-author">Head of Finance</div><div class="testimonial-role" data-de="Fertigungsunternehmen" data-en="Manufacturing Company">Fertigungsunternehmen</div></div>
-    <div class="testimonial-card"><blockquote data-de="„Endlich Dashboards, die unser Management tatsächlich nutzt. Klar, schnell, genau richtig."" data-en=""Finally, dashboards our management team actually uses. Clean, fast, and exactly what we needed."">„Endlich Dashboards, die unser Management tatsächlich nutzt. Klar, schnell, genau richtig."</blockquote><div class="testimonial-author">Director of Operations</div><div class="testimonial-role" data-de="Energiesektor" data-en="Energy Sector">Energiesektor</div></div>
+    <div class="testimonial-card"><blockquote data-de="„Wir sind von zwei Tagen monatlicher Reportarbeit zu vollständig automatisierten Updates gewechselt. Der ROI war sofort spürbar."" data-en="&ldquo;We went from two days of monthly report work to fully automated updates. The ROI was immediate.&rdquo;">„Wir sind von zwei Tagen monatlicher Reportarbeit zu vollständig automatisierten Updates gewechselt. Der ROI war sofort spürbar."</blockquote><div class="testimonial-author">Head of Finance</div><div class="testimonial-role" data-de="Fertigungsunternehmen" data-en="Manufacturing Company">Fertigungsunternehmen</div></div>
+    <div class="testimonial-card"><blockquote data-de="„Endlich Dashboards, die unser Management tatsächlich nutzt. Klar, schnell, genau richtig."" data-en="&ldquo;Finally, dashboards our management actually uses. Clean, fast, exactly right.&rdquo;">„Endlich Dashboards, die unser Management tatsächlich nutzt. Klar, schnell, genau richtig."</blockquote><div class="testimonial-author">Director of Operations</div><div class="testimonial-role" data-de="Energiesektor" data-en="Energy Sector">Energiesektor</div></div>
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- CONTACT -->
 <section id="contact" class="scroll-section">
   <div class="contact-wrapper">
     <div class="section-header">
       <div class="section-label" data-de="Kontakt" data-en="Contact">Kontakt</div>
       <h2 class="section-title" data-de="Lassen Sie uns über Ihre Daten sprechen" data-en="Let's talk about your data">Lassen Sie uns über Ihre Daten sprechen</h2>
-      <p class="section-desc" data-de="Beschreiben Sie Ihre Herausforderung — ich melde mich innerhalb von 24 Stunden mit einer ersten Einschätzung." data-en="Describe your challenge — I'll get back within 24 hours with an initial assessment.">Beschreiben Sie Ihre Herausforderung — ich melde mich innerhalb von 24 Stunden mit einer ersten Einschätzung.</p>
+      <p class="section-desc" data-de="Beschreiben Sie Ihre Herausforderung — ich melde mich innerhalb von 24 Stunden." data-en="Describe your challenge — I'll get back within 24 hours.">Beschreiben Sie Ihre Herausforderung — ich melde mich innerhalb von 24 Stunden.</p>
     </div>
     <form class="contact-form" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
-      <input type="hidden" name="_subject" value="New Holocron inquiry">
+      <input type="hidden" name="_subject" value="Neue Holocron Anfrage">
       <input type="text" name="_gotcha" style="display:none">
       <div class="form-row">
         <div><label for="name" data-de="Name" data-en="Name">Name</label><input type="text" id="name" name="name" placeholder="Ihr Name" required></div>
-        <div><label for="email">Email</label><input type="email" id="email" name="email" placeholder="name@firma.de" required></div>
+        <div><label for="email">E-Mail</label><input type="email" id="email" name="email" placeholder="name@firma.de" required></div>
       </div>
       <div><label for="company" data-de="Unternehmen" data-en="Company">Unternehmen</label><input type="text" id="company" name="company" placeholder="Firmenname"></div>
       <div><label for="service" data-de="Gewünschte Leistung" data-en="Service of Interest">Gewünschte Leistung</label>
         <select id="service" name="service">
           <option value="" data-de="Bitte wählen..." data-en="Select a service...">Bitte wählen...</option>
           <option>Power BI Reports & Dashboards</option><option data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</option>
-          <option data-de="Datenbereinigung & Transformation" data-en="Data Cleaning & Transformation">Datenbereinigung & Transformation</option><option data-de="Datenmodellierung & Architektur" data-en="Data Modeling & Architecture">Datenmodellierung & Architektur</option>
+          <option data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</option><option data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</option>
           <option data-de="Systemintegration" data-en="System Integration">Systemintegration</option><option data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</option><option data-de="Noch unsicher" data-en="Not sure yet">Noch unsicher</option>
         </select>
       </div>
@@ -599,28 +496,34 @@ const obs = new IntersectionObserver(e => {
 }, { threshold: 0.06 });
 document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
 
-// WORD SHUFFLE
+// WORD SHUFFLE — with article prefix
 (function() {
-  const wordsDE = ['Potenzial', 'Intelligenz', 'Wert'];
-  const wordsEN = ['potential', 'intelligence', 'value'];
+  const wordsDE = ['Potenzial', 'Wert', 'Intelligenz'];
+  const prefDE  = ['das', 'den', 'die'];
+  const wordsEN = ['potential', 'value', 'intelligence'];
   let idx = 0, lang = 'de';
-  const el = document.getElementById('shuffleWord');
+  const wordEl = document.getElementById('shuffleWord');
+  const prefEl = document.getElementById('shufflePrefix');
 
   setInterval(() => {
     const words = lang === 'de' ? wordsDE : wordsEN;
-    el.classList.add('exit');
+    const prefs = lang === 'de' ? prefDE : ['the','the','the'];
+    wordEl.classList.add('exit');
     setTimeout(() => {
       idx = (idx + 1) % words.length;
-      el.textContent = words[idx];
-      el.classList.remove('exit');
-      el.classList.add('enter');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => el.classList.remove('enter'));
-      });
-    }, 300);
+      prefEl.textContent = prefs[idx];
+      wordEl.textContent = words[idx];
+      wordEl.classList.remove('exit');
+      wordEl.classList.add('enter');
+      requestAnimationFrame(() => requestAnimationFrame(() => wordEl.classList.remove('enter')));
+    }, 280);
   }, 2800);
 
-  window._setShuffleLang = (l) => { lang = l; idx = 0; el.textContent = (l === 'de' ? wordsDE : wordsEN)[0]; };
+  window._setShuffleLang = (l) => {
+    lang = l; idx = 0;
+    wordEl.textContent = (l === 'de' ? wordsDE : wordsEN)[0];
+    prefEl.textContent = (l === 'de' ? prefDE : ['the'])[0];
+  };
 })();
 
 // LANGUAGE TOGGLE
@@ -633,20 +536,13 @@ document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
       document.querySelectorAll('[data-' + lang + ']').forEach(el => {
         const val = el.getAttribute('data-' + lang);
         if (val) {
-          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            el.placeholder = val;
-          } else if (el.tagName === 'OPTION') {
-            el.textContent = val;
-          } else {
-            el.textContent = val;
-          }
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+          else el.textContent = val;
         }
       });
-      document.querySelector('.pricing-card.featured::before');
-      const featured = document.querySelector('.pricing-card.featured');
-      if (featured) {
-        featured.style.setProperty('--popular-text', lang === 'de' ? '"Beliebt"' : '"Popular"');
-      }
+      // Update featured badge
+      const f = document.querySelector('.pricing-card.featured');
+      if (f) f.dataset.badge = lang === 'de' ? 'Beliebt' : 'Popular';
       window._setShuffleLang(lang);
     });
   });
@@ -660,9 +556,8 @@ function dc(id, type) {
   const w = r.width, h = r.height;
   ctx.strokeStyle = 'rgba(0,0,0,0.04)'; ctx.lineWidth = 1;
   for (let y = 20; y < h; y += 25) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
-  const g = ctx.createLinearGradient(0, 0, w, 0); g.addColorStop(0, '#09090B'); g.addColorStop(1, '#71717A');
-  if (type === 'bars') { const n = 16, gap = 4, bw = (w - 40 - gap * (n - 1)) / n; for (let i = 0; i < n; i++) { const bh = 20 + Math.random() * (h - 60); ctx.fillStyle = '#09090B'; ctx.globalAlpha = 0.12 + Math.random() * 0.18; ctx.beginPath(); ctx.roundRect(20 + i * (bw + gap), h - 10 - bh, bw, bh, [3, 3, 0, 0]); ctx.fill(); } ctx.globalAlpha = 1; }
-  else if (type === 'line') { const pts = [], steps = 24; for (let i = 0; i <= steps; i++) pts.push({ x: 15 + (i / steps) * (w - 30), y: h * 0.35 + Math.sin(i * 0.45) * h * 0.18 + (Math.random() - 0.5) * h * 0.06 }); const gf = ctx.createLinearGradient(0, 0, 0, h); gf.addColorStop(0, 'rgba(9,9,11,0.08)'); gf.addColorStop(1, 'rgba(9,9,11,0)'); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) { const xc = (pts[i].x + pts[i - 1].x) / 2, yc = (pts[i].y + pts[i - 1].y) / 2; ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, xc, yc); } ctx.lineTo(w - 15, h); ctx.lineTo(15, h); ctx.closePath(); ctx.fillStyle = gf; ctx.fill(); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) { const xc = (pts[i].x + pts[i - 1].x) / 2, yc = (pts[i].y + pts[i - 1].y) / 2; ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, xc, yc); } ctx.strokeStyle = '#09090B'; ctx.globalAlpha = 0.25; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1; }
+  if (type === 'bars') { const n = 16, gap = 4, bw = (w - 40 - gap * (n - 1)) / n; for (let i = 0; i < n; i++) { const bh = 20 + Math.random() * (h - 60); ctx.fillStyle = '#09090B'; ctx.globalAlpha = 0.1 + Math.random() * 0.15; ctx.beginPath(); ctx.roundRect(20 + i * (bw + gap), h - 10 - bh, bw, bh, [3, 3, 0, 0]); ctx.fill(); } ctx.globalAlpha = 1; }
+  else if (type === 'line') { const pts = [], steps = 24; for (let i = 0; i <= steps; i++) pts.push({ x: 15 + (i / steps) * (w - 30), y: h * 0.35 + Math.sin(i * 0.45) * h * 0.18 + (Math.random() - 0.5) * h * 0.06 }); const gf = ctx.createLinearGradient(0, 0, 0, h); gf.addColorStop(0, 'rgba(9,9,11,0.07)'); gf.addColorStop(1, 'rgba(9,9,11,0)'); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) { const xc = (pts[i].x + pts[i - 1].x) / 2, yc = (pts[i].y + pts[i - 1].y) / 2; ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, xc, yc); } ctx.lineTo(w - 15, h); ctx.lineTo(15, h); ctx.closePath(); ctx.fillStyle = gf; ctx.fill(); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) { const xc = (pts[i].x + pts[i - 1].x) / 2, yc = (pts[i].y + pts[i - 1].y) / 2; ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, xc, yc); } ctx.strokeStyle = '#09090B'; ctx.globalAlpha = 0.2; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1; }
   else { for (let l = 2; l >= 0; l--) { const pts = [], steps = 18, base = h * (0.55 + l * 0.1); for (let i = 0; i <= steps; i++) pts.push({ x: (i / steps) * w, y: base + Math.sin(i * 0.5 + l * 1.2) * h * 0.12 - l * h * 0.08 }); ctx.beginPath(); ctx.moveTo(0, h); pts.forEach(p => ctx.lineTo(p.x, p.y)); ctx.lineTo(w, h); ctx.closePath(); ctx.fillStyle = `rgba(9,9,11,${0.06 - l * 0.015})`; ctx.fill(); } }
 }
 const co = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { if (x.target.id === 'chart1') dc('chart1', 'bars'); if (x.target.id === 'chart2') dc('chart2', 'line'); if (x.target.id === 'chart3') dc('chart3', 'area'); co.unobserve(x.target); } }); }, { threshold: 0.3 });
@@ -671,11 +566,11 @@ window.addEventListener('resize', () => { dc('chart1', 'bars'); dc('chart2', 'li
 
 // FORM
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
-  e.preventDefault(); const btn = this.querySelector('.form-submit'); btn.textContent = '...'; btn.disabled = true;
+  e.preventDefault(); const btn = this.querySelector('.form-submit'); const orig = btn.textContent; btn.textContent = '...'; btn.disabled = true;
   try { const res = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
-    if (res.ok) { btn.textContent = '✓'; this.reset(); setTimeout(() => { btn.textContent = btn.dataset.de || 'Nachricht senden →'; btn.disabled = false; }, 2500); }
-    else { btn.textContent = 'Fehler'; setTimeout(() => { btn.textContent = btn.dataset.de || 'Nachricht senden →'; btn.disabled = false; }, 2500); } }
-  catch { btn.textContent = 'Fehler'; setTimeout(() => { btn.textContent = btn.dataset.de || 'Nachricht senden →'; btn.disabled = false; }, 2500); }
+    if (res.ok) { btn.textContent = '✓'; this.reset(); setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2500); }
+    else { btn.textContent = 'Fehler'; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2500); } }
+  catch { btn.textContent = 'Fehler'; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2500); }
 });
 </script>
 </body>
