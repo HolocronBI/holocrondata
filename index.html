@@ -4,32 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Holocron — Business Intelligence Services</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 2L28 9V23L16 30L4 23V9L16 2Z' fill='%2309090B'/%3E%3Ccircle cx='16' cy='16' r='5' fill='white'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='4' y='4' width='24' height='24' rx='4' fill='%2309090B'/%3E%3Cpath d='M16 10v12M10 16h12' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
 :root {
-  --bg: #FFFFFF;
-  --bg-muted: #FAFAFA;
-  --fg: #09090B;
-  --fg-muted: #71717A;
-  --fg-light: #A1A1AA;
-  --border: #E4E4E7;
-  --border-hover: #D4D4D8;
-  --accent: #2563EB;
-  --radius: 8px;
-  --font: 'Inter', -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --bg: #FFFFFF; --bg-muted: #FAFAFA; --fg: #09090B; --fg-muted: #71717A; --fg-light: #A1A1AA;
+  --border: #E4E4E7; --border-hover: #D4D4D8; --accent: #2563EB;
+  --font: 'Inter', -apple-system, sans-serif; --font-mono: 'JetBrains Mono', monospace;
 }
-
 html { scroll-behavior: smooth; }
 body { font-family: var(--font); background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-
-.scroll-section {
-  opacity: 0; transform: translateY(32px);
-  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
-}
+.scroll-section { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
 .scroll-section.visible { opacity: 1; transform: translateY(0); }
 
 /* NAV */
@@ -37,32 +23,50 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 1.5rem; height: 56px;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
-.nav-left { display: flex; align-items: center; gap: 1.5rem; }
-.logo { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; color: var(--fg); }
-.logo-mark { width: 28px; height: 28px; }
-.logo-mark svg { width: 100%; height: 100%; }
-.logo-mark .logo-ring { transform-origin: center; animation: logo-spin 20s linear infinite; }
-@keyframes logo-spin { to { transform: rotate(360deg); } }
-.logo-mark:hover .logo-ring { animation-duration: 3s; }
-.logo span { font-weight: 700; font-size: 0.9rem; letter-spacing: -0.02em; }
-.nav-links { display: flex; gap: 0.25rem; }
-.nav-links a {
+.nav-left { display: flex; align-items: center; gap: 1.25rem; }
+.logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); }
+.logo-mark { width: 24px; height: 24px; }
+.logo-mark svg { width: 100%; height: 100%; display: block; }
+.logo-text { font-weight: 700; font-size: 0.88rem; letter-spacing: -0.02em; }
+
+/* Nav dropdown */
+.nav-items { display: flex; gap: 0; align-items: center; }
+.nav-item { position: relative; }
+.nav-item > a, .nav-trigger {
   text-decoration: none; color: var(--fg-muted); font-size: 0.825rem; font-weight: 500;
-  padding: 0.35rem 0.75rem; border-radius: 6px; transition: color 0.15s, background 0.15s;
+  padding: 0.4rem 0.7rem; border-radius: 6px; transition: color 0.15s, background 0.15s;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: none; border: none; cursor: pointer; font-family: var(--font);
 }
-.nav-links a:hover { color: var(--fg); background: var(--bg-muted); }
+.nav-item > a:hover, .nav-trigger:hover { color: var(--fg); background: var(--bg-muted); }
+.nav-trigger svg { width: 12px; height: 12px; transition: transform 0.2s; }
+.nav-item:hover .nav-trigger svg { transform: rotate(180deg); }
+.nav-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0;
+  background: white; border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.5rem; min-width: 280px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  opacity: 0; pointer-events: none; transform: translateY(-4px);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.nav-item:hover .nav-dropdown { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.nav-dropdown a {
+  display: block; padding: 0.6rem 0.75rem; border-radius: 6px;
+  text-decoration: none; transition: background 0.1s;
+}
+.nav-dropdown a:hover { background: var(--bg-muted); }
+.nav-dropdown a .dd-title { font-size: 0.82rem; font-weight: 600; color: var(--fg); margin-bottom: 0.1rem; }
+.nav-dropdown a .dd-desc { font-size: 0.72rem; color: var(--fg-muted); line-height: 1.4; }
+
 .nav-right { display: flex; align-items: center; gap: 0.5rem; }
-.lang-toggle {
-  display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
-}
+.lang-toggle { display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
 .lang-btn {
-  padding: 0.3rem 0.6rem; cursor: pointer; background: none; border: none;
-  font-family: var(--font); font-size: 0.75rem; font-weight: 600; color: var(--fg-muted);
-  transition: background 0.15s, color 0.15s;
+  padding: 0.3rem 0.55rem; cursor: pointer; background: none; border: none;
+  font-family: var(--font); font-size: 0.72rem; font-weight: 600; color: var(--fg-muted);
+  transition: background 0.15s, color 0.15s; min-width: 32px; text-align: center;
 }
 .lang-btn.active { background: var(--fg); color: white; }
 .nav-cta {
@@ -86,102 +90,51 @@ nav {
   color: var(--fg-muted); margin-bottom: 2rem;
 }
 .hero-announce .badge {
-  background: var(--fg); color: white;
-  font-size: 0.65rem; font-weight: 700;
+  background: var(--fg); color: white; font-size: 0.65rem; font-weight: 700;
   padding: 0.1rem 0.45rem; border-radius: 100px;
 }
 .hero h1 {
   font-size: clamp(2.4rem, 5.5vw, 3.8rem); font-weight: 800;
   letter-spacing: -0.04em; line-height: 1.12; max-width: 720px;
 }
-/* Shuffle: entire "article + word" swaps as one unit */
 .shuffle-slot {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  vertical-align: bottom;
-  color: var(--accent);
-  /* fixed width to prevent layout shifts — wide enough for longest phrase */
-  min-width: 4.5em;
-  text-align: left;
+  display: inline-block; position: relative; overflow: hidden;
+  vertical-align: bottom; color: var(--accent); min-width: 5em; text-align: left;
 }
 .shuffle-slot .shuffle-inner {
-  display: inline-block;
-  white-space: nowrap;
+  display: inline-block; white-space: nowrap;
   transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.25s;
 }
 .shuffle-slot .shuffle-inner.exit { transform: translateY(-110%); opacity: 0; }
 .shuffle-slot .shuffle-inner.enter { transform: translateY(110%); opacity: 0; }
-
-.hero-sub {
-  max-width: 500px; margin: 1.5rem auto 0;
-  font-size: 1rem; color: var(--fg-muted);
-}
+.hero-sub { max-width: 500px; margin: 1.5rem auto 0; font-size: 1rem; color: var(--fg-muted); }
 .hero-buttons { display: flex; gap: 0.75rem; margin-top: 2rem; }
-.btn-dark {
-  background: var(--fg); color: white;
-  padding: 0.65rem 1.6rem; border-radius: 6px;
-  text-decoration: none; font-weight: 600; font-size: 0.875rem;
-  transition: opacity 0.15s;
-}
+.btn-dark { background: var(--fg); color: white; padding: 0.65rem 1.6rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.875rem; transition: opacity 0.15s; }
 .btn-dark:hover { opacity: 0.85; }
-.btn-outline {
-  background: white; color: var(--fg);
-  padding: 0.65rem 1.6rem; border-radius: 6px;
-  text-decoration: none; font-weight: 600; font-size: 0.875rem;
-  border: 1px solid var(--border); transition: background 0.15s;
-}
+.btn-outline { background: white; color: var(--fg); padding: 0.65rem 1.6rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.875rem; border: 1px solid var(--border); transition: background 0.15s; }
 .btn-outline:hover { background: var(--bg-muted); }
 
 /* SECTIONS */
 section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .section-header { text-align: center; margin-bottom: 3rem; }
-.section-label {
-  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--fg-muted); margin-bottom: 0.75rem;
-}
+.section-label { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-muted); margin-bottom: 0.75rem; }
 .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
 .section-desc { color: var(--fg-muted); margin-top: 0.6rem; font-size: 0.95rem; max-width: 500px; margin-inline: auto; }
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
-/* SERVICES — 5 items: 3+2 grid */
-.services-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-}
-.service-item {
-  padding: 2rem 1.75rem;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  transition: background 0.2s;
-  display: flex; flex-direction: column;
-}
-/* 5 items: first row 3, second row 2 */
-.service-item:nth-child(3) { border-right: none; }
-.service-item:nth-child(n+4) { border-bottom: none; }
-.service-item:last-child { border-right: none; }
-.service-item:hover { background: var(--bg-muted); }
-.service-icon {
-  width: 36px; height: 36px;
-  border: 1px solid var(--border); border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 1rem; font-size: 1rem; flex-shrink: 0;
-}
-.service-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
-.service-item p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; flex: 1; }
-
-/* PROCESS */
-.process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-.process-card {
+/* CARD GRID — shared for services + process */
+.card-grid { display: grid; gap: 1rem; }
+.card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.card-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.card-item {
   border: 1px solid var(--border); border-radius: 12px;
   padding: 1.75rem 1.5rem; transition: border-color 0.2s, box-shadow 0.2s;
   display: flex; flex-direction: column;
 }
-.process-card:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
-.process-num { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--fg-light); margin-bottom: 1rem; }
-.process-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.35rem; }
-.process-card p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; flex: 1; }
+.card-item:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+.card-num { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--fg-light); margin-bottom: 1rem; }
+.card-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+.card-item p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; flex: 1; }
 
 /* PRICING */
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; }
@@ -192,10 +145,8 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 }
 .pricing-card.featured { border-color: var(--fg); box-shadow: 0 4px 24px rgba(0,0,0,0.06); position: relative; }
 .pricing-card.featured::before {
-  content: attr(data-badge);
-  position: absolute; top: -10px; right: 1.5rem;
-  background: var(--fg); color: white;
-  font-size: 0.68rem; font-weight: 700;
+  content: attr(data-badge); position: absolute; top: -10px; right: 1.5rem;
+  background: var(--fg); color: white; font-size: 0.68rem; font-weight: 700;
   padding: 0.2rem 0.6rem; border-radius: 100px;
 }
 .pricing-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
@@ -204,17 +155,9 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .pricing-price .amount { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.04em; }
 .pricing-price .period { font-size: 0.85rem; color: var(--fg-muted); }
 .pricing-features { list-style: none; margin-bottom: 2rem; flex: 1; }
-.pricing-features li {
-  font-size: 0.84rem; color: var(--fg-muted); padding: 0.35rem 0;
-  display: flex; align-items: center; gap: 0.5rem;
-}
+.pricing-features li { font-size: 0.84rem; color: var(--fg-muted); padding: 0.35rem 0; display: flex; align-items: center; gap: 0.5rem; }
 .pricing-features li::before { content: '✓'; font-weight: 700; color: var(--fg); font-size: 0.8rem; }
-.pricing-btn {
-  width: 100%; padding: 0.6rem; border-radius: 6px;
-  font-family: var(--font); font-size: 0.85rem; font-weight: 600;
-  cursor: pointer; text-align: center; text-decoration: none; display: block;
-  transition: opacity 0.15s; margin-top: auto;
-}
+.pricing-btn { width: 100%; padding: 0.6rem; border-radius: 6px; font-family: var(--font); font-size: 0.85rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; transition: opacity 0.15s; margin-top: auto; }
 .pricing-btn-dark { background: var(--fg); color: white; border: none; }
 .pricing-btn-dark:hover { opacity: 0.85; }
 .pricing-btn-outline { background: white; color: var(--fg); border: 1px solid var(--border); }
@@ -222,10 +165,7 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 
 /* PORTFOLIO */
 .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-.portfolio-card {
-  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-  transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
-}
+.portfolio-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
 .portfolio-card:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
 .portfolio-vis { height: 180px; background: var(--bg-muted); overflow: hidden; }
 .portfolio-vis canvas { width: 100%; height: 100%; display: block; }
@@ -241,64 +181,50 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .form-row > * { flex: 1; }
 .contact-form label { font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.35rem; }
 .contact-form input, .contact-form select, .contact-form textarea {
-  width: 100%; padding: 0.6rem 0.75rem;
-  border: 1px solid var(--border); border-radius: 6px;
-  font-family: var(--font); font-size: 0.85rem;
-  background: var(--bg); color: var(--fg); transition: border-color 0.15s, box-shadow 0.15s; outline: none;
+  width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: 6px;
+  font-family: var(--font); font-size: 0.85rem; background: var(--bg); color: var(--fg);
+  transition: border-color 0.15s, box-shadow 0.15s; outline: none;
 }
-.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus {
-  border-color: var(--fg); box-shadow: 0 0 0 2px rgba(9,9,11,0.08);
-}
+.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { border-color: var(--fg); box-shadow: 0 0 0 2px rgba(9,9,11,0.08); }
 .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--fg-light); }
 .contact-form textarea { min-height: 100px; resize: vertical; }
-.form-submit {
-  background: var(--fg); color: white; border: none;
-  padding: 0.65rem; border-radius: 6px;
-  font-family: var(--font); font-size: 0.875rem; font-weight: 600;
-  cursor: pointer; transition: opacity 0.15s;
-}
+.form-submit { background: var(--fg); color: white; border: none; padding: 0.65rem; border-radius: 6px; font-family: var(--font); font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
 .form-submit:hover { opacity: 0.85; }
 
-footer {
-  border-top: 1px solid var(--border); padding: 2rem 1.5rem;
-  display: flex; justify-content: space-between; align-items: center;
-  max-width: 1100px; margin: 0 auto; font-size: 0.78rem; color: var(--fg-light);
-}
+footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; font-size: 0.78rem; color: var(--fg-light); }
 
-@media(max-width:900px){
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
-  .services-grid .service-item:nth-child(2n) { border-right: none; }
-  .services-grid .service-item { border-bottom: 1px solid var(--border) !important; }
-  .services-grid .service-item:nth-last-child(-n+1) { border-bottom: none !important; }
-  .pricing-grid, .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-  .process-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media(max-width:640px){
-  .nav-links { display: none; }
-  .services-grid, .pricing-grid, .portfolio-grid, .process-grid { grid-template-columns: 1fr; }
-  .service-item { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
-  .service-item:last-child { border-bottom: none !important; }
-  .form-row { flex-direction: column; }
-  section { padding: 3.5rem 1.25rem; }
-  footer { flex-direction: column; gap: 0.5rem; text-align: center; }
-}
+@media(max-width:900px){ .card-grid.cols-3, .pricing-grid, .portfolio-grid { grid-template-columns: repeat(2, 1fr); } .card-grid.cols-4 { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width:640px){ .nav-items { display: none; } .card-grid.cols-3, .card-grid.cols-4, .pricing-grid, .portfolio-grid { grid-template-columns: 1fr; } .form-row { flex-direction: column; } section { padding: 3.5rem 1.25rem; } footer { flex-direction: column; gap: 0.5rem; text-align: center; } }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <div class="nav-left">
     <a href="#" class="logo">
       <div class="logo-mark">
-        <svg viewBox="0 0 28 28" fill="none"><path d="M14 1L26 8V20L14 27L2 20V8L14 1Z" fill="#09090B"/><circle class="logo-ring" cx="14" cy="14" r="8" stroke="white" stroke-width="1.2" fill="none" stroke-dasharray="4 3"/><circle cx="14" cy="14" r="3" fill="white"/></svg>
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="#09090B"/>
+          <path d="M12 7v10M7 12h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
       </div>
-      <span>Holocron</span>
+      <span class="logo-text">Holocron</span>
     </a>
-    <div class="nav-links">
-      <a href="#services" data-de="Leistungen" data-en="Services">Leistungen</a>
-      <a href="#process" data-de="Ablauf" data-en="Process">Ablauf</a>
-      <a href="#pricing" data-de="Preise" data-en="Pricing">Preise</a>
-      <a href="#portfolio" data-de="Projekte" data-en="Portfolio">Projekte</a>
+    <div class="nav-items">
+      <div class="nav-item">
+        <button class="nav-trigger" data-de="Leistungen" data-en="Services">Leistungen <svg viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="nav-dropdown">
+          <a href="#services"><div class="dd-title" data-de="Power BI Dashboards" data-en="Power BI Dashboards">Power BI Dashboards</div><div class="dd-desc" data-de="Interaktive Reports und KPI-Übersichten" data-en="Interactive reports and KPI overviews">Interaktive Reports und KPI-Übersichten</div></a>
+          <a href="#services"><div class="dd-title" data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</div><div class="dd-desc" data-de="Automatische Aktualisierung Ihrer Reports" data-en="Automated refresh of your reports">Automatische Aktualisierung Ihrer Reports</div></a>
+          <a href="#services"><div class="dd-title" data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</div><div class="dd-desc" data-de="Strukturierte, zuverlässige Datengrundlage" data-en="Structured, reliable data foundation">Strukturierte, zuverlässige Datengrundlage</div></a>
+          <a href="#services"><div class="dd-title" data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</div><div class="dd-desc" data-de="Skalierbare Modelle und DAX-Logik" data-en="Scalable models and DAX logic">Skalierbare Modelle und DAX-Logik</div></a>
+          <a href="#services"><div class="dd-title" data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</div><div class="dd-desc" data-de="Roadmap und Hands-on-Training" data-en="Roadmap and hands-on training">Roadmap und Hands-on-Training</div></a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="#process" data-de="Ablauf" data-en="Process">Ablauf</a></div>
+      <div class="nav-item"><a href="#pricing" data-de="Preise" data-en="Pricing">Preise</a></div>
+      <div class="nav-item"><a href="#portfolio" data-de="Projekte" data-en="Portfolio">Projekte</a></div>
     </div>
   </div>
   <div class="nav-right">
@@ -310,8 +236,9 @@ footer {
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-announce"><span class="badge">Neu</span><span data-de="Verfügbar für Projekte" data-en="Available for projects">Verfügbar für Projekte</span></div>
+  <div class="hero-announce"><span class="badge" data-de="Neu" data-en="New">Neu</span><span data-de="Verfügbar für Projekte" data-en="Available for projects">Verfügbar für Projekte</span></div>
   <h1>
     <span data-de="Entdecken Sie" data-en="Unlock the">Entdecken Sie</span><br>
     <span class="shuffle-slot"><span class="shuffle-inner" id="shufflePhrase">das Potenzial</span></span><br>
@@ -326,44 +253,46 @@ footer {
 
 <hr class="divider">
 
+<!-- SERVICES — numbered cards like process -->
 <section id="services" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Leistungen" data-en="Services">Leistungen</div>
     <h2 class="section-title" data-de="Alles, was Sie brauchen, um datengetrieben zu arbeiten" data-en="Everything you need to work data-driven">Alles, was Sie brauchen, um datengetrieben zu arbeiten</h2>
-    <p class="section-desc" data-de="Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen für Ihr Unternehmen." data-en="From raw data to actionable insights — tailored BI solutions for your business.">Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen für Ihr Unternehmen.</p>
+    <p class="section-desc" data-de="Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen." data-en="From raw data to actionable insights — tailored BI solutions.">Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen.</p>
   </div>
-  <div class="services-grid">
-    <div class="service-item"><div class="service-icon">📊</div><h3 data-de="Power BI Reports & Dashboards" data-en="Power BI Reports & Dashboards">Power BI Reports & Dashboards</h3><p data-de="Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen." data-en="Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.">Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen.</p></div>
-    <div class="service-item"><div class="service-icon">⚙️</div><h3 data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</h3><p data-de="Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand." data-en="Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.">Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand.</p></div>
-    <div class="service-item"><div class="service-icon">🧹</div><h3 data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</h3><p data-de="Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige Grundlage überführt." data-en="Messy data cleaned, standardized, and structured into a reliable analytical foundation.">Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige Grundlage überführt.</p></div>
-    <div class="service-item"><div class="service-icon">🗄️</div><h3 data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</h3><p data-de="Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports." data-en="Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.">Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports.</p></div>
-    <div class="service-item"><div class="service-icon">🎯</div><h3 data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</h3><p data-de="Eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen für Ihr Team." data-en="A roadmap for data-driven decisions, plus hands-on training for your team.">Eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen für Ihr Team.</p></div>
+  <div class="card-grid cols-3">
+    <div class="card-item"><div class="card-num">01</div><h3 data-de="Power BI Reports & Dashboards" data-en="Power BI Reports & Dashboards">Power BI Reports & Dashboards</h3><p data-de="Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen." data-en="Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.">Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen.</p></div>
+    <div class="card-item"><div class="card-num">02</div><h3 data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</h3><p data-de="Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand." data-en="Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.">Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand.</p></div>
+    <div class="card-item"><div class="card-num">03</div><h3 data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</h3><p data-de="Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige Grundlage überführt." data-en="Messy data cleaned, standardized, and structured into a reliable analytical foundation.">Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige Grundlage überführt.</p></div>
+    <div class="card-item"><div class="card-num">04</div><h3 data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</h3><p data-de="Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports." data-en="Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.">Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports.</p></div>
+    <div class="card-item"><div class="card-num">05</div><h3 data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</h3><p data-de="Eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen für Ihr Team." data-en="A roadmap for data-driven decisions, plus hands-on training for your team.">Eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen für Ihr Team.</p></div>
   </div>
 </section>
 
 <hr class="divider">
 
+<!-- PROCESS -->
 <section id="process" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Ablauf" data-en="Process">Ablauf</div>
     <h2 class="section-title" data-de="Vom ersten Gespräch zum ersten Insight" data-en="From first call to first insight">Vom ersten Gespräch zum ersten Insight</h2>
-    <p class="section-desc" data-de="Ein klarer, strukturierter Ansatz — damit Sie immer wissen, was passiert." data-en="A clear, structured approach — so you always know what's happening.">Ein klarer, strukturierter Ansatz — damit Sie immer wissen, was passiert.</p>
   </div>
-  <div class="process-grid">
-    <div class="process-card"><div class="process-num">01</div><h3 data-de="Discovery" data-en="Discovery">Discovery</h3><p data-de="Ihre Datenlandschaft, Ziele und Schmerzpunkte verstehen — in einem kostenlosen Erstgespräch." data-en="Understanding your data landscape, goals, and pain points in a free consultation.">Ihre Datenlandschaft, Ziele und Schmerzpunkte verstehen — in einem kostenlosen Erstgespräch.</p></div>
-    <div class="process-card"><div class="process-num">02</div><h3 data-de="Design" data-en="Design">Design</h3><p data-de="Wireframes und Datenmodell-Vorschläge. Sie geben grünes Licht, bevor gebaut wird." data-en="Wireframes and data model proposals. You sign off before any build starts.">Wireframes und Datenmodell-Vorschläge. Sie geben grünes Licht, bevor gebaut wird.</p></div>
-    <div class="process-card"><div class="process-num">03</div><h3 data-de="Build" data-en="Build">Build</h3><p data-de="Iterative Entwicklung mit wöchentlichen Check-ins. Live-Demos statt Überraschungen." data-en="Iterative development with weekly check-ins. Live demos, not surprises.">Iterative Entwicklung mit wöchentlichen Check-ins. Live-Demos statt Überraschungen.</p></div>
-    <div class="process-card"><div class="process-num">04</div><h3 data-de="Launch" data-en="Launch">Launch</h3><p data-de="Deployment, Dokumentation und optionaler laufender Support." data-en="Deployment, documentation, and optional ongoing support.">Deployment, Dokumentation und optionaler laufender Support.</p></div>
+  <div class="card-grid cols-4">
+    <div class="card-item"><div class="card-num">01</div><h3 data-de="Discovery" data-en="Discovery">Discovery</h3><p data-de="Ihre Datenlandschaft, Ziele und Schmerzpunkte verstehen — in einem kostenlosen Erstgespräch." data-en="Understanding your data landscape, goals, and pain points in a free consultation.">Ihre Datenlandschaft, Ziele und Schmerzpunkte verstehen — in einem kostenlosen Erstgespräch.</p></div>
+    <div class="card-item"><div class="card-num">02</div><h3 data-de="Design" data-en="Design">Design</h3><p data-de="Wireframes und Datenmodell-Vorschläge. Sie geben grünes Licht, bevor gebaut wird." data-en="Wireframes and data model proposals. You sign off before any build starts.">Wireframes und Datenmodell-Vorschläge. Sie geben grünes Licht, bevor gebaut wird.</p></div>
+    <div class="card-item"><div class="card-num">03</div><h3 data-de="Build" data-en="Build">Build</h3><p data-de="Iterative Entwicklung mit wöchentlichen Check-ins. Live-Demos statt Überraschungen." data-en="Iterative development with weekly check-ins. Live demos, not surprises.">Iterative Entwicklung mit wöchentlichen Check-ins. Live-Demos statt Überraschungen.</p></div>
+    <div class="card-item"><div class="card-num">04</div><h3 data-de="Launch" data-en="Launch">Launch</h3><p data-de="Deployment, Dokumentation und optionaler laufender Support." data-en="Deployment, documentation, and optional ongoing support.">Deployment, Dokumentation und optionaler laufender Support.</p></div>
   </div>
 </section>
 
 <hr class="divider">
 
+<!-- PRICING -->
 <section id="pricing" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Preise" data-en="Pricing">Preise</div>
     <h2 class="section-title" data-de="Transparente Pakete für jede Projektgröße" data-en="Transparent packages for every project size">Transparente Pakete für jede Projektgröße</h2>
-    <p class="section-desc" data-de="Alle Preise zzgl. MwSt. Individuelle Angebote auf Anfrage." data-en="All prices excl. VAT. Custom quotes available on request.">Alle Preise zzgl. MwSt. Individuelle Angebote auf Anfrage.</p>
+    <p class="section-desc" data-de="Alle Preise zzgl. MwSt. Individuelle Angebote auf Anfrage." data-en="All prices excl. VAT. Custom quotes on request.">Alle Preise zzgl. MwSt. Individuelle Angebote auf Anfrage.</p>
   </div>
   <div class="pricing-grid">
     <div class="pricing-card">
@@ -377,7 +306,7 @@ footer {
         <li data-de="2 Revisionsrunden" data-en="2 revision rounds">2 Revisionsrunden</li>
         <li data-de="Dokumentation" data-en="Documentation">Dokumentation</li>
       </ul>
-      <a href="#contact" class="pricing-btn pricing-btn-outline" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
+      <a href="#contact" class="pricing-btn pricing-btn-outline pkg-select" data-pkg="Starter" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
     <div class="pricing-card featured" data-badge="Beliebt">
       <div class="pricing-name">Professional</div>
@@ -391,7 +320,7 @@ footer {
         <li data-de="Team-Schulung (1h)" data-en="Team training (1h)">Team-Schulung (1h)</li>
         <li data-de="14 Tage Support" data-en="14 days support">14 Tage Support</li>
       </ul>
-      <a href="#contact" class="pricing-btn pricing-btn-dark" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
+      <a href="#contact" class="pricing-btn pricing-btn-dark pkg-select" data-pkg="Professional" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
     <div class="pricing-card">
       <div class="pricing-name">Enterprise</div>
@@ -404,27 +333,29 @@ footer {
         <li data-de="Team-Schulungen" data-en="Team training">Team-Schulungen</li>
         <li data-de="Priorisierter Support" data-en="Priority support">Priorisierter Support</li>
       </ul>
-      <a href="#contact" class="pricing-btn pricing-btn-outline" data-de="Gespräch vereinbaren" data-en="Book a Call">Gespräch vereinbaren</a>
+      <a href="#contact" class="pricing-btn pricing-btn-outline pkg-select" data-pkg="Enterprise" data-de="Gespräch vereinbaren" data-en="Book a Call">Gespräch vereinbaren</a>
     </div>
   </div>
 </section>
 
 <hr class="divider">
 
+<!-- PORTFOLIO -->
 <section id="portfolio" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Projekte" data-en="Portfolio">Projekte</div>
     <h2 class="section-title" data-de="Ausgewählte Projekte" data-en="Selected projects">Ausgewählte Projekte</h2>
   </div>
   <div class="portfolio-grid">
-    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart1"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Finance</div><h3 data-de="Financial Reporting Cockpit" data-en="Financial Reporting Cockpit">Financial Reporting Cockpit</h3><p data-de="Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich." data-en="Consolidated financial reports with automated budget-vs-actuals tracking.">Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich.</p></div></div>
-    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart2"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Operations</div><h3 data-de="KPI Performance Dashboard" data-en="KPI Performance Dashboard">KPI Performance Dashboard</h3><p data-de="Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts." data-en="Real-time KPIs with trend analysis and threshold alerts.">Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts.</p></div></div>
-    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart3"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Automation</div><h3 data-de="Rolling Forecast" data-en="Rolling Forecast">Rolling Forecast</h3><p data-de="Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich." data-en="Self-refreshing forecast replacing 12+ hours of monthly manual work.">Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich.</p></div></div>
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart1"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Finance</div><h3>Financial Reporting Cockpit</h3><p data-de="Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich." data-en="Consolidated financial reports with automated budget-vs-actuals tracking.">Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich.</p></div></div>
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart2"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Operations</div><h3>KPI Performance Dashboard</h3><p data-de="Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts." data-en="Real-time KPIs with trend analysis and threshold alerts.">Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts.</p></div></div>
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart3"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Automation</div><h3>Rolling Forecast</h3><p data-de="Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich." data-en="Self-refreshing forecast replacing 12+ hours of monthly manual work.">Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich.</p></div></div>
   </div>
 </section>
 
 <hr class="divider">
 
+<!-- CONTACT -->
 <section id="contact" class="scroll-section">
   <div class="contact-wrapper">
     <div class="section-header">
@@ -441,13 +372,26 @@ footer {
         <div><label for="email">E-Mail</label><input type="email" id="email" name="email" placeholder="name@firma.de" required></div>
       </div>
       <div><label for="company" data-de="Unternehmen" data-en="Company">Unternehmen</label><input type="text" id="company" name="company" placeholder="Firmenname"></div>
-      <div><label for="service" data-de="Gewünschte Leistung" data-en="Service of Interest">Gewünschte Leistung</label>
-        <select id="service" name="service">
-          <option value="" data-de="Bitte wählen..." data-en="Select a service...">Bitte wählen...</option>
-          <option>Power BI Reports & Dashboards</option><option data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</option>
-          <option data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</option><option data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</option>
-          <option data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</option><option data-de="Noch unsicher" data-en="Not sure yet">Noch unsicher</option>
-        </select>
+      <div class="form-row">
+        <div><label for="service" data-de="Leistung" data-en="Service">Leistung</label>
+          <select id="service" name="service">
+            <option value="" data-de="Bitte wählen..." data-en="Select...">Bitte wählen...</option>
+            <option>Power BI Reports & Dashboards</option>
+            <option data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</option>
+            <option data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</option>
+            <option data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</option>
+            <option data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</option>
+            <option data-de="Noch unsicher" data-en="Not sure yet">Noch unsicher</option>
+          </select>
+        </div>
+        <div><label for="package" data-de="Paket" data-en="Package">Paket</label>
+          <select id="package" name="package">
+            <option value="" data-de="Kein Paket gewählt" data-en="No package selected">Kein Paket gewählt</option>
+            <option value="Starter">Starter — €990</option>
+            <option value="Professional">Professional — €2.500</option>
+            <option value="Enterprise" data-de="Enterprise — Auf Anfrage" data-en="Enterprise — On Request">Enterprise — Auf Anfrage</option>
+          </select>
+        </div>
       </div>
       <div><label for="message" data-de="Projektbeschreibung" data-en="Project Description">Projektbeschreibung</label><textarea id="message" name="message" placeholder="Erzählen Sie mir von Ihrem aktuellen Setup und Ihren Zielen..."></textarea></div>
       <button type="submit" class="form-submit" data-de="Nachricht senden →" data-en="Send Message →">Nachricht senden →</button>
@@ -462,18 +406,15 @@ footer {
 
 <script>
 // SCROLL REVEAL
-const obs = new IntersectionObserver(e => {
-  e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); } });
-}, { threshold: 0.06 });
+const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); } }); }, { threshold: 0.06 });
 document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
 
-// WORD SHUFFLE — full phrase "article + word" as single unit
+// WORD SHUFFLE
 (function() {
   const phrasesDE = ['das Potenzial', 'den Wert', 'die Intelligenz'];
   const phrasesEN = ['the potential', 'the value', 'the intelligence'];
   let idx = 0, lang = 'de';
   const el = document.getElementById('shufflePhrase');
-
   setInterval(() => {
     const phrases = lang === 'de' ? phrasesDE : phrasesEN;
     el.classList.add('exit');
@@ -485,11 +426,7 @@ document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
       requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('enter')));
     }, 280);
   }, 2800);
-
-  window._setShuffleLang = (l) => {
-    lang = l; idx = 0;
-    el.textContent = (l === 'de' ? phrasesDE : phrasesEN)[0];
-  };
+  window._setShuffleLang = (l) => { lang = l; idx = 0; el.textContent = (l === 'de' ? phrasesDE : phrasesEN)[0]; };
 })();
 
 // LANGUAGE TOGGLE
@@ -501,10 +438,7 @@ document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
       btns.forEach(b => b.classList.toggle('active', b === btn));
       document.querySelectorAll('[data-' + lang + ']').forEach(el => {
         const val = el.getAttribute('data-' + lang);
-        if (val) {
-          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
-          else el.textContent = val;
-        }
+        if (val) { if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val; else el.textContent = val; }
       });
       const f = document.querySelector('.pricing-card.featured');
       if (f) f.dataset.badge = lang === 'de' ? 'Beliebt' : 'Popular';
@@ -513,7 +447,18 @@ document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
   });
 })();
 
-// PORTFOLIO CHARTS
+// PRICING → CONTACT: pre-select package
+document.querySelectorAll('.pkg-select').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const pkg = btn.dataset.pkg;
+    setTimeout(() => {
+      const sel = document.getElementById('package');
+      if (sel) { for (let o of sel.options) { if (o.value === pkg) { sel.value = pkg; break; } } }
+    }, 400);
+  });
+});
+
+// CHARTS
 function dc(id, type) {
   const c = document.getElementById(id); if (!c) return;
   const ctx = c.getContext('2d'), dpr = window.devicePixelRatio || 1, r = c.getBoundingClientRect();
