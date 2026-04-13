@@ -1,516 +1,681 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Holocron — Business Intelligence Services</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
   --bg: #FFFFFF;
-  --bg2: #F4F6FA;
-  --fg: #0F1729;
-  --fg-muted: #5A6478;
-  --fg-light: #8892A4;
-  --blue-900: #0B1A3E;
-  --blue-800: #102A5C;
-  --blue-700: #1E40AF;
-  --blue-600: #2563EB;
-  --blue-500: #3B82F6;
-  --blue-400: #60A5FA;
-  --blue-300: #93C5FD;
-  --blue-100: #DBEAFE;
-  --blue-50: #EFF6FF;
-  --cyan-500: #06B6D4;
-  --cyan-400: #22D3EE;
-  --gradient-blue: linear-gradient(135deg, #1E40AF, #2563EB, #3B82F6);
-  --gradient-blue-cyan: linear-gradient(135deg, #1E40AF, #2563EB, #06B6D4);
-  --border: rgba(0,0,0,0.07);
-  --radius: 16px;
-  --font-body: 'Outfit', sans-serif;
-  --font-mono: 'Space Mono', monospace;
+  --bg-muted: #FAFAFA;
+  --fg: #09090B;
+  --fg-muted: #71717A;
+  --fg-light: #A1A1AA;
+  --border: #E4E4E7;
+  --border-hover: #D4D4D8;
+  --ring: #18181B;
+  --blue: #2563EB;
+  --blue-muted: #DBEAFE;
+  --radius: 8px;
+  --font: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 html { scroll-behavior: smooth; }
-body {
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--fg);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+body { font-family: var(--font); background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+/* SMOOTH SCROLL SECTIONS */
+.scroll-section {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
 }
+.scroll-section.visible { opacity: 1; transform: translateY(0); }
 
 /* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1rem 4vw;
-  background: rgba(11,26,62,0.85);
-  backdrop-filter: blur(24px) saturate(1.4);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 1.5rem; height: 56px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
 }
-.logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: var(--gradient-blue-cyan);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
+.nav-left { display: flex; align-items: center; gap: 1.5rem; }
+.logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); }
+.logo svg { width: 22px; height: 22px; }
+.logo span { font-weight: 700; font-size: 0.9rem; letter-spacing: -0.02em; }
+.nav-links { display: flex; gap: 0.25rem; }
+.nav-links a {
+  text-decoration: none; color: var(--fg-muted); font-size: 0.825rem; font-weight: 500;
+  padding: 0.35rem 0.75rem; border-radius: 6px; transition: color 0.15s, background 0.15s;
 }
-.logo-icon::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.15) 100%);
-  border-radius: inherit;
+.nav-links a:hover { color: var(--fg); background: var(--bg-muted); }
+.nav-right { display: flex; align-items: center; gap: 0.5rem; }
+.lang-toggle {
+  display: flex; align-items: center;
+  border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+  font-size: 0.75rem; font-weight: 600;
 }
-.logo-icon svg { position: relative; z-index: 1; width: 20px; height: 20px; }
-.logo-name {
-  font-family: var(--font-mono);
-  font-size: 0.95rem; font-weight: 700;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  background: linear-gradient(90deg, #93C5FD, #60A5FA, #22D3EE, #60A5FA, #93C5FD);
-  background-size: 200% 100%;
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  animation: shimmer 4s linear infinite;
+.lang-btn {
+  padding: 0.3rem 0.6rem; cursor: pointer; background: none; border: none;
+  font-family: var(--font); font-size: 0.75rem; font-weight: 600; color: var(--fg-muted);
+  transition: background 0.15s, color 0.15s;
 }
-@keyframes shimmer { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
-nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
-nav ul li a { text-decoration: none; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; transition: color 0.3s; }
-nav ul li a:hover { color: #fff; }
+.lang-btn.active { background: var(--fg); color: white; }
 .nav-cta {
-  background: var(--gradient-blue-cyan) !important; color: #fff !important;
-  padding: 0.5rem 1.4rem !important; border-radius: 10px;
-  font-weight: 600 !important; transition: box-shadow 0.4s, transform 0.2s !important;
+  background: var(--fg); color: white; border: none;
+  padding: 0.4rem 1rem; border-radius: 6px;
+  font-family: var(--font); font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: opacity 0.15s;
 }
-.nav-cta:hover { box-shadow: 0 4px 24px rgba(37,99,235,0.4) !important; transform: translateY(-1px) !important; }
+.nav-cta:hover { opacity: 0.85; }
 
-/* HERO WITH PARTICLE RING */
+/* HERO */
 .hero {
-  position: relative;
   min-height: 100vh;
-  background: var(--blue-900);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 7rem 1.5rem 5rem;
+  position: relative;
+}
+.hero-announce {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  border: 1px solid var(--border); border-radius: 100px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.78rem; font-weight: 500; color: var(--fg-muted);
+  margin-bottom: 2rem;
+  transition: border-color 0.2s;
+}
+.hero-announce:hover { border-color: var(--border-hover); }
+.hero-announce .badge {
+  background: var(--fg); color: white;
+  font-size: 0.65rem; font-weight: 700;
+  padding: 0.1rem 0.45rem; border-radius: 100px;
+  letter-spacing: 0.02em;
+}
+.hero h1 {
+  font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  max-width: 700px;
+}
+.hero h1 .shuffle-word {
+  display: inline-block;
+  position: relative;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  vertical-align: bottom;
 }
-#particle-canvas {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  display: block;
+.hero h1 .shuffle-inner {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.3s;
 }
-.hero-content {
-  position: relative; z-index: 2;
-  text-align: center; color: white;
-  padding: 0 4vw;
-  max-width: 900px;
+.hero h1 .shuffle-inner.exit {
+  transform: translateY(-110%);
+  opacity: 0;
 }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  border: 1px solid rgba(96,165,250,0.3); background: rgba(37,99,235,0.15);
-  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
-  padding: 0.4rem 1.1rem; border-radius: 100px; margin-bottom: 2rem;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-300);
-  opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
-}
-.dot { width: 6px; height: 6px; background: var(--blue-400); border-radius: 50%; box-shadow: 0 0 8px rgba(96,165,250,0.6); animation: pg 2s infinite; }
-@keyframes pg { 0%,100%{box-shadow:0 0 8px rgba(96,165,250,0.6)} 50%{box-shadow:0 0 16px rgba(96,165,250,0.9)} }
-.hero-content h1 {
-  font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 800;
-  line-height: 1.08; letter-spacing: -0.04em;
-  text-shadow: 0 2px 40px rgba(0,0,0,0.3);
-  opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
-}
-.hero-content h1 .accent {
-  background: linear-gradient(135deg, var(--blue-400), var(--cyan-400));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+.hero h1 .shuffle-inner.enter {
+  transform: translateY(110%);
+  opacity: 0;
 }
 .hero-sub {
-  max-width: 520px; margin: 1.5rem auto 0; font-size: 1.1rem;
-  color: rgba(255,255,255,0.7); font-weight: 300;
-  opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
+  max-width: 500px; margin: 1.5rem auto 0;
+  font-size: 1rem; color: var(--fg-muted); font-weight: 400;
 }
-.hero-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; opacity: 0; animation: fadeUp 0.7s 0.65s forwards; }
-.btn-primary {
-  background: var(--gradient-blue-cyan); color: #fff;
-  padding: 0.9rem 2.2rem; border-radius: 12px; text-decoration: none;
-  font-weight: 700; font-size: 0.95rem;
-  transition: transform 0.3s, box-shadow 0.3s;
-  position: relative; overflow: hidden;
+.hero-buttons { display: flex; gap: 0.75rem; margin-top: 2rem; }
+.btn-dark {
+  background: var(--fg); color: white;
+  padding: 0.65rem 1.6rem; border-radius: 6px;
+  text-decoration: none; font-weight: 600; font-size: 0.875rem;
+  transition: opacity 0.15s;
+  display: inline-flex; align-items: center; gap: 0.4rem;
 }
-.btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%); pointer-events: none; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,99,235,0.4); }
-.btn-secondary {
-  color: rgba(255,255,255,0.85); padding: 0.9rem 2.2rem; border-radius: 12px;
-  text-decoration: none; font-weight: 500; font-size: 0.95rem;
-  border: 1.5px solid rgba(255,255,255,0.2); transition: background 0.3s, transform 0.3s;
+.btn-dark:hover { opacity: 0.85; }
+.btn-outline {
+  background: white; color: var(--fg);
+  padding: 0.65rem 1.6rem; border-radius: 6px;
+  text-decoration: none; font-weight: 600; font-size: 0.875rem;
+  border: 1px solid var(--border);
+  transition: background 0.15s, border-color 0.15s;
 }
-.btn-secondary:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+.btn-outline:hover { background: var(--bg-muted); border-color: var(--border-hover); }
 
 /* SECTIONS */
-section { padding: 7rem 4vw; }
-.sl {
-  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 0.6rem; color: var(--blue-600);
+section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+section.full-width { max-width: none; }
+.section-header { text-align: center; margin-bottom: 3rem; }
+.section-label {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--fg-muted); margin-bottom: 0.75rem;
 }
-.sc .sl { justify-content: center; }
-.st { font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; max-width: 600px; }
-.sc .st { margin-inline: auto; }
-.ss { color: var(--fg-muted); max-width: 500px; margin-top: 1rem; font-size: 1rem; font-weight: 300; }
-.sc .ss { margin-inline: auto; }
-.sc { text-align: center; }
-.sh { margin-bottom: 4rem; }
+.section-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.2;
+}
+.section-desc {
+  color: var(--fg-muted); margin-top: 0.6rem; font-size: 0.95rem;
+  max-width: 500px; margin-inline: auto;
+}
 
-/* SQUISHY CARDS */
-#services { background: var(--bg2); }
-.sg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
-.sq {
-  position: relative; border-radius: var(--radius); padding: 2.2rem 1.8rem;
-  color: white; overflow: hidden; cursor: default; min-height: 280px;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
-}
-.sq:hover { transform: scale(1.04); }
-.sq.c1{background:#1E40AF} .sq.c2{background:#2563EB} .sq.c3{background:#1D4ED8}
-.sq.c4{background:#1E3A8A} .sq.c5{background:#2563EB} .sq.c6{background:#1E40AF}
-.sq .cb { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-.sq .cb svg { position: absolute; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1); }
-.sq:hover .cb svg { transform: scale(1.45); }
-.sq .cb circle, .sq .cb ellipse { transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); }
-.sq:hover .bt { transform: scaleY(0.5) translateY(-15px); }
-.sq:hover .bb { transform: scaleY(2.2) translateY(-15px); }
-.cc { position: relative; z-index: 1; }
-.cn {
-  display: inline-block; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
-  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
-  padding: 0.25rem 0.7rem; border-radius: 100px; margin-bottom: 1rem; letter-spacing: 0.05em;
-}
-.cc h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1); transform-origin: top left; }
-.sq:hover .cc h3 { transform: scale(1.05); }
-.cc p { font-size: 0.88rem; line-height: 1.6; color: rgba(255,255,255,0.8); font-weight: 300; }
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
-/* PROCESS — HORIZONTAL CARDS */
-#process { background: var(--bg); }
-.process-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.process-card {
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 2rem 1.5rem;
-  text-align: center;
-  position: relative;
-  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s, border-color 0.4s;
-}
-.process-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 48px rgba(37,99,235,0.1);
-  border-color: var(--blue-300);
-}
-.process-num {
-  width: 56px; height: 56px;
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;
-  margin: 0 auto 1.2rem;
-  color: white;
-  position: relative;
+/* SERVICES */
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; border: 1px solid var(--border); border-radius: 12px;
   overflow: hidden;
 }
-.process-card:nth-child(1) .process-num { background: linear-gradient(135deg, #1E40AF, #2563EB); }
-.process-card:nth-child(2) .process-num { background: linear-gradient(135deg, #2563EB, #3B82F6); }
-.process-card:nth-child(3) .process-num { background: linear-gradient(135deg, #3B82F6, #06B6D4); }
-.process-card:nth-child(4) .process-num { background: linear-gradient(135deg, #06B6D4, #22D3EE); }
-.process-num::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 50%); }
-.process-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
-.process-card p { font-size: 0.85rem; color: var(--fg-muted); font-weight: 300; line-height: 1.6; }
-/* connector arrows */
-.process-card:not(:last-child)::after {
-  content: '→';
-  position: absolute;
-  right: -1.1rem; top: 50%;
-  transform: translateY(-50%);
-  color: var(--blue-300);
-  font-size: 1.2rem;
-  font-weight: 300;
+.service-item {
+  padding: 2rem 1.75rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
 }
+.service-item:nth-child(3n) { border-right: none; }
+.service-item:nth-child(n+4) { border-bottom: none; }
+.service-item:hover { background: var(--bg-muted); }
+.service-icon {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.service-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; letter-spacing: -0.01em; }
+.service-item p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; }
+
+/* PROCESS */
+.process-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.process-card {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.process-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+.process-num {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+  color: var(--fg-light); margin-bottom: 1rem;
+}
+.process-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.35rem; }
+.process-card p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; }
+
+/* PRICING */
+.pricing-toggle {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.75rem; margin-bottom: 3rem;
+}
+.pricing-toggle span { font-size: 0.85rem; font-weight: 500; color: var(--fg-muted); }
+.pricing-toggle span.active-label { color: var(--fg); font-weight: 600; }
+.toggle-switch {
+  width: 44px; height: 24px;
+  background: var(--border); border-radius: 100px;
+  position: relative; cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle-switch.on { background: var(--fg); }
+.toggle-knob {
+  width: 18px; height: 18px;
+  background: white; border-radius: 50%;
+  position: absolute; top: 3px; left: 3px;
+  transition: left 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.toggle-switch.on .toggle-knob { left: 23px; }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.pricing-card {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 2rem 1.75rem;
+  display: flex; flex-direction: column;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.pricing-card.featured {
+  border-color: var(--fg);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  position: relative;
+}
+.pricing-card.featured::before {
+  content: 'Beliebt';
+  position: absolute; top: -10px; right: 1.5rem;
+  background: var(--fg); color: white;
+  font-size: 0.68rem; font-weight: 700;
+  padding: 0.2rem 0.6rem; border-radius: 100px;
+  letter-spacing: 0.02em;
+}
+.pricing-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
+.pricing-desc { font-size: 0.82rem; color: var(--fg-muted); margin-bottom: 1.25rem; }
+.pricing-price { margin-bottom: 1.5rem; }
+.pricing-price .amount {
+  font-size: 2.4rem; font-weight: 800; letter-spacing: -0.04em;
+}
+.pricing-price .period { font-size: 0.85rem; color: var(--fg-muted); font-weight: 400; }
+.pricing-features { list-style: none; margin-bottom: 2rem; flex: 1; }
+.pricing-features li {
+  font-size: 0.84rem; color: var(--fg-muted);
+  padding: 0.35rem 0;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.pricing-features li::before {
+  content: '✓'; font-weight: 700; color: var(--fg);
+  font-size: 0.8rem;
+}
+.pricing-btn {
+  width: 100%; padding: 0.6rem;
+  border-radius: 6px; font-family: var(--font);
+  font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  text-align: center; text-decoration: none;
+  transition: opacity 0.15s;
+  display: block;
+}
+.pricing-btn-dark { background: var(--fg); color: white; border: none; }
+.pricing-btn-dark:hover { opacity: 0.85; }
+.pricing-btn-outline { background: white; color: var(--fg); border: 1px solid var(--border); }
+.pricing-btn-outline:hover { background: var(--bg-muted); }
 
 /* PORTFOLIO */
-#portfolio { background: var(--bg2); }
-.pg { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
-.pk {
-  border-radius: var(--radius); overflow: hidden; background: var(--bg);
-  border: 1px solid var(--border);
-  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
+.portfolio-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }
-.pk:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 24px 60px rgba(37,99,235,0.08), 0 4px 16px rgba(0,0,0,0.05); }
-.pv { width: 100%; height: 200px; position: relative; overflow: hidden; background: linear-gradient(135deg, var(--blue-50), var(--blue-100)); }
-.pv canvas { width: 100%; height: 100%; display: block; }
-.pv::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50px; background: linear-gradient(to top, var(--bg), transparent); pointer-events: none; }
-.pb { padding: 1.5rem 1.75rem; }
-.ptag { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.5rem; color: var(--blue-600); }
-.pb h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
-.pb p { font-size: 0.88rem; color: var(--fg-muted); font-weight: 300; }
-
-/* TESTIMONIALS */
-.testimonials { text-align: center; background: var(--bg); }
-.tc { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
-.tm {
-  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 2rem; text-align: left;
-  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
+.portfolio-card {
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.portfolio-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+.portfolio-vis {
+  height: 180px; background: var(--bg-muted);
   position: relative; overflow: hidden;
 }
-.tm:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(37,99,235,0.06); }
-.tm::before { content: '\201C'; position: absolute; top: -5px; left: 16px; font-size: 5rem; font-weight: 800; color: var(--blue-100); pointer-events: none; line-height: 1; }
-.tm blockquote { font-size: 0.92rem; color: var(--fg-muted); line-height: 1.7; font-style: italic; font-weight: 300; margin-bottom: 1.25rem; }
-.ta { font-size: 0.85rem; font-weight: 600; }
-.tr { font-size: 0.75rem; color: var(--fg-light); font-weight: 300; }
+.portfolio-vis canvas { width: 100%; height: 100%; display: block; }
+.portfolio-body { padding: 1.25rem 1.5rem; }
+.portfolio-tag {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--fg-light); margin-bottom: 0.35rem;
+}
+.portfolio-body h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+.portfolio-body p { font-size: 0.82rem; color: var(--fg-muted); }
+
+/* TESTIMONIALS */
+.testimonial-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.testimonial-card {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.75rem;
+  transition: border-color 0.2s;
+}
+.testimonial-card:hover { border-color: var(--border-hover); }
+.testimonial-card blockquote {
+  font-size: 0.88rem; color: var(--fg-muted);
+  line-height: 1.65; font-style: italic;
+  margin-bottom: 1rem;
+}
+.testimonial-author { font-size: 0.82rem; font-weight: 600; }
+.testimonial-role { font-size: 0.75rem; color: var(--fg-light); }
 
 /* CONTACT */
-#contact { background: var(--bg2); }
-.cw { max-width: 620px; margin: 0 auto; text-align: center; }
-.cf { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem; text-align: left; }
-.fr { display: flex; gap: 1rem; }
-.fr > * { flex: 1; }
-.cf label { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.4rem; color: var(--fg-muted); }
-.cf input, .cf select, .cf textarea {
-  width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #D1D5DB; border-radius: 10px;
-  font-family: var(--font-body); font-size: 0.9rem; font-weight: 400;
-  background: var(--bg); color: var(--fg); transition: border-color 0.3s, box-shadow 0.3s; outline: none;
+.contact-wrapper { max-width: 560px; margin: 0 auto; }
+.contact-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+.form-row { display: flex; gap: 0.75rem; }
+.form-row > * { flex: 1; }
+.contact-form label {
+  font-size: 0.8rem; font-weight: 600;
+  display: block; margin-bottom: 0.35rem;
 }
-.cf input:focus, .cf select:focus, .cf textarea:focus { border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
-.cf input::placeholder, .cf textarea::placeholder { color: #B0B8C8; }
-.cf textarea { min-height: 120px; resize: vertical; }
-.cf select { cursor: pointer; }
-.fs {
-  position: relative; background: var(--gradient-blue-cyan); color: #fff;
-  padding: 0.95rem 2rem; border: none; border-radius: 12px;
-  font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
-  cursor: pointer; overflow: hidden; transition: box-shadow 0.4s, transform 0.3s; margin-top: 0.5rem;
+.contact-form input, .contact-form select, .contact-form textarea {
+  width: 100%; padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-family: var(--font); font-size: 0.85rem;
+  background: var(--bg); color: var(--fg);
+  transition: border-color 0.15s, box-shadow 0.15s; outline: none;
 }
-.fs::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%); pointer-events: none; }
-.fs:hover { box-shadow: 0 8px 32px rgba(37,99,235,0.35); transform: translateY(-2px); }
+.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px rgba(9,9,11,0.08);
+}
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--fg-light); }
+.contact-form textarea { min-height: 100px; resize: vertical; }
+.form-submit {
+  background: var(--fg); color: white; border: none;
+  padding: 0.65rem; border-radius: 6px;
+  font-family: var(--font); font-size: 0.875rem; font-weight: 600;
+  cursor: pointer; transition: opacity 0.15s;
+}
+.form-submit:hover { opacity: 0.85; }
 
 /* FOOTER */
-footer { text-align: center; padding: 3rem 4vw; border-top: 1px solid var(--border); background: var(--bg); }
-.fb { font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.7rem; color: var(--blue-600); }
-footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-weight: 300; }
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 1.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 1100px; margin: 0 auto;
+  font-size: 0.78rem; color: var(--fg-light);
+}
 
-/* ANIMATIONS */
-@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
-.reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.8s cubic-bezier(0.23,1,0.32,1), transform 0.8s cubic-bezier(0.23,1,0.32,1); }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.rs > .reveal:nth-child(1){transition-delay:0s} .rs > .reveal:nth-child(2){transition-delay:0.08s}
-.rs > .reveal:nth-child(3){transition-delay:0.16s} .rs > .reveal:nth-child(4){transition-delay:0.24s}
-.rs > .reveal:nth-child(5){transition-delay:0.32s} .rs > .reveal:nth-child(6){transition-delay:0.4s}
-
-@media(max-width:1024px){ .process-grid{grid-template-columns:repeat(2,1fr)} .process-card:nth-child(2)::after,.process-card:nth-child(4)::after{display:none} }
-@media(max-width:900px){ .sg{grid-template-columns:repeat(2,1fr)} }
-@media(max-width:768px){
-  nav ul{display:none} .fr{flex-direction:column} section{padding:5rem 5vw}
-  .sg{grid-template-columns:1fr} .process-grid{grid-template-columns:1fr}
-  .process-card::after{display:none!important}
+/* RESPONSIVE */
+@media(max-width:900px){
+  .services-grid, .pricing-grid, .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-grid { grid-template-columns: repeat(2, 1fr); }
+  .service-item:nth-child(2n) { border-right: none; }
+  .service-item:nth-child(n+5) { border-bottom: none; }
+  .service-item:nth-child(3), .service-item:nth-child(4) { border-bottom: 1px solid var(--border); }
+}
+@media(max-width:640px){
+  .nav-links { display: none; }
+  .services-grid, .pricing-grid, .portfolio-grid, .process-grid, .testimonial-grid { grid-template-columns: 1fr; }
+  .service-item { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
+  .service-item:last-child { border-bottom: none !important; }
+  .form-row { flex-direction: column; }
+  section { padding: 3.5rem 1.25rem; }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; }
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <a href="#" class="logo">
-    <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" fill="none"/><path d="M12 6L16 8.5V13.5L12 16L8 13.5V8.5L12 6Z" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.7)" stroke-width="0.8"/><circle cx="12" cy="11" r="1.5" fill="white"/></svg></div>
-    <span class="logo-name">Holocron</span>
-  </a>
-  <ul>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#portfolio">Portfolio</a></li>
-    <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
-  </ul>
+  <div class="nav-left">
+    <a href="#" class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+      <span>Holocron</span>
+    </a>
+    <div class="nav-links">
+      <a href="#services" data-de="Leistungen" data-en="Services">Leistungen</a>
+      <a href="#process" data-de="Ablauf" data-en="Process">Ablauf</a>
+      <a href="#pricing" data-de="Preise" data-en="Pricing">Preise</a>
+      <a href="#portfolio" data-de="Projekte" data-en="Portfolio">Projekte</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <a href="#contact" class="nav-cta" data-de="Kontakt" data-en="Contact">Kontakt</a>
+  </div>
 </nav>
 
-<!-- HERO WITH PARTICLE RING BACKGROUND -->
+<!-- HERO -->
 <section class="hero">
-  <canvas id="particle-canvas"></canvas>
-  <div class="hero-content">
-    <div class="hero-badge"><span class="dot"></span> Available for Projects</div>
-    <h1>Unlock the <span class="accent">intelligence</span> hidden in your data</h1>
-    <p class="hero-sub">Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.</p>
-    <div class="hero-buttons">
-      <a href="#contact" class="btn-primary">Start a Project</a>
-      <a href="#portfolio" class="btn-secondary">View Work</a>
-    </div>
+  <div class="hero-announce">
+    <span class="badge">Neu</span>
+    <span data-de="Verfügbar für Projekte" data-en="Available for projects">Verfügbar für Projekte</span>
+  </div>
+  <h1>
+    <span data-de="Entdecken Sie das" data-en="Unlock the">Entdecken Sie das</span><br>
+    <span class="shuffle-word"><span class="shuffle-inner" id="shuffleWord">Potenzial</span></span><br>
+    <span data-de="Ihrer Daten" data-en="of your data">Ihrer Daten</span>
+  </h1>
+  <p class="hero-sub" data-de="Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt." data-en="Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.">Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt.</p>
+  <div class="hero-buttons">
+    <a href="#contact" class="btn-dark" data-de="Projekt starten →" data-en="Start a Project →">Projekt starten →</a>
+    <a href="#portfolio" class="btn-outline" data-de="Projekte ansehen" data-en="View Work">Projekte ansehen</a>
   </div>
 </section>
+
+<hr class="divider">
 
 <!-- SERVICES -->
-<section id="services">
-  <div class="sc sh">
-    <div class="sl">Services</div>
-    <h2 class="st">Everything you need to make data work for you</h2>
-    <p class="ss">From raw data to boardroom-ready insights — end-to-end BI support tailored to your business.</p>
+<section id="services" class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Leistungen" data-en="Services">Leistungen</div>
+    <h2 class="section-title" data-de="Alles, was Sie brauchen, um datengetrieben zu arbeiten" data-en="Everything you need to work data-driven">Alles, was Sie brauchen, um datengetrieben zu arbeiten</h2>
+    <p class="section-desc" data-de="Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen für Ihr Unternehmen." data-en="From raw data to actionable insights — tailored BI solutions for your business.">Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen für Ihr Unternehmen.</p>
   </div>
-  <div class="sg rs">
-    <div class="sq c1 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">01</span><h3>Power BI Reports & Dashboards</h3><p>Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.</p></div></div>
-    <div class="sq c2 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">02</span><h3>Report Automation</h3><p>Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.</p></div></div>
-    <div class="sq c3 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">03</span><h3>Data Cleaning & Transformation</h3><p>Messy data cleaned, standardized, and structured into a reliable analytical foundation.</p></div></div>
-    <div class="sq c4 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">04</span><h3>Data Modeling & Architecture</h3><p>Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.</p></div></div>
-    <div class="sq c5 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">05</span><h3>System Integration</h3><p>Connect SAP, Oracle, SQL, SharePoint into a unified reporting layer — no more siloed data.</p></div></div>
-    <div class="sq c6 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">06</span><h3>BI Strategy & Training</h3><p>A roadmap for data-driven decisions, plus training so your team can extend reports independently.</p></div></div>
+  <div class="services-grid">
+    <div class="service-item"><div class="service-icon">📊</div><h3 data-de="Power BI Reports & Dashboards" data-en="Power BI Reports & Dashboards">Power BI Reports & Dashboards</h3><p data-de="Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen, keine Fragen." data-en="Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.">Interaktive Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen, keine Fragen.</p></div>
+    <div class="service-item"><div class="service-icon">⚙️</div><h3 data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</h3><p data-de="Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand." data-en="Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.">Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand.</p></div>
+    <div class="service-item"><div class="service-icon">🧹</div><h3 data-de="Datenbereinigung & Transformation" data-en="Data Cleaning & Transformation">Datenbereinigung & Transformation</h3><p data-de="Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige analytische Grundlage überführt." data-en="Messy data cleaned, standardized, and structured into a reliable analytical foundation.">Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige analytische Grundlage überführt.</p></div>
+    <div class="service-item"><div class="service-icon">🗄️</div><h3 data-de="Datenmodellierung & Architektur" data-en="Data Modeling & Architecture">Datenmodellierung & Architektur</h3><p data-de="Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports." data-en="Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.">Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports.</p></div>
+    <div class="service-item"><div class="service-icon">🔗</div><h3 data-de="Systemintegration" data-en="System Integration">Systemintegration</h3><p data-de="SAP, Oracle, SQL, SharePoint — alles in einer einheitlichen Reporting-Schicht vereint." data-en="Connect SAP, Oracle, SQL, SharePoint into a unified reporting layer — no more siloed data.">SAP, Oracle, SQL, SharePoint — alles in einer einheitlichen Reporting-Schicht vereint.</p></div>
+    <div class="service-item"><div class="service-icon">🎯</div><h3 data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</h3><p data-de="Nicht nur Dashboards — eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen." data-en="Not just dashboards — a roadmap for data-driven decisions, plus hands-on training.">Nicht nur Dashboards — eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen.</p></div>
   </div>
 </section>
+
+<hr class="divider">
 
 <!-- PROCESS -->
-<section id="process">
-  <div class="sc sh">
-    <div class="sl">Process</div>
-    <h2 class="st">From first call to first insight</h2>
-    <p class="ss">A clear, structured approach — so you always know what's happening and what comes next.</p>
+<section id="process" class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Ablauf" data-en="Process">Ablauf</div>
+    <h2 class="section-title" data-de="Vom ersten Gespräch zum ersten Insight" data-en="From first call to first insight">Vom ersten Gespräch zum ersten Insight</h2>
+    <p class="section-desc" data-de="Ein klarer, strukturierter Ansatz — damit Sie immer wissen, was passiert." data-en="A clear, structured approach — so you always know what's happening.">Ein klarer, strukturierter Ansatz — damit Sie immer wissen, was passiert.</p>
   </div>
-  <div class="process-grid rs">
-    <div class="process-card reveal">
-      <div class="process-num">01</div>
-      <h3>Discovery</h3>
-      <p>Understanding your data landscape, goals, and pain points in a free consultation.</p>
+  <div class="process-grid">
+    <div class="process-card"><div class="process-num">01</div><h3 data-de="Discovery" data-en="Discovery">Discovery</h3><p data-de="Ihre Datenlandschaft, Ziele und Schmerzpunkte verstehen — in einem kostenlosen Erstgespräch." data-en="Understanding your data landscape, goals, and pain points in a free consultation.">Ihre Datenlandschaft, Ziele und Schmerzpunkte verstehen — in einem kostenlosen Erstgespräch.</p></div>
+    <div class="process-card"><div class="process-num">02</div><h3 data-de="Design" data-en="Design">Design</h3><p data-de="Wireframes und Datenmodell-Vorschläge. Sie geben grünes Licht, bevor gebaut wird." data-en="Wireframes and data model proposals. You sign off before any build starts.">Wireframes und Datenmodell-Vorschläge. Sie geben grünes Licht, bevor gebaut wird.</p></div>
+    <div class="process-card"><div class="process-num">03</div><h3 data-de="Build" data-en="Build">Build</h3><p data-de="Iterative Entwicklung mit wöchentlichen Check-ins. Live-Demos statt Überraschungen." data-en="Iterative development with weekly check-ins. Live demos, not surprises.">Iterative Entwicklung mit wöchentlichen Check-ins. Live-Demos statt Überraschungen.</p></div>
+    <div class="process-card"><div class="process-num">04</div><h3 data-de="Launch" data-en="Launch">Launch</h3><p data-de="Deployment, Dokumentation und optionaler laufender Support." data-en="Deployment, documentation, and optional ongoing support.">Deployment, Dokumentation und optionaler laufender Support.</p></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRICING -->
+<section id="pricing" class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Preise" data-en="Pricing">Preise</div>
+    <h2 class="section-title" data-de="Transparente Pakete für jede Projektgröße" data-en="Transparent packages for every project size">Transparente Pakete für jede Projektgröße</h2>
+    <p class="section-desc" data-de="Alle Preise zzgl. MwSt. Individuelle Angebote auf Anfrage." data-en="All prices excl. VAT. Custom quotes available on request.">Alle Preise zzgl. MwSt. Individuelle Angebote auf Anfrage.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-name" data-de="Starter" data-en="Starter">Starter</div>
+      <div class="pricing-desc" data-de="Einzelnes Dashboard oder Report" data-en="Single dashboard or report">Einzelnes Dashboard oder Report</div>
+      <div class="pricing-price"><span class="amount">€1.500</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
+      <ul class="pricing-features">
+        <li data-de="1 Power BI Dashboard" data-en="1 Power BI Dashboard">1 Power BI Dashboard</li>
+        <li data-de="Bis zu 3 Datenquellen" data-en="Up to 3 data sources">Bis zu 3 Datenquellen</li>
+        <li data-de="Datenbereinigung inkl." data-en="Data cleaning included">Datenbereinigung inkl.</li>
+        <li data-de="2 Revisionsrunden" data-en="2 revision rounds">2 Revisionsrunden</li>
+        <li data-de="Dokumentation" data-en="Documentation">Dokumentation</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-outline" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
-    <div class="process-card reveal">
-      <div class="process-num">02</div>
-      <h3>Design</h3>
-      <p>Wireframes and data model proposals. You sign off before any build starts.</p>
+    <div class="pricing-card featured">
+      <div class="pricing-name" data-de="Professional" data-en="Professional">Professional</div>
+      <div class="pricing-desc" data-de="Komplettes Reporting-Setup" data-en="Complete reporting setup">Komplettes Reporting-Setup</div>
+      <div class="pricing-price"><span class="amount">€4.500</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
+      <ul class="pricing-features">
+        <li data-de="Bis zu 5 Dashboards" data-en="Up to 5 dashboards">Bis zu 5 Dashboards</li>
+        <li data-de="Unbegrenzte Datenquellen" data-en="Unlimited data sources">Unbegrenzte Datenquellen</li>
+        <li data-de="Datenmodellierung & ETL" data-en="Data modeling & ETL">Datenmodellierung & ETL</li>
+        <li data-de="Report-Automatisierung" data-en="Report automation">Report-Automatisierung</li>
+        <li data-de="4 Revisionsrunden" data-en="4 revision rounds">4 Revisionsrunden</li>
+        <li data-de="Team-Schulung (2h)" data-en="Team training (2h)">Team-Schulung (2h)</li>
+        <li data-de="30 Tage Support" data-en="30 days support">30 Tage Support</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-dark" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
-    <div class="process-card reveal">
-      <div class="process-num">03</div>
-      <h3>Build</h3>
-      <p>Iterative development with weekly check-ins. Live demos, not surprises.</p>
-    </div>
-    <div class="process-card reveal">
-      <div class="process-num">04</div>
-      <h3>Launch</h3>
-      <p>Deployment, documentation, and optional ongoing support to keep things running.</p>
+    <div class="pricing-card">
+      <div class="pricing-name" data-de="Enterprise" data-en="Enterprise">Enterprise</div>
+      <div class="pricing-desc" data-de="Maßgeschneiderte BI-Lösung" data-en="Tailored BI solution">Maßgeschneiderte BI-Lösung</div>
+      <div class="pricing-price"><span class="amount" data-de="Individuell" data-en="Custom">Individuell</span></div>
+      <ul class="pricing-features">
+        <li data-de="Unbegrenzte Dashboards" data-en="Unlimited dashboards">Unbegrenzte Dashboards</li>
+        <li data-de="Systemintegration (SAP, Oracle)" data-en="System integration (SAP, Oracle)">Systemintegration (SAP, Oracle)</li>
+        <li data-de="BI-Strategieberatung" data-en="BI strategy consulting">BI-Strategieberatung</li>
+        <li data-de="Laufende Betreuung" data-en="Ongoing support">Laufende Betreuung</li>
+        <li data-de="SLA & Priorisierung" data-en="SLA & prioritization">SLA & Priorisierung</li>
+        <li data-de="Dedizierter Ansprechpartner" data-en="Dedicated contact person">Dedizierter Ansprechpartner</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-outline" data-de="Gespräch vereinbaren" data-en="Book a Call">Gespräch vereinbaren</a>
     </div>
   </div>
 </section>
+
+<hr class="divider">
 
 <!-- PORTFOLIO -->
-<section id="portfolio">
-  <div class="sc sh">
-    <div class="sl">Portfolio</div>
-    <h2 class="st">Selected projects</h2>
-    <p class="ss">Dashboards and reporting solutions delivered across industries.</p>
+<section id="portfolio" class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Projekte" data-en="Portfolio">Projekte</div>
+    <h2 class="section-title" data-de="Ausgewählte Projekte" data-en="Selected projects">Ausgewählte Projekte</h2>
   </div>
-  <div class="pg">
-    <div class="pk reveal"><div class="pv"><canvas id="chart1"></canvas></div><div class="pb"><div class="ptag">Finance</div><h3>Financial Reporting Cockpit</h3><p>Consolidated multi-source financial reports with automated budget-vs-actuals tracking and drill-through.</p></div></div>
-    <div class="pk reveal"><div class="pv"><canvas id="chart2"></canvas></div><div class="pb"><div class="ptag">Operations</div><h3>KPI Performance Dashboard</h3><p>Real-time operational KPIs with trend analysis, threshold alerts, and executive summary views.</p></div></div>
-    <div class="pk reveal"><div class="pv"><canvas id="chart3"></canvas></div><div class="pb"><div class="ptag">Automation</div><h3>Automated Rolling Forecast</h3><p>Self-refreshing forecast model replacing 12+ hours of monthly manual work with a single pipeline.</p></div></div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart1"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Finance</div><h3 data-de="Financial Reporting Cockpit" data-en="Financial Reporting Cockpit">Financial Reporting Cockpit</h3><p data-de="Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich." data-en="Consolidated financial reports with automated budget-vs-actuals tracking.">Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich.</p></div></div>
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart2"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Operations</div><h3 data-de="KPI Performance Dashboard" data-en="KPI Performance Dashboard">KPI Performance Dashboard</h3><p data-de="Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts." data-en="Real-time KPIs with trend analysis and threshold alerts.">Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts.</p></div></div>
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart3"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Automation</div><h3 data-de="Automatisierter Rolling Forecast" data-en="Automated Rolling Forecast">Automatisierter Rolling Forecast</h3><p data-de="Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich." data-en="Self-refreshing forecast replacing 12+ hours of monthly manual work.">Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich.</p></div></div>
   </div>
 </section>
+
+<hr class="divider">
 
 <!-- TESTIMONIALS -->
-<section class="testimonials">
-  <div class="sc sh">
-    <div class="sl">Testimonials</div>
-    <h2 class="st">What clients say</h2>
+<section class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Referenzen" data-en="Testimonials">Referenzen</div>
+    <h2 class="section-title" data-de="Das sagen Kunden" data-en="What clients say">Das sagen Kunden</h2>
   </div>
-  <div class="tc">
-    <div class="tm reveal"><blockquote>"We went from spending two days on monthly reports to having everything update automatically. The ROI was immediate."</blockquote><div class="ta">Head of Finance</div><div class="tr">Manufacturing Company</div></div>
-    <div class="tm reveal"><blockquote>"Finally, dashboards our management team actually uses. Clean, fast, and exactly what we needed — nothing more, nothing less."</blockquote><div class="ta">Director of Operations</div><div class="tr">Energy Sector</div></div>
+  <div class="testimonial-grid">
+    <div class="testimonial-card"><blockquote data-de="„Wir sind von zwei Tagen monatlicher Reportarbeit zu vollständig automatisierten Updates gewechselt. Der ROI war sofort spürbar."" data-en=""We went from spending two days on monthly reports to having everything update automatically. The ROI was immediate."">„Wir sind von zwei Tagen monatlicher Reportarbeit zu vollständig automatisierten Updates gewechselt. Der ROI war sofort spürbar."</blockquote><div class="testimonial-author">Head of Finance</div><div class="testimonial-role" data-de="Fertigungsunternehmen" data-en="Manufacturing Company">Fertigungsunternehmen</div></div>
+    <div class="testimonial-card"><blockquote data-de="„Endlich Dashboards, die unser Management tatsächlich nutzt. Klar, schnell, genau richtig."" data-en=""Finally, dashboards our management team actually uses. Clean, fast, and exactly what we needed."">„Endlich Dashboards, die unser Management tatsächlich nutzt. Klar, schnell, genau richtig."</blockquote><div class="testimonial-author">Director of Operations</div><div class="testimonial-role" data-de="Energiesektor" data-en="Energy Sector">Energiesektor</div></div>
   </div>
 </section>
 
+<hr class="divider">
+
 <!-- CONTACT -->
-<section id="contact">
-  <div class="cw">
-    <div class="sl" style="justify-content:center;">Contact</div>
-    <h2 class="st" style="margin-inline:auto;">Let's talk about your data</h2>
-    <p class="ss" style="margin-inline:auto;">Describe your challenge and I'll get back within 24 hours with an initial assessment — free of charge.</p>
-    <form class="cf" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
+<section id="contact" class="scroll-section">
+  <div class="contact-wrapper">
+    <div class="section-header">
+      <div class="section-label" data-de="Kontakt" data-en="Contact">Kontakt</div>
+      <h2 class="section-title" data-de="Lassen Sie uns über Ihre Daten sprechen" data-en="Let's talk about your data">Lassen Sie uns über Ihre Daten sprechen</h2>
+      <p class="section-desc" data-de="Beschreiben Sie Ihre Herausforderung — ich melde mich innerhalb von 24 Stunden mit einer ersten Einschätzung." data-en="Describe your challenge — I'll get back within 24 hours with an initial assessment.">Beschreiben Sie Ihre Herausforderung — ich melde mich innerhalb von 24 Stunden mit einer ersten Einschätzung.</p>
+    </div>
+    <form class="contact-form" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
       <input type="hidden" name="_subject" value="New Holocron inquiry">
       <input type="text" name="_gotcha" style="display:none">
-      <div class="fr">
-        <div><label for="name">Name</label><input type="text" id="name" name="name" placeholder="Your name" required></div>
-        <div><label for="email">Email</label><input type="email" id="email" name="email" placeholder="you@company.com" required></div>
+      <div class="form-row">
+        <div><label for="name" data-de="Name" data-en="Name">Name</label><input type="text" id="name" name="name" placeholder="Ihr Name" required></div>
+        <div><label for="email">Email</label><input type="email" id="email" name="email" placeholder="name@firma.de" required></div>
       </div>
-      <div><label for="company">Company</label><input type="text" id="company" name="company" placeholder="Company name"></div>
-      <div><label for="service">Service of Interest</label>
-        <select id="service" name="service"><option value="">Select a service...</option><option>Power BI Reports & Dashboards</option><option>Report Automation</option><option>Data Cleaning & Transformation</option><option>Data Modeling & Architecture</option><option>System Integration</option><option>BI Strategy & Training</option><option>Not sure yet</option></select>
+      <div><label for="company" data-de="Unternehmen" data-en="Company">Unternehmen</label><input type="text" id="company" name="company" placeholder="Firmenname"></div>
+      <div><label for="service" data-de="Gewünschte Leistung" data-en="Service of Interest">Gewünschte Leistung</label>
+        <select id="service" name="service">
+          <option value="" data-de="Bitte wählen..." data-en="Select a service...">Bitte wählen...</option>
+          <option>Power BI Reports & Dashboards</option><option data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</option>
+          <option data-de="Datenbereinigung & Transformation" data-en="Data Cleaning & Transformation">Datenbereinigung & Transformation</option><option data-de="Datenmodellierung & Architektur" data-en="Data Modeling & Architecture">Datenmodellierung & Architektur</option>
+          <option data-de="Systemintegration" data-en="System Integration">Systemintegration</option><option data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</option><option data-de="Noch unsicher" data-en="Not sure yet">Noch unsicher</option>
+        </select>
       </div>
-      <div><label for="message">Project Description</label><textarea id="message" name="message" placeholder="Tell me about your current data setup, what's not working, and what you'd like to achieve..."></textarea></div>
-      <button type="submit" class="fs">Transmit Message →</button>
+      <div><label for="message" data-de="Projektbeschreibung" data-en="Project Description">Projektbeschreibung</label><textarea id="message" name="message" placeholder="Erzählen Sie mir von Ihrem aktuellen Setup und Ihren Zielen..."></textarea></div>
+      <button type="submit" class="form-submit" data-de="Nachricht senden →" data-en="Send Message →">Nachricht senden →</button>
     </form>
   </div>
 </section>
 
 <footer>
-  <span class="fb">Holocron</span>
-  <p>© 2026 holocrondata.net — Business Intelligence Services</p>
+  <span>© 2026 Holocron — holocrondata.net</span>
+  <span data-de="Business Intelligence Services" data-en="Business Intelligence Services">Business Intelligence Services</span>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // SCROLL REVEAL
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const obs = new IntersectionObserver(e => {
+  e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); } });
+}, { threshold: 0.06 });
+document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
 
-// THREE.JS PARTICLE RING — HERO
-(function(){
-  const canvas=document.getElementById('particle-canvas');
-  const hero=document.querySelector('.hero');
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  renderer.setClearColor(0x0B1A3E,1);
-  const scene=new THREE.Scene();
-  const camera=new THREE.PerspectiveCamera(50,1,0.1,100);
-  camera.position.set(10,-7.5,-5);
-  camera.lookAt(0,0,0);
-  const dl=new THREE.DirectionalLight(0xffffff,0.6);dl.position.set(5,5,5);scene.add(dl);
-  const p1=new THREE.PointLight(0x2563EB,5,50);p1.position.set(-15,0,-15);scene.add(p1);
-  const p2=new THREE.PointLight(0x06B6D4,4,50);p2.position.set(10,5,10);scene.add(p2);
-  const p3=new THREE.PointLight(0x3B82F6,3,40);p3.position.set(0,-10,5);scene.add(p3);
-  const group=new THREE.Group();scene.add(group);
-  const geo=new THREE.SphereGeometry(0.08,8,8);
-  function rr(mn,mx,ys){const a=Math.random()*Math.PI*2,r=mn+Math.random()*(mx-mn);return[Math.cos(a)*r,(Math.random()-0.5)*ys,Math.sin(a)*r]}
-  for(let i=0;i<600;i++){const[x,y,z]=rr(2,6,1.5);const h=0.55+Math.random()*0.1;const c=new THREE.Color().setHSL(h,0.7,0.5);const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.5,roughness:0.5}));m.position.set(x,y,z);group.add(m)}
-  for(let i=0;i<600;i++){const[x,y,z]=rr(6,12,3);const h=0.5+Math.random()*0.15;const c=new THREE.Color().setHSL(h,0.5,0.3);const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.3,roughness:0.6}));m.position.set(x,y,z);group.add(m)}
-  function resize(){const r=hero.getBoundingClientRect();renderer.setSize(r.width,r.height);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
-  resize();window.addEventListener('resize',resize);
-  let mx=0,my=0;
-  hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();mx=((e.clientX-r.left)/r.width-0.5)*2;my=((e.clientY-r.top)/r.height-0.5)*2});
-  (function a(){requestAnimationFrame(a);group.rotation.z+=0.002;group.rotation.x+=(my*0.3-group.rotation.x)*0.015;group.rotation.y+=(mx*0.3-group.rotation.y)*0.015;renderer.render(scene,camera)})();
+// WORD SHUFFLE
+(function() {
+  const wordsDE = ['Potenzial', 'Intelligenz', 'Wert'];
+  const wordsEN = ['potential', 'intelligence', 'value'];
+  let idx = 0, lang = 'de';
+  const el = document.getElementById('shuffleWord');
+
+  setInterval(() => {
+    const words = lang === 'de' ? wordsDE : wordsEN;
+    el.classList.add('exit');
+    setTimeout(() => {
+      idx = (idx + 1) % words.length;
+      el.textContent = words[idx];
+      el.classList.remove('exit');
+      el.classList.add('enter');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => el.classList.remove('enter'));
+      });
+    }, 300);
+  }, 2800);
+
+  window._setShuffleLang = (l) => { lang = l; idx = 0; el.textContent = (l === 'de' ? wordsDE : wordsEN)[0]; };
+})();
+
+// LANGUAGE TOGGLE
+(function() {
+  const btns = document.querySelectorAll('.lang-btn');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      btns.forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (val) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.placeholder = val;
+          } else if (el.tagName === 'OPTION') {
+            el.textContent = val;
+          } else {
+            el.textContent = val;
+          }
+        }
+      });
+      document.querySelector('.pricing-card.featured::before');
+      const featured = document.querySelector('.pricing-card.featured');
+      if (featured) {
+        featured.style.setProperty('--popular-text', lang === 'de' ? '"Beliebt"' : '"Popular"');
+      }
+      window._setShuffleLang(lang);
+    });
+  });
 })();
 
 // PORTFOLIO CHARTS
-function dc(id,type){
-  const c=document.getElementById(id);if(!c)return;
-  const ctx=c.getContext('2d'),dpr=window.devicePixelRatio||1,r=c.getBoundingClientRect();
-  c.width=r.width*dpr;c.height=r.height*dpr;ctx.scale(dpr,dpr);
-  const w=r.width,h=r.height;
-  const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#1E40AF');g.addColorStop(0.5,'#2563EB');g.addColorStop(1,'#06B6D4');
-  ctx.strokeStyle='rgba(0,0,0,0.04)';ctx.lineWidth=1;
-  for(let y=20;y<h;y+=25){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
-  if(type==='bars'){const n=14,gap=6,bw=(w-40-gap*(n-1))/n;for(let i=0;i<n;i++){const bh=25+Math.random()*(h-70);ctx.fillStyle=g;ctx.globalAlpha=0.5+Math.random()*0.3;ctx.beginPath();ctx.roundRect(20+i*(bw+gap),h-15-bh,bw,bh,[4,4,0,0]);ctx.fill()}ctx.globalAlpha=1}
-  else if(type==='line'){const pts=[],steps=24;for(let i=0;i<=steps;i++)pts.push({x:15+(i/steps)*(w-30),y:h*0.35+Math.sin(i*0.45)*h*0.18+(Math.random()-0.5)*h*0.06});const gf=ctx.createLinearGradient(0,0,0,h);gf.addColorStop(0,'rgba(37,99,235,0.2)');gf.addColorStop(1,'rgba(37,99,235,0)');ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++){const xc=(pts[i].x+pts[i-1].x)/2,yc=(pts[i].y+pts[i-1].y)/2;ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc)}ctx.lineTo(w-15,h);ctx.lineTo(15,h);ctx.closePath();ctx.fillStyle=gf;ctx.fill();ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++){const xc=(pts[i].x+pts[i-1].x)/2,yc=(pts[i].y+pts[i-1].y)/2;ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc)}ctx.strokeStyle=g;ctx.lineWidth=2.5;ctx.stroke()}
-  else{for(let l=2;l>=0;l--){const pts=[],steps=18,base=h*(0.55+l*0.1);for(let i=0;i<=steps;i++)pts.push({x:(i/steps)*w,y:base+Math.sin(i*0.5+l*1.2)*h*0.12-l*h*0.08});ctx.beginPath();ctx.moveTo(0,h);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(w,h);ctx.closePath();const ag=ctx.createLinearGradient(0,0,w,0);ag.addColorStop(0,`rgba(30,64,175,${0.18-l*0.04})`);ag.addColorStop(0.5,`rgba(37,99,235,${0.22-l*0.05})`);ag.addColorStop(1,`rgba(6,182,212,${0.16-l*0.04})`);ctx.fillStyle=ag;ctx.fill()}}
+function dc(id, type) {
+  const c = document.getElementById(id); if (!c) return;
+  const ctx = c.getContext('2d'), dpr = window.devicePixelRatio || 1, r = c.getBoundingClientRect();
+  c.width = r.width * dpr; c.height = r.height * dpr; ctx.scale(dpr, dpr);
+  const w = r.width, h = r.height;
+  ctx.strokeStyle = 'rgba(0,0,0,0.04)'; ctx.lineWidth = 1;
+  for (let y = 20; y < h; y += 25) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+  const g = ctx.createLinearGradient(0, 0, w, 0); g.addColorStop(0, '#09090B'); g.addColorStop(1, '#71717A');
+  if (type === 'bars') { const n = 16, gap = 4, bw = (w - 40 - gap * (n - 1)) / n; for (let i = 0; i < n; i++) { const bh = 20 + Math.random() * (h - 60); ctx.fillStyle = '#09090B'; ctx.globalAlpha = 0.12 + Math.random() * 0.18; ctx.beginPath(); ctx.roundRect(20 + i * (bw + gap), h - 10 - bh, bw, bh, [3, 3, 0, 0]); ctx.fill(); } ctx.globalAlpha = 1; }
+  else if (type === 'line') { const pts = [], steps = 24; for (let i = 0; i <= steps; i++) pts.push({ x: 15 + (i / steps) * (w - 30), y: h * 0.35 + Math.sin(i * 0.45) * h * 0.18 + (Math.random() - 0.5) * h * 0.06 }); const gf = ctx.createLinearGradient(0, 0, 0, h); gf.addColorStop(0, 'rgba(9,9,11,0.08)'); gf.addColorStop(1, 'rgba(9,9,11,0)'); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) { const xc = (pts[i].x + pts[i - 1].x) / 2, yc = (pts[i].y + pts[i - 1].y) / 2; ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, xc, yc); } ctx.lineTo(w - 15, h); ctx.lineTo(15, h); ctx.closePath(); ctx.fillStyle = gf; ctx.fill(); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) { const xc = (pts[i].x + pts[i - 1].x) / 2, yc = (pts[i].y + pts[i - 1].y) / 2; ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, xc, yc); } ctx.strokeStyle = '#09090B'; ctx.globalAlpha = 0.25; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1; }
+  else { for (let l = 2; l >= 0; l--) { const pts = [], steps = 18, base = h * (0.55 + l * 0.1); for (let i = 0; i <= steps; i++) pts.push({ x: (i / steps) * w, y: base + Math.sin(i * 0.5 + l * 1.2) * h * 0.12 - l * h * 0.08 }); ctx.beginPath(); ctx.moveTo(0, h); pts.forEach(p => ctx.lineTo(p.x, p.y)); ctx.lineTo(w, h); ctx.closePath(); ctx.fillStyle = `rgba(9,9,11,${0.06 - l * 0.015})`; ctx.fill(); } }
 }
-const co=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){if(x.target.id==='chart1')dc('chart1','bars');if(x.target.id==='chart2')dc('chart2','line');if(x.target.id==='chart3')dc('chart3','area');co.unobserve(x.target)}})},{threshold:0.3});
-['chart1','chart2','chart3'].forEach(id=>{const el=document.getElementById(id);if(el)co.observe(el)});
-window.addEventListener('resize',()=>{dc('chart1','bars');dc('chart2','line');dc('chart3','area')});
+const co = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { if (x.target.id === 'chart1') dc('chart1', 'bars'); if (x.target.id === 'chart2') dc('chart2', 'line'); if (x.target.id === 'chart3') dc('chart3', 'area'); co.unobserve(x.target); } }); }, { threshold: 0.3 });
+['chart1', 'chart2', 'chart3'].forEach(id => { const el = document.getElementById(id); if (el) co.observe(el); });
+window.addEventListener('resize', () => { dc('chart1', 'bars'); dc('chart2', 'line'); dc('chart3', 'area'); });
 
 // FORM
-document.getElementById('contactForm').addEventListener('submit',async function(e){
-  e.preventDefault();const btn=this.querySelector('.fs');btn.textContent='Transmitting...';btn.disabled=true;
-  try{const res=await fetch(this.action,{method:'POST',body:new FormData(this),headers:{'Accept':'application/json'}});
-  if(res.ok){btn.textContent='✓ Transmitted';btn.style.background='linear-gradient(135deg,#10B981,#059669)';this.reset();setTimeout(()=>{btn.textContent='Transmit Message →';btn.style.background='';btn.disabled=false},3000)}
-  else{btn.textContent='Error — try again';btn.style.background='linear-gradient(135deg,#EF4444,#DC2626)';setTimeout(()=>{btn.textContent='Transmit Message →';btn.style.background='';btn.disabled=false},3000)}}
-  catch{btn.textContent='Error — try again';btn.style.background='linear-gradient(135deg,#EF4444,#DC2626)';setTimeout(()=>{btn.textContent='Transmit Message →';btn.style.background='';btn.disabled=false},3000)}
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault(); const btn = this.querySelector('.form-submit'); btn.textContent = '...'; btn.disabled = true;
+  try { const res = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+    if (res.ok) { btn.textContent = '✓'; this.reset(); setTimeout(() => { btn.textContent = btn.dataset.de || 'Nachricht senden →'; btn.disabled = false; }, 2500); }
+    else { btn.textContent = 'Fehler'; setTimeout(() => { btn.textContent = btn.dataset.de || 'Nachricht senden →'; btn.disabled = false; }, 2500); } }
+  catch { btn.textContent = 'Fehler'; setTimeout(() => { btn.textContent = btn.dataset.de || 'Nachricht senden →'; btn.disabled = false; }, 2500); }
 });
 </script>
 </body>
