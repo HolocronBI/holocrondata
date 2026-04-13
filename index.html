@@ -85,7 +85,7 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; }
 .pricing-card { border: 1px solid var(--border); border-radius: 12px; padding: 2rem 1.75rem; display: flex; flex-direction: column; transition: border-color 0.2s, box-shadow 0.2s; position: relative; }
 .pricing-card.featured { border-color: var(--fg); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-.pricing-rec { font-size: 0.7rem; font-weight: 600; color: var(--fg-muted); margin-bottom: 0.5rem; letter-spacing: 0.02em; }
+.pricing-rec { font-size: 0.7rem; font-weight: 600; color: var(--fg-muted); margin-bottom: 0.5rem; letter-spacing: 0.02em; height: 1rem; }
 .pricing-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
 .pricing-desc { font-size: 0.82rem; color: var(--fg-muted); margin-bottom: 1.25rem; }
 .pricing-price { margin-bottom: 1.5rem; }
@@ -216,6 +216,7 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
   </div>
   <div class="pricing-grid">
     <div class="pricing-card">
+      <div class="pricing-rec">&nbsp;</div>
       <div class="pricing-name">Basic</div>
       <div class="pricing-desc" data-de="Einzelnes Dashboard oder Report" data-en="Single dashboard or report">Einzelnes Dashboard oder Report</div>
       <div class="pricing-price"><span class="amount">€1.000</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
@@ -244,6 +245,7 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
       <a href="#contact" class="pricing-btn pricing-btn-dark pkg-select" data-pkg="Advanced" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
     <div class="pricing-card">
+      <div class="pricing-rec">&nbsp;</div>
       <div class="pricing-name">Custom</div>
       <div class="pricing-desc" data-de="Maßgeschneiderte BI-Lösung" data-en="Tailored BI solution">Maßgeschneiderte BI-Lösung</div>
       <div class="pricing-price"><span class="amount" data-de="Auf Anfrage" data-en="On Request">Auf Anfrage</span></div>
