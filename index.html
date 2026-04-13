@@ -10,13 +10,25 @@
 
 :root {
   --bg: #FFFFFF;
-  --bg2: #F7F7FA;
-  --fg: #111118;
-  --fg-muted: #6B7280;
-  --fg-light: #9CA3AF;
-  --gradient-accent: linear-gradient(135deg, #6366F1, #A855F7, #EC4899);
-  --border: rgba(0,0,0,0.06);
-  --radius: 20px;
+  --bg2: #F4F6FA;
+  --fg: #0F1729;
+  --fg-muted: #5A6478;
+  --fg-light: #8892A4;
+  --blue-900: #0B1A3E;
+  --blue-800: #102A5C;
+  --blue-700: #1E40AF;
+  --blue-600: #2563EB;
+  --blue-500: #3B82F6;
+  --blue-400: #60A5FA;
+  --blue-300: #93C5FD;
+  --blue-100: #DBEAFE;
+  --blue-50: #EFF6FF;
+  --cyan-500: #06B6D4;
+  --cyan-400: #22D3EE;
+  --gradient-blue: linear-gradient(135deg, #1E40AF, #2563EB, #3B82F6);
+  --gradient-blue-cyan: linear-gradient(135deg, #1E40AF, #2563EB, #06B6D4);
+  --border: rgba(0,0,0,0.07);
+  --radius: 16px;
   --font-body: 'Outfit', sans-serif;
   --font-mono: 'Space Mono', monospace;
 }
@@ -36,14 +48,14 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1rem 4vw;
-  background: rgba(255,255,255,0.8);
+  background: rgba(11,26,62,0.85);
   backdrop-filter: blur(24px) saturate(1.4);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; }
 .logo-icon {
   width: 36px; height: 36px;
-  background: linear-gradient(135deg, #6366F1, #A855F7, #EC4899, #C0C0E0);
+  background: var(--gradient-blue-cyan);
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
@@ -51,7 +63,7 @@ nav {
 .logo-icon::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 50%, rgba(0,0,0,0.15) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.15) 100%);
   border-radius: inherit;
 }
 .logo-icon svg { position: relative; z-index: 1; width: 20px; height: 20px; }
@@ -59,95 +71,103 @@ nav {
   font-family: var(--font-mono);
   font-size: 0.95rem; font-weight: 700;
   letter-spacing: 0.2em; text-transform: uppercase;
-  background: linear-gradient(90deg, #4F46E5, #8B5CF6, #EC4899, #8B5CF6, #4F46E5);
+  background: linear-gradient(90deg, #93C5FD, #60A5FA, #22D3EE, #60A5FA, #93C5FD);
   background-size: 200% 100%;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   animation: shimmer 4s linear infinite;
 }
 @keyframes shimmer { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
 nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
-nav ul li a { text-decoration: none; color: var(--fg-muted); font-size: 0.85rem; font-weight: 500; transition: color 0.3s; }
-nav ul li a:hover { color: var(--fg); }
+nav ul li a { text-decoration: none; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; transition: color 0.3s; }
+nav ul li a:hover { color: #fff; }
 .nav-cta {
-  background: var(--gradient-accent) !important; color: #fff !important;
+  background: var(--gradient-blue-cyan) !important; color: #fff !important;
   padding: 0.5rem 1.4rem !important; border-radius: 10px;
   font-weight: 600 !important; transition: box-shadow 0.4s, transform 0.2s !important;
 }
-.nav-cta:hover { box-shadow: 0 4px 24px rgba(139,92,246,0.35) !important; transform: translateY(-1px) !important; }
+.nav-cta:hover { box-shadow: 0 4px 24px rgba(37,99,235,0.4) !important; transform: translateY(-1px) !important; }
 
-/* HERO */
-.hero-wrapper { position: relative; height: calc(1500px + 100vh); width: 100%; }
-.hero-sticky {
-  position: sticky; top: 0; height: 100vh; width: 100%;
-  overflow: hidden; display: flex; align-items: center; justify-content: center;
+/* HERO WITH PARTICLE RING */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  background: var(--blue-900);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.hero-bg {
+#particle-canvas {
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 30%, #A855F7 50%, #D946EF 70%, #EC4899 100%);
-  background-size: 170%; background-position: center;
-  will-change: clip-path, background-size, opacity;
+  width: 100%; height: 100%;
+  display: block;
 }
-.hero-content { position: relative; z-index: 2; text-align: center; color: white; padding: 0 4vw; }
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; color: white;
+  padding: 0 4vw;
+  max-width: 900px;
+}
 .hero-badge {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(96,165,250,0.3); background: rgba(37,99,235,0.15);
   font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
   padding: 0.4rem 1.1rem; border-radius: 100px; margin-bottom: 2rem;
-  letter-spacing: 0.12em; text-transform: uppercase;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-300);
   opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
 }
-.dot { width: 6px; height: 6px; background: #fff; border-radius: 50%; box-shadow: 0 0 8px rgba(255,255,255,0.6); animation: pg 2s infinite; }
-@keyframes pg { 0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.6)} 50%{box-shadow:0 0 16px rgba(255,255,255,0.9)} }
+.dot { width: 6px; height: 6px; background: var(--blue-400); border-radius: 50%; box-shadow: 0 0 8px rgba(96,165,250,0.6); animation: pg 2s infinite; }
+@keyframes pg { 0%,100%{box-shadow:0 0 8px rgba(96,165,250,0.6)} 50%{box-shadow:0 0 16px rgba(96,165,250,0.9)} }
 .hero-content h1 {
-  font-size: clamp(3rem, 6.5vw, 5.2rem); font-weight: 800;
-  line-height: 1.05; letter-spacing: -0.045em; max-width: 800px; margin: 0 auto;
+  font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 800;
+  line-height: 1.08; letter-spacing: -0.04em;
+  text-shadow: 0 2px 40px rgba(0,0,0,0.3);
   opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
 }
-.hero-sub { max-width: 500px; margin: 1.6rem auto 0; font-size: 1.1rem; color: rgba(255,255,255,0.8); font-weight: 300; opacity: 0; animation: fadeUp 0.7s 0.5s forwards; }
+.hero-content h1 .accent {
+  background: linear-gradient(135deg, var(--blue-400), var(--cyan-400));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-sub {
+  max-width: 520px; margin: 1.5rem auto 0; font-size: 1.1rem;
+  color: rgba(255,255,255,0.7); font-weight: 300;
+  opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
+}
 .hero-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; opacity: 0; animation: fadeUp 0.7s 0.65s forwards; }
-.btn-hero-primary {
-  background: white; color: #4F46E5; padding: 0.9rem 2.2rem; border-radius: 12px;
-  text-decoration: none; font-weight: 700; font-size: 0.95rem; transition: transform 0.3s, box-shadow 0.3s;
+.btn-primary {
+  background: var(--gradient-blue-cyan); color: #fff;
+  padding: 0.9rem 2.2rem; border-radius: 12px; text-decoration: none;
+  font-weight: 700; font-size: 0.95rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative; overflow: hidden;
 }
-.btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
-.btn-hero-secondary {
-  color: rgba(255,255,255,0.9); padding: 0.9rem 2.2rem; border-radius: 12px;
+.btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%); pointer-events: none; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,99,235,0.4); }
+.btn-secondary {
+  color: rgba(255,255,255,0.85); padding: 0.9rem 2.2rem; border-radius: 12px;
   text-decoration: none; font-weight: 500; font-size: 0.95rem;
-  border: 1.5px solid rgba(255,255,255,0.3); transition: background 0.3s, transform 0.3s;
+  border: 1.5px solid rgba(255,255,255,0.2); transition: background 0.3s, transform 0.3s;
 }
-.btn-hero-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-.hero-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(to bottom, transparent, var(--bg)); z-index: 3; pointer-events: none; }
-
-/* PARTICLE */
-#particle-section { position: relative; height: 80vh; min-height: 500px; background: #0A0A12; overflow: hidden; }
-#particle-canvas { width: 100%; height: 100%; display: block; }
-.particle-overlay {
-  position: absolute; inset: 0; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  pointer-events: none; z-index: 2; padding: 0 4vw;
-}
-.particle-overlay h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: white; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
-.particle-overlay p { color: rgba(255,255,255,0.55); font-size: 1rem; font-weight: 300; max-width: 450px; }
+.btn-secondary:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
 
 /* SECTIONS */
 section { padding: 7rem 4vw; }
-.section-label {
+.sl {
   font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 0.6rem;
-  background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  display: flex; align-items: center; gap: 0.6rem; color: var(--blue-600);
 }
-.sc .section-label { justify-content: center; }
-.section-title { font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; max-width: 600px; }
-.sc .section-title { margin-inline: auto; }
-.section-subtitle { color: var(--fg-muted); max-width: 500px; margin-top: 1rem; font-size: 1rem; font-weight: 300; }
-.sc .section-subtitle { margin-inline: auto; }
+.sc .sl { justify-content: center; }
+.st { font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; max-width: 600px; }
+.sc .st { margin-inline: auto; }
+.ss { color: var(--fg-muted); max-width: 500px; margin-top: 1rem; font-size: 1rem; font-weight: 300; }
+.sc .ss { margin-inline: auto; }
 .sc { text-align: center; }
 .sh { margin-bottom: 4rem; }
 
 /* SQUISHY CARDS */
 #services { background: var(--bg2); }
-.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+.sg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
 .sq {
   position: relative; border-radius: var(--radius); padding: 2.2rem 1.8rem;
   color: white; overflow: hidden; cursor: default; min-height: 280px;
@@ -155,8 +175,8 @@ section { padding: 7rem 4vw; }
   transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
 }
 .sq:hover { transform: scale(1.04); }
-.sq.c1{background:#6366F1} .sq.c2{background:#8B5CF6} .sq.c3{background:#4F46E5}
-.sq.c4{background:#A855F7} .sq.c5{background:#7C3AED} .sq.c6{background:#6D28D9}
+.sq.c1{background:#1E40AF} .sq.c2{background:#2563EB} .sq.c3{background:#1D4ED8}
+.sq.c4{background:#1E3A8A} .sq.c5{background:#2563EB} .sq.c6{background:#1E40AF}
 .sq .cb { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .sq .cb svg { position: absolute; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1); }
 .sq:hover .cb svg { transform: scale(1.45); }
@@ -165,7 +185,7 @@ section { padding: 7rem 4vw; }
 .sq:hover .bb { transform: scaleY(2.2) translateY(-15px); }
 .cc { position: relative; z-index: 1; }
 .cn {
-  display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);
+  display: inline-block; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
   font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
   padding: 0.25rem 0.7rem; border-radius: 100px; margin-bottom: 1rem; letter-spacing: 0.05em;
 }
@@ -173,24 +193,56 @@ section { padding: 7rem 4vw; }
 .sq:hover .cc h3 { transform: scale(1.05); }
 .cc p { font-size: 0.88rem; line-height: 1.6; color: rgba(255,255,255,0.8); font-weight: 300; }
 
-/* PROCESS */
-.pt { max-width: 900px; margin: 4rem auto 0; display: flex; flex-direction: column; position: relative; }
-.pt::before { content: ''; position: absolute; left: 28px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #6366F1, #A855F7, #EC4899, #E5E7EB); }
-.pi { display: flex; gap: 2rem; padding: 2.5rem 0; align-items: flex-start; }
-.pd {
-  width: 58px; height: 58px; min-width: 58px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
-  position: relative; z-index: 1; background: var(--bg); border: 2px solid;
-  transition: box-shadow 0.4s, transform 0.4s;
+/* PROCESS — HORIZONTAL CARDS */
+#process { background: var(--bg); }
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
 }
-.pi:hover .pd { box-shadow: 0 0 24px rgba(139,92,246,0.2); transform: scale(1.1); }
-.pi:nth-child(1) .pd{border-color:#6366F1;color:#6366F1}
-.pi:nth-child(2) .pd{border-color:#8B5CF6;color:#8B5CF6}
-.pi:nth-child(3) .pd{border-color:#A855F7;color:#A855F7}
-.pi:nth-child(4) .pd{border-color:#D946EF;color:#D946EF}
-.pc h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
-.pc p { font-size: 0.9rem; color: var(--fg-muted); font-weight: 300; max-width: 500px; }
+.process-card {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s, border-color 0.4s;
+}
+.process-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(37,99,235,0.1);
+  border-color: var(--blue-300);
+}
+.process-num {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;
+  margin: 0 auto 1.2rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.process-card:nth-child(1) .process-num { background: linear-gradient(135deg, #1E40AF, #2563EB); }
+.process-card:nth-child(2) .process-num { background: linear-gradient(135deg, #2563EB, #3B82F6); }
+.process-card:nth-child(3) .process-num { background: linear-gradient(135deg, #3B82F6, #06B6D4); }
+.process-card:nth-child(4) .process-num { background: linear-gradient(135deg, #06B6D4, #22D3EE); }
+.process-num::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 50%); }
+.process-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+.process-card p { font-size: 0.85rem; color: var(--fg-muted); font-weight: 300; line-height: 1.6; }
+/* connector arrows */
+.process-card:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -1.1rem; top: 50%;
+  transform: translateY(-50%);
+  color: var(--blue-300);
+  font-size: 1.2rem;
+  font-weight: 300;
+}
 
 /* PORTFOLIO */
 #portfolio { background: var(--bg2); }
@@ -200,17 +252,17 @@ section { padding: 7rem 4vw; }
   border: 1px solid var(--border);
   transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
 }
-.pk:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 24px 60px rgba(99,102,241,0.1), 0 4px 16px rgba(0,0,0,0.06); }
-.pv { width: 100%; height: 200px; position: relative; overflow: hidden; background: linear-gradient(135deg, #EEF2FF, #E0E7FF); }
+.pk:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 24px 60px rgba(37,99,235,0.08), 0 4px 16px rgba(0,0,0,0.05); }
+.pv { width: 100%; height: 200px; position: relative; overflow: hidden; background: linear-gradient(135deg, var(--blue-50), var(--blue-100)); }
 .pv canvas { width: 100%; height: 100%; display: block; }
 .pv::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50px; background: linear-gradient(to top, var(--bg), transparent); pointer-events: none; }
 .pb { padding: 1.5rem 1.75rem; }
-.ptag { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.5rem; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.ptag { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.5rem; color: var(--blue-600); }
 .pb h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
 .pb p { font-size: 0.88rem; color: var(--fg-muted); font-weight: 300; }
 
 /* TESTIMONIALS */
-.testimonials { text-align: center; }
+.testimonials { text-align: center; background: var(--bg); }
 .tc { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
 .tm {
   background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
@@ -218,8 +270,8 @@ section { padding: 7rem 4vw; }
   transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
   position: relative; overflow: hidden;
 }
-.tm:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(99,102,241,0.08); }
-.tm::before { content: '\201C'; position: absolute; top: -5px; left: 16px; font-size: 5rem; font-weight: 800; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; opacity: 0.1; pointer-events: none; line-height: 1; }
+.tm:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(37,99,235,0.06); }
+.tm::before { content: '\201C'; position: absolute; top: -5px; left: 16px; font-size: 5rem; font-weight: 800; color: var(--blue-100); pointer-events: none; line-height: 1; }
 .tm blockquote { font-size: 0.92rem; color: var(--fg-muted); line-height: 1.7; font-style: italic; font-weight: 300; margin-bottom: 1.25rem; }
 .ta { font-size: 0.85rem; font-weight: 600; }
 .tr { font-size: 0.75rem; color: var(--fg-light); font-weight: 300; }
@@ -232,26 +284,26 @@ section { padding: 7rem 4vw; }
 .fr > * { flex: 1; }
 .cf label { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.4rem; color: var(--fg-muted); }
 .cf input, .cf select, .cf textarea {
-  width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #E5E7EB; border-radius: 10px;
+  width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #D1D5DB; border-radius: 10px;
   font-family: var(--font-body); font-size: 0.9rem; font-weight: 400;
   background: var(--bg); color: var(--fg); transition: border-color 0.3s, box-shadow 0.3s; outline: none;
 }
-.cf input:focus, .cf select:focus, .cf textarea:focus { border-color: #8B5CF6; box-shadow: 0 0 0 3px rgba(139,92,246,0.1); }
-.cf input::placeholder, .cf textarea::placeholder { color: #B0B0C0; }
+.cf input:focus, .cf select:focus, .cf textarea:focus { border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.cf input::placeholder, .cf textarea::placeholder { color: #B0B8C8; }
 .cf textarea { min-height: 120px; resize: vertical; }
 .cf select { cursor: pointer; }
 .fs {
-  position: relative; background: var(--gradient-accent); color: #fff;
+  position: relative; background: var(--gradient-blue-cyan); color: #fff;
   padding: 0.95rem 2rem; border: none; border-radius: 12px;
   font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
   cursor: pointer; overflow: hidden; transition: box-shadow 0.4s, transform 0.3s; margin-top: 0.5rem;
 }
-.fs::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 50%); pointer-events: none; }
-.fs:hover { box-shadow: 0 8px 32px rgba(139,92,246,0.3); transform: translateY(-2px); }
+.fs::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%); pointer-events: none; }
+.fs:hover { box-shadow: 0 8px 32px rgba(37,99,235,0.35); transform: translateY(-2px); }
 
 /* FOOTER */
 footer { text-align: center; padding: 3rem 4vw; border-top: 1px solid var(--border); background: var(--bg); }
-.fb { font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.7rem; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.fb { font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.7rem; color: var(--blue-600); }
 footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-weight: 300; }
 
 /* ANIMATIONS */
@@ -262,12 +314,12 @@ footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-
 .rs > .reveal:nth-child(3){transition-delay:0.16s} .rs > .reveal:nth-child(4){transition-delay:0.24s}
 .rs > .reveal:nth-child(5){transition-delay:0.32s} .rs > .reveal:nth-child(6){transition-delay:0.4s}
 
-@media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1024px){ .process-grid{grid-template-columns:repeat(2,1fr)} .process-card:nth-child(2)::after,.process-card:nth-child(4)::after{display:none} }
+@media(max-width:900px){ .sg{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:768px){
   nav ul{display:none} .fr{flex-direction:column} section{padding:5rem 5vw}
-  .services-grid{grid-template-columns:1fr} .pt::before{left:20px}
-  .pd{width:42px;height:42px;min-width:42px;font-size:0.6rem}
-  #particle-section{height:60vh;min-height:350px}
+  .sg{grid-template-columns:1fr} .process-grid{grid-template-columns:1fr}
+  .process-card::after{display:none!important}
 }
 </style>
 </head>
@@ -286,64 +338,74 @@ footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-
   </ul>
 </nav>
 
-<div class="hero-wrapper">
-  <div class="hero-sticky">
-    <div class="hero-bg" id="heroBg"></div>
-    <div class="hero-content">
-      <div class="hero-badge"><span class="dot"></span> Available for Projects</div>
-      <h1>Unlock the intelligence hidden in your data</h1>
-      <p class="hero-sub">Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.</p>
-      <div class="hero-buttons">
-        <a href="#contact" class="btn-hero-primary">Start a Project</a>
-        <a href="#portfolio" class="btn-hero-secondary">View Work</a>
-      </div>
+<!-- HERO WITH PARTICLE RING BACKGROUND -->
+<section class="hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Available for Projects</div>
+    <h1>Unlock the <span class="accent">intelligence</span> hidden in your data</h1>
+    <p class="hero-sub">Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.</p>
+    <div class="hero-buttons">
+      <a href="#contact" class="btn-primary">Start a Project</a>
+      <a href="#portfolio" class="btn-secondary">View Work</a>
     </div>
   </div>
-  <div class="hero-fade"></div>
-</div>
+</section>
 
-<div id="particle-section">
-  <canvas id="particle-canvas"></canvas>
-  <div class="particle-overlay">
-    <h2>Built for the Data-Driven Future</h2>
-    <p>Combining deep technical expertise with modern tooling to deliver insight at scale.</p>
-  </div>
-</div>
-
+<!-- SERVICES -->
 <section id="services">
   <div class="sc sh">
-    <div class="section-label">Services</div>
-    <h2 class="section-title">Everything you need to make data work for you</h2>
-    <p class="section-subtitle">From raw data to boardroom-ready insights — end-to-end BI support tailored to your business.</p>
+    <div class="sl">Services</div>
+    <h2 class="st">Everything you need to make data work for you</h2>
+    <p class="ss">From raw data to boardroom-ready insights — end-to-end BI support tailored to your business.</p>
   </div>
-  <div class="services-grid rs">
-    <div class="sq c1 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">01</span><h3>Power BI Reports & Dashboards</h3><p>Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.</p></div></div>
-    <div class="sq c2 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">02</span><h3>Report Automation</h3><p>Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.</p></div></div>
-    <div class="sq c3 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">03</span><h3>Data Cleaning & Transformation</h3><p>Messy data cleaned, standardized, and structured into a reliable analytical foundation.</p></div></div>
-    <div class="sq c4 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">04</span><h3>Data Modeling & Architecture</h3><p>Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.</p></div></div>
-    <div class="sq c5 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">05</span><h3>System Integration</h3><p>Connect SAP, Oracle, SQL, SharePoint into a unified reporting layer — no more siloed data.</p></div></div>
-    <div class="sq c6 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">06</span><h3>BI Strategy & Training</h3><p>A roadmap for data-driven decisions, plus training so your team can extend reports independently.</p></div></div>
+  <div class="sg rs">
+    <div class="sq c1 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">01</span><h3>Power BI Reports & Dashboards</h3><p>Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.</p></div></div>
+    <div class="sq c2 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">02</span><h3>Report Automation</h3><p>Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.</p></div></div>
+    <div class="sq c3 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">03</span><h3>Data Cleaning & Transformation</h3><p>Messy data cleaned, standardized, and structured into a reliable analytical foundation.</p></div></div>
+    <div class="sq c4 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">04</span><h3>Data Modeling & Architecture</h3><p>Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.</p></div></div>
+    <div class="sq c5 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">05</span><h3>System Integration</h3><p>Connect SAP, Oracle, SQL, SharePoint into a unified reporting layer — no more siloed data.</p></div></div>
+    <div class="sq c6 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.12)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.12)"/></svg></div><div class="cc"><span class="cn">06</span><h3>BI Strategy & Training</h3><p>A roadmap for data-driven decisions, plus training so your team can extend reports independently.</p></div></div>
   </div>
 </section>
 
+<!-- PROCESS -->
 <section id="process">
   <div class="sc sh">
-    <div class="section-label">Process</div>
-    <h2 class="section-title">From first call to first insight</h2>
+    <div class="sl">Process</div>
+    <h2 class="st">From first call to first insight</h2>
+    <p class="ss">A clear, structured approach — so you always know what's happening and what comes next.</p>
   </div>
-  <div class="pt">
-    <div class="pi reveal"><div class="pd">01</div><div class="pc"><h3>Discovery</h3><p>Understanding your data landscape, goals, and pain points in a free initial consultation.</p></div></div>
-    <div class="pi reveal"><div class="pd">02</div><div class="pc"><h3>Design</h3><p>Wireframes and data model proposals. You sign off on the direction before any build starts.</p></div></div>
-    <div class="pi reveal"><div class="pd">03</div><div class="pc"><h3>Build</h3><p>Iterative development with weekly check-ins. Live demos, not surprises.</p></div></div>
-    <div class="pi reveal"><div class="pd">04</div><div class="pc"><h3>Launch & Support</h3><p>Deployment, documentation, and optional ongoing support to keep things running smoothly.</p></div></div>
+  <div class="process-grid rs">
+    <div class="process-card reveal">
+      <div class="process-num">01</div>
+      <h3>Discovery</h3>
+      <p>Understanding your data landscape, goals, and pain points in a free consultation.</p>
+    </div>
+    <div class="process-card reveal">
+      <div class="process-num">02</div>
+      <h3>Design</h3>
+      <p>Wireframes and data model proposals. You sign off before any build starts.</p>
+    </div>
+    <div class="process-card reveal">
+      <div class="process-num">03</div>
+      <h3>Build</h3>
+      <p>Iterative development with weekly check-ins. Live demos, not surprises.</p>
+    </div>
+    <div class="process-card reveal">
+      <div class="process-num">04</div>
+      <h3>Launch</h3>
+      <p>Deployment, documentation, and optional ongoing support to keep things running.</p>
+    </div>
   </div>
 </section>
 
+<!-- PORTFOLIO -->
 <section id="portfolio">
   <div class="sc sh">
-    <div class="section-label">Portfolio</div>
-    <h2 class="section-title">Selected projects</h2>
-    <p class="section-subtitle">Dashboards and reporting solutions delivered across industries.</p>
+    <div class="sl">Portfolio</div>
+    <h2 class="st">Selected projects</h2>
+    <p class="ss">Dashboards and reporting solutions delivered across industries.</p>
   </div>
   <div class="pg">
     <div class="pk reveal"><div class="pv"><canvas id="chart1"></canvas></div><div class="pb"><div class="ptag">Finance</div><h3>Financial Reporting Cockpit</h3><p>Consolidated multi-source financial reports with automated budget-vs-actuals tracking and drill-through.</p></div></div>
@@ -352,10 +414,11 @@ footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-
   </div>
 </section>
 
+<!-- TESTIMONIALS -->
 <section class="testimonials">
   <div class="sc sh">
-    <div class="section-label">Testimonials</div>
-    <h2 class="section-title">What clients say</h2>
+    <div class="sl">Testimonials</div>
+    <h2 class="st">What clients say</h2>
   </div>
   <div class="tc">
     <div class="tm reveal"><blockquote>"We went from spending two days on monthly reports to having everything update automatically. The ROI was immediate."</blockquote><div class="ta">Head of Finance</div><div class="tr">Manufacturing Company</div></div>
@@ -363,11 +426,12 @@ footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-
   </div>
 </section>
 
+<!-- CONTACT -->
 <section id="contact">
   <div class="cw">
-    <div class="section-label" style="justify-content:center;">Contact</div>
-    <h2 class="section-title" style="margin-inline:auto;">Let's talk about your data</h2>
-    <p class="section-subtitle" style="margin-inline:auto;">Describe your challenge and I'll get back within 24 hours with an initial assessment — free of charge.</p>
+    <div class="sl" style="justify-content:center;">Contact</div>
+    <h2 class="st" style="margin-inline:auto;">Let's talk about your data</h2>
+    <p class="ss" style="margin-inline:auto;">Describe your challenge and I'll get back within 24 hours with an initial assessment — free of charge.</p>
     <form class="cf" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
       <input type="hidden" name="_subject" value="New Holocron inquiry">
       <input type="text" name="_gotcha" style="display:none">
@@ -377,12 +441,7 @@ footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-
       </div>
       <div><label for="company">Company</label><input type="text" id="company" name="company" placeholder="Company name"></div>
       <div><label for="service">Service of Interest</label>
-        <select id="service" name="service">
-          <option value="">Select a service...</option>
-          <option>Power BI Reports & Dashboards</option><option>Report Automation</option>
-          <option>Data Cleaning & Transformation</option><option>Data Modeling & Architecture</option>
-          <option>System Integration</option><option>BI Strategy & Training</option><option>Not sure yet</option>
-        </select>
+        <select id="service" name="service"><option value="">Select a service...</option><option>Power BI Reports & Dashboards</option><option>Report Automation</option><option>Data Cleaning & Transformation</option><option>Data Modeling & Architecture</option><option>System Integration</option><option>BI Strategy & Training</option><option>Not sure yet</option></select>
       </div>
       <div><label for="message">Project Description</label><textarea id="message" name="message" placeholder="Tell me about your current data setup, what's not working, and what you'd like to achieve..."></textarea></div>
       <button type="submit" class="fs">Transmit Message →</button>
@@ -397,48 +456,35 @@ footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// HERO PARALLAX
-(function(){
-  const bg=document.getElementById('heroBg');
-  function u(){
-    const s=window.scrollY,p=Math.min(s/1500,1);
-    const c1=25-p*25,c2=75+p*25;
-    bg.style.clipPath=`polygon(${c1}% ${c1}%,${c2}% ${c1}%,${c2}% ${c2}%,${c1}% ${c2}%)`;
-    bg.style.backgroundSize=(170-p*70)+'%';
-    bg.style.opacity=s>1500?Math.max(1-(s-1500)/500,0):1;
-    requestAnimationFrame(u);
-  }
-  u();
-})();
-
 // SCROLL REVEAL
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// THREE.JS PARTICLE RING
+// THREE.JS PARTICLE RING — HERO
 (function(){
   const canvas=document.getElementById('particle-canvas');
-  const section=document.getElementById('particle-section');
+  const hero=document.querySelector('.hero');
   const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  renderer.setClearColor(0x0A0A12,1);
+  renderer.setClearColor(0x0B1A3E,1);
   const scene=new THREE.Scene();
   const camera=new THREE.PerspectiveCamera(50,1,0.1,100);
   camera.position.set(10,-7.5,-5);
   camera.lookAt(0,0,0);
-  scene.add(new THREE.DirectionalLight(0xffffff,0.8));
-  const p1=new THREE.PointLight(0x8B5CF6,4,50);p1.position.set(-15,0,-15);scene.add(p1);
-  const p2=new THREE.PointLight(0xEC4899,3,50);p2.position.set(10,5,10);scene.add(p2);
+  const dl=new THREE.DirectionalLight(0xffffff,0.6);dl.position.set(5,5,5);scene.add(dl);
+  const p1=new THREE.PointLight(0x2563EB,5,50);p1.position.set(-15,0,-15);scene.add(p1);
+  const p2=new THREE.PointLight(0x06B6D4,4,50);p2.position.set(10,5,10);scene.add(p2);
+  const p3=new THREE.PointLight(0x3B82F6,3,40);p3.position.set(0,-10,5);scene.add(p3);
   const group=new THREE.Group();scene.add(group);
   const geo=new THREE.SphereGeometry(0.08,8,8);
   function rr(mn,mx,ys){const a=Math.random()*Math.PI*2,r=mn+Math.random()*(mx-mn);return[Math.cos(a)*r,(Math.random()-0.5)*ys,Math.sin(a)*r]}
-  for(let i=0;i<600;i++){const[x,y,z]=rr(2,6,1.5);const c=new THREE.Color().setHSL(0.7+Math.random()*0.2,0.8,0.55);group.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.5,roughness:0.5})).translateX(x).translateY(y).translateZ(z))}
-  for(let i=0;i<600;i++){const[x,y,z]=rr(6,12,3);const c=new THREE.Color().setHSL(0.75+Math.random()*0.2,0.6,0.35);group.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.3,roughness:0.6})).translateX(x).translateY(y).translateZ(z))}
-  function resize(){const r=section.getBoundingClientRect();renderer.setSize(r.width,r.height);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
+  for(let i=0;i<600;i++){const[x,y,z]=rr(2,6,1.5);const h=0.55+Math.random()*0.1;const c=new THREE.Color().setHSL(h,0.7,0.5);const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.5,roughness:0.5}));m.position.set(x,y,z);group.add(m)}
+  for(let i=0;i<600;i++){const[x,y,z]=rr(6,12,3);const h=0.5+Math.random()*0.15;const c=new THREE.Color().setHSL(h,0.5,0.3);const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.3,roughness:0.6}));m.position.set(x,y,z);group.add(m)}
+  function resize(){const r=hero.getBoundingClientRect();renderer.setSize(r.width,r.height);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
   resize();window.addEventListener('resize',resize);
   let mx=0,my=0;
-  section.addEventListener('mousemove',e=>{const r=section.getBoundingClientRect();mx=((e.clientX-r.left)/r.width-0.5)*2;my=((e.clientY-r.top)/r.height-0.5)*2});
-  (function a(){requestAnimationFrame(a);group.rotation.z+=0.002;group.rotation.x+=(my*0.3-group.rotation.x)*0.02;group.rotation.y+=(mx*0.3-group.rotation.y)*0.02;renderer.render(scene,camera)})();
+  hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();mx=((e.clientX-r.left)/r.width-0.5)*2;my=((e.clientY-r.top)/r.height-0.5)*2});
+  (function a(){requestAnimationFrame(a);group.rotation.z+=0.002;group.rotation.x+=(my*0.3-group.rotation.x)*0.015;group.rotation.y+=(mx*0.3-group.rotation.y)*0.015;renderer.render(scene,camera)})();
 })();
 
 // PORTFOLIO CHARTS
@@ -447,12 +493,12 @@ function dc(id,type){
   const ctx=c.getContext('2d'),dpr=window.devicePixelRatio||1,r=c.getBoundingClientRect();
   c.width=r.width*dpr;c.height=r.height*dpr;ctx.scale(dpr,dpr);
   const w=r.width,h=r.height;
-  const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#6366F1');g.addColorStop(0.5,'#A855F7');g.addColorStop(1,'#EC4899');
+  const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#1E40AF');g.addColorStop(0.5,'#2563EB');g.addColorStop(1,'#06B6D4');
   ctx.strokeStyle='rgba(0,0,0,0.04)';ctx.lineWidth=1;
   for(let y=20;y<h;y+=25){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
   if(type==='bars'){const n=14,gap=6,bw=(w-40-gap*(n-1))/n;for(let i=0;i<n;i++){const bh=25+Math.random()*(h-70);ctx.fillStyle=g;ctx.globalAlpha=0.5+Math.random()*0.3;ctx.beginPath();ctx.roundRect(20+i*(bw+gap),h-15-bh,bw,bh,[4,4,0,0]);ctx.fill()}ctx.globalAlpha=1}
-  else if(type==='line'){const pts=[],steps=24;for(let i=0;i<=steps;i++)pts.push({x:15+(i/steps)*(w-30),y:h*0.35+Math.sin(i*0.45)*h*0.18+(Math.random()-0.5)*h*0.06});const gf=ctx.createLinearGradient(0,0,0,h);gf.addColorStop(0,'rgba(139,92,246,0.2)');gf.addColorStop(1,'rgba(139,92,246,0)');ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++){const xc=(pts[i].x+pts[i-1].x)/2,yc=(pts[i].y+pts[i-1].y)/2;ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc)}ctx.lineTo(w-15,h);ctx.lineTo(15,h);ctx.closePath();ctx.fillStyle=gf;ctx.fill();ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++){const xc=(pts[i].x+pts[i-1].x)/2,yc=(pts[i].y+pts[i-1].y)/2;ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc)}ctx.strokeStyle=g;ctx.lineWidth=2.5;ctx.stroke()}
-  else{for(let l=2;l>=0;l--){const pts=[],steps=18,base=h*(0.55+l*0.1);for(let i=0;i<=steps;i++)pts.push({x:(i/steps)*w,y:base+Math.sin(i*0.5+l*1.2)*h*0.12-l*h*0.08});ctx.beginPath();ctx.moveTo(0,h);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(w,h);ctx.closePath();const ag=ctx.createLinearGradient(0,0,w,0);ag.addColorStop(0,`rgba(99,102,241,${0.18-l*0.04})`);ag.addColorStop(0.5,`rgba(168,85,247,${0.22-l*0.05})`);ag.addColorStop(1,`rgba(236,72,153,${0.16-l*0.04})`);ctx.fillStyle=ag;ctx.fill()}}
+  else if(type==='line'){const pts=[],steps=24;for(let i=0;i<=steps;i++)pts.push({x:15+(i/steps)*(w-30),y:h*0.35+Math.sin(i*0.45)*h*0.18+(Math.random()-0.5)*h*0.06});const gf=ctx.createLinearGradient(0,0,0,h);gf.addColorStop(0,'rgba(37,99,235,0.2)');gf.addColorStop(1,'rgba(37,99,235,0)');ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++){const xc=(pts[i].x+pts[i-1].x)/2,yc=(pts[i].y+pts[i-1].y)/2;ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc)}ctx.lineTo(w-15,h);ctx.lineTo(15,h);ctx.closePath();ctx.fillStyle=gf;ctx.fill();ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++){const xc=(pts[i].x+pts[i-1].x)/2,yc=(pts[i].y+pts[i-1].y)/2;ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc)}ctx.strokeStyle=g;ctx.lineWidth=2.5;ctx.stroke()}
+  else{for(let l=2;l>=0;l--){const pts=[],steps=18,base=h*(0.55+l*0.1);for(let i=0;i<=steps;i++)pts.push({x:(i/steps)*w,y:base+Math.sin(i*0.5+l*1.2)*h*0.12-l*h*0.08});ctx.beginPath();ctx.moveTo(0,h);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(w,h);ctx.closePath();const ag=ctx.createLinearGradient(0,0,w,0);ag.addColorStop(0,`rgba(30,64,175,${0.18-l*0.04})`);ag.addColorStop(0.5,`rgba(37,99,235,${0.22-l*0.05})`);ag.addColorStop(1,`rgba(6,182,212,${0.16-l*0.04})`);ctx.fillStyle=ag;ctx.fill()}}
 }
 const co=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){if(x.target.id==='chart1')dc('chart1','bars');if(x.target.id==='chart2')dc('chart2','line');if(x.target.id==='chart3')dc('chart3','area');co.unobserve(x.target)}})},{threshold:0.3});
 ['chart1','chart2','chart3'].forEach(id=>{const el=document.getElementById(id);if(el)co.observe(el)});
