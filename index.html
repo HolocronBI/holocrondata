@@ -6,588 +6,276 @@
 <title>Holocron — Business Intelligence Services</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root {
-    --bg: #08080C;
-    --bg2: #0C0C12;
-    --bg-card: #111118;
-    --fg: #EAEAF2;
-    --fg-muted: #8888A0;
-    --chrome-1: #C0C0D8;
-    --gradient-hot: linear-gradient(135deg, #3B82F6, #8B5CF6, #D946EF, #F0ABFC, #C0C0E0);
-    --gradient-chrome: linear-gradient(135deg, #60607A, #A0A0C0, #E0E0F0, #A0A0C0, #60607A);
-    --gradient-accent: linear-gradient(135deg, #6366F1, #A855F7, #EC4899);
-    --border: rgba(255,255,255,0.06);
-    --glow-purple: rgba(139,92,246,0.15);
-    --radius: 16px;
-    --font-body: 'Outfit', sans-serif;
-    --font-mono: 'Space Mono', monospace;
-  }
+:root {
+  --bg: #FFFFFF;
+  --bg2: #F7F7FA;
+  --fg: #111118;
+  --fg-muted: #6B7280;
+  --fg-light: #9CA3AF;
+  --gradient-accent: linear-gradient(135deg, #6366F1, #A855F7, #EC4899);
+  --border: rgba(0,0,0,0.06);
+  --radius: 20px;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
 
-  html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-  body {
-    font-family: var(--font-body);
-    background: var(--bg);
-    color: var(--fg);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 4vw;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; }
+.logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #6366F1, #A855F7, #EC4899, #C0C0E0);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.logo-icon::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 50%, rgba(0,0,0,0.15) 100%);
+  border-radius: inherit;
+}
+.logo-icon svg { position: relative; z-index: 1; width: 20px; height: 20px; }
+.logo-name {
+  font-family: var(--font-mono);
+  font-size: 0.95rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  background: linear-gradient(90deg, #4F46E5, #8B5CF6, #EC4899, #8B5CF6, #4F46E5);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
+nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+nav ul li a { text-decoration: none; color: var(--fg-muted); font-size: 0.85rem; font-weight: 500; transition: color 0.3s; }
+nav ul li a:hover { color: var(--fg); }
+.nav-cta {
+  background: var(--gradient-accent) !important; color: #fff !important;
+  padding: 0.5rem 1.4rem !important; border-radius: 10px;
+  font-weight: 600 !important; transition: box-shadow 0.4s, transform 0.2s !important;
+}
+.nav-cta:hover { box-shadow: 0 4px 24px rgba(139,92,246,0.35) !important; transform: translateY(-1px) !important; }
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-    background-size: 80px 80px;
-  }
+/* HERO */
+.hero-wrapper { position: relative; height: calc(1500px + 100vh); width: 100%; }
+.hero-sticky {
+  position: sticky; top: 0; height: 100vh; width: 100%;
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 30%, #A855F7 50%, #D946EF 70%, #EC4899 100%);
+  background-size: 170%; background-position: center;
+  will-change: clip-path, background-size, opacity;
+}
+.hero-content { position: relative; z-index: 2; text-align: center; color: white; padding: 0 4vw; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.12);
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+  padding: 0.4rem 1.1rem; border-radius: 100px; margin-bottom: 2rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+}
+.dot { width: 6px; height: 6px; background: #fff; border-radius: 50%; box-shadow: 0 0 8px rgba(255,255,255,0.6); animation: pg 2s infinite; }
+@keyframes pg { 0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.6)} 50%{box-shadow:0 0 16px rgba(255,255,255,0.9)} }
+.hero-content h1 {
+  font-size: clamp(3rem, 6.5vw, 5.2rem); font-weight: 800;
+  line-height: 1.05; letter-spacing: -0.045em; max-width: 800px; margin: 0 auto;
+  opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
+}
+.hero-sub { max-width: 500px; margin: 1.6rem auto 0; font-size: 1.1rem; color: rgba(255,255,255,0.8); font-weight: 300; opacity: 0; animation: fadeUp 0.7s 0.5s forwards; }
+.hero-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; opacity: 0; animation: fadeUp 0.7s 0.65s forwards; }
+.btn-hero-primary {
+  background: white; color: #4F46E5; padding: 0.9rem 2.2rem; border-radius: 12px;
+  text-decoration: none; font-weight: 700; font-size: 0.95rem; transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+.btn-hero-secondary {
+  color: rgba(255,255,255,0.9); padding: 0.9rem 2.2rem; border-radius: 12px;
+  text-decoration: none; font-weight: 500; font-size: 0.95rem;
+  border: 1.5px solid rgba(255,255,255,0.3); transition: background 0.3s, transform 0.3s;
+}
+.btn-hero-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+.hero-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(to bottom, transparent, var(--bg)); z-index: 3; pointer-events: none; }
 
-  section, nav, footer { position: relative; z-index: 1; }
+/* PARTICLE */
+#particle-section { position: relative; height: 80vh; min-height: 500px; background: #0A0A12; overflow: hidden; }
+#particle-canvas { width: 100%; height: 100%; display: block; }
+.particle-overlay {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  pointer-events: none; z-index: 2; padding: 0 4vw;
+}
+.particle-overlay h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: white; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+.particle-overlay p { color: rgba(255,255,255,0.55); font-size: 1rem; font-weight: 300; max-width: 450px; }
 
-  .chrome-text {
-    background: var(--gradient-hot);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+/* SECTIONS */
+section { padding: 7rem 4vw; }
+.section-label {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.sc .section-label { justify-content: center; }
+.section-title { font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; max-width: 600px; }
+.sc .section-title { margin-inline: auto; }
+.section-subtitle { color: var(--fg-muted); max-width: 500px; margin-top: 1rem; font-size: 1rem; font-weight: 300; }
+.sc .section-subtitle { margin-inline: auto; }
+.sc { text-align: center; }
+.sh { margin-bottom: 4rem; }
 
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 4vw;
-    background: rgba(8,8,12,0.7);
-    backdrop-filter: blur(24px) saturate(1.4);
-    border-bottom: 1px solid var(--border);
-  }
-  .logo {
-    display: flex; align-items: center; gap: 0.65rem;
-    text-decoration: none;
-  }
-  .logo-icon {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, #6366F1, #A855F7, #EC4899, #C0C0E0);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .logo-icon::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
-    border-radius: inherit;
-  }
-  .logo-icon svg { position: relative; z-index: 1; width: 20px; height: 20px; }
-  .logo-name {
-    font-family: var(--font-mono);
-    font-size: 0.95rem; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    background: linear-gradient(90deg, #C0C0E0, #A0A0C8, #8B5CF6, #A0A0C8, #C0C0E0);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 4s linear infinite;
-  }
-  @keyframes shimmer {
-    0% { background-position: 100% 0; }
-    100% { background-position: -100% 0; }
-  }
-  nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
-  nav ul li a {
-    text-decoration: none; color: var(--fg-muted);
-    font-size: 0.85rem; font-weight: 500;
-    transition: color 0.3s;
-  }
-  nav ul li a:hover { color: var(--fg); }
-  .nav-cta {
-    background: linear-gradient(135deg, #6366F1, #A855F7) !important;
-    color: #fff !important;
-    padding: 0.5rem 1.4rem !important;
-    border-radius: 10px;
-    font-weight: 600 !important;
-    transition: box-shadow 0.4s, transform 0.2s !important;
-  }
-  .nav-cta:hover {
-    box-shadow: 0 4px 24px rgba(139,92,246,0.4) !important;
-    transform: translateY(-1px) !important;
-  }
+/* SQUISHY CARDS */
+#services { background: var(--bg2); }
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+.sq {
+  position: relative; border-radius: var(--radius); padding: 2.2rem 1.8rem;
+  color: white; overflow: hidden; cursor: default; min-height: 280px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+.sq:hover { transform: scale(1.04); }
+.sq.c1{background:#6366F1} .sq.c2{background:#8B5CF6} .sq.c3{background:#4F46E5}
+.sq.c4{background:#A855F7} .sq.c5{background:#7C3AED} .sq.c6{background:#6D28D9}
+.sq .cb { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.sq .cb svg { position: absolute; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+.sq:hover .cb svg { transform: scale(1.45); }
+.sq .cb circle, .sq .cb ellipse { transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+.sq:hover .bt { transform: scaleY(0.5) translateY(-15px); }
+.sq:hover .bb { transform: scaleY(2.2) translateY(-15px); }
+.cc { position: relative; z-index: 1; }
+.cn {
+  display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  padding: 0.25rem 0.7rem; border-radius: 100px; margin-bottom: 1rem; letter-spacing: 0.05em;
+}
+.cc h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1); transform-origin: top left; }
+.sq:hover .cc h3 { transform: scale(1.05); }
+.cc p { font-size: 0.88rem; line-height: 1.6; color: rgba(255,255,255,0.8); font-weight: 300; }
 
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    padding: 8rem 4vw 6rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    pointer-events: none;
-    animation: blob-drift 12s ease-in-out infinite alternate;
-  }
-  .blob-1 {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(99,102,241,0.18), transparent 70%);
-    top: -10%; left: -10%;
-  }
-  .blob-2 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(168,85,247,0.15), transparent 70%);
-    top: 10%; right: -15%;
-    animation-delay: -4s;
-  }
-  .blob-3 {
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(236,72,153,0.12), transparent 70%);
-    bottom: 5%; left: 20%;
-    animation-delay: -8s;
-  }
-  @keyframes blob-drift {
-    0% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -20px) scale(1.05); }
-    66% { transform: translate(-20px, 15px) scale(0.95); }
-    100% { transform: translate(10px, -10px) scale(1.02); }
-  }
+/* PROCESS */
+.pt { max-width: 900px; margin: 4rem auto 0; display: flex; flex-direction: column; position: relative; }
+.pt::before { content: ''; position: absolute; left: 28px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #6366F1, #A855F7, #EC4899, #E5E7EB); }
+.pi { display: flex; gap: 2rem; padding: 2.5rem 0; align-items: flex-start; }
+.pd {
+  width: 58px; height: 58px; min-width: 58px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+  position: relative; z-index: 1; background: var(--bg); border: 2px solid;
+  transition: box-shadow 0.4s, transform 0.4s;
+}
+.pi:hover .pd { box-shadow: 0 0 24px rgba(139,92,246,0.2); transform: scale(1.1); }
+.pi:nth-child(1) .pd{border-color:#6366F1;color:#6366F1}
+.pi:nth-child(2) .pd{border-color:#8B5CF6;color:#8B5CF6}
+.pi:nth-child(3) .pd{border-color:#A855F7;color:#A855F7}
+.pi:nth-child(4) .pd{border-color:#D946EF;color:#D946EF}
+.pc h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
+.pc p { font-size: 0.9rem; color: var(--fg-muted); font-weight: 300; max-width: 500px; }
 
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    border: 1px solid rgba(139,92,246,0.3);
-    background: rgba(139,92,246,0.08);
-    font-family: var(--font-mono);
-    font-size: 0.68rem; font-weight: 700;
-    padding: 0.4rem 1.1rem;
-    border-radius: 100px;
-    margin-bottom: 2rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #A78BFA;
-    opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
-  }
-  .dot {
-    width: 6px; height: 6px;
-    background: #A855F7;
-    border-radius: 50%;
-    box-shadow: 0 0 8px rgba(168,85,247,0.6);
-    animation: pulse-glow 2s infinite;
-  }
-  @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 8px rgba(168,85,247,0.6); }
-    50% { box-shadow: 0 0 16px rgba(168,85,247,0.9), 0 0 4px rgba(168,85,247,0.4); }
-  }
+/* PORTFOLIO */
+#portfolio { background: var(--bg2); }
+.pg { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+.pk {
+  border-radius: var(--radius); overflow: hidden; background: var(--bg);
+  border: 1px solid var(--border);
+  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
+}
+.pk:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 24px 60px rgba(99,102,241,0.1), 0 4px 16px rgba(0,0,0,0.06); }
+.pv { width: 100%; height: 200px; position: relative; overflow: hidden; background: linear-gradient(135deg, #EEF2FF, #E0E7FF); }
+.pv canvas { width: 100%; height: 100%; display: block; }
+.pv::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50px; background: linear-gradient(to top, var(--bg), transparent); pointer-events: none; }
+.pb { padding: 1.5rem 1.75rem; }
+.ptag { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.5rem; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.pb h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+.pb p { font-size: 0.88rem; color: var(--fg-muted); font-weight: 300; }
 
-  .hero h1 {
-    font-size: clamp(3rem, 6.5vw, 5.2rem);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.045em;
-    max-width: 800px;
-    opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
-  }
-  .hero-sub {
-    max-width: 500px;
-    margin-top: 1.6rem;
-    font-size: 1.1rem;
-    color: var(--fg-muted);
-    font-weight: 300;
-    opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
-  }
-  .hero-buttons {
-    display: flex; gap: 1rem; margin-top: 2.5rem;
-    opacity: 0; animation: fadeUp 0.7s 0.65s forwards;
-  }
-  .btn-primary {
-    position: relative;
-    background: linear-gradient(135deg, #6366F1, #A855F7, #EC4899);
-    color: #fff;
-    padding: 0.9rem 2.2rem;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600; font-size: 0.95rem;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.4s;
-  }
-  .btn-primary::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 50%);
-    border-radius: inherit;
-    pointer-events: none;
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(139,92,246,0.4), 0 2px 12px rgba(236,72,153,0.2);
-  }
-  .btn-secondary {
-    color: var(--chrome-1);
-    padding: 0.9rem 2.2rem;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 500; font-size: 0.95rem;
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: border-color 0.3s, color 0.3s, transform 0.3s;
-    backdrop-filter: blur(8px);
-    background: rgba(255,255,255,0.02);
-  }
-  .btn-secondary:hover {
-    border-color: rgba(139,92,246,0.4);
-    color: #fff;
-    transform: translateY(-2px);
-  }
+/* TESTIMONIALS */
+.testimonials { text-align: center; }
+.tc { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+.tm {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 2rem; text-align: left;
+  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
+  position: relative; overflow: hidden;
+}
+.tm:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(99,102,241,0.08); }
+.tm::before { content: '\201C'; position: absolute; top: -5px; left: 16px; font-size: 5rem; font-weight: 800; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; opacity: 0.1; pointer-events: none; line-height: 1; }
+.tm blockquote { font-size: 0.92rem; color: var(--fg-muted); line-height: 1.7; font-style: italic; font-weight: 300; margin-bottom: 1.25rem; }
+.ta { font-size: 0.85rem; font-weight: 600; }
+.tr { font-size: 0.75rem; color: var(--fg-light); font-weight: 300; }
 
-  /* ─── SECTION COMMON ─── */
-  section { padding: 7rem 4vw; }
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.2em;
-    margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 0.6rem;
-  }
-  .section-title {
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.15;
-    max-width: 600px;
-  }
-  .section-subtitle {
-    color: var(--fg-muted);
-    max-width: 500px;
-    margin-top: 1rem;
-    font-size: 1rem;
-    font-weight: 300;
-  }
+/* CONTACT */
+#contact { background: var(--bg2); }
+.cw { max-width: 620px; margin: 0 auto; text-align: center; }
+.cf { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem; text-align: left; }
+.fr { display: flex; gap: 1rem; }
+.fr > * { flex: 1; }
+.cf label { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.4rem; color: var(--fg-muted); }
+.cf input, .cf select, .cf textarea {
+  width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #E5E7EB; border-radius: 10px;
+  font-family: var(--font-body); font-size: 0.9rem; font-weight: 400;
+  background: var(--bg); color: var(--fg); transition: border-color 0.3s, box-shadow 0.3s; outline: none;
+}
+.cf input:focus, .cf select:focus, .cf textarea:focus { border-color: #8B5CF6; box-shadow: 0 0 0 3px rgba(139,92,246,0.1); }
+.cf input::placeholder, .cf textarea::placeholder { color: #B0B0C0; }
+.cf textarea { min-height: 120px; resize: vertical; }
+.cf select { cursor: pointer; }
+.fs {
+  position: relative; background: var(--gradient-accent); color: #fff;
+  padding: 0.95rem 2rem; border: none; border-radius: 12px;
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
+  cursor: pointer; overflow: hidden; transition: box-shadow 0.4s, transform 0.3s; margin-top: 0.5rem;
+}
+.fs::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 50%); pointer-events: none; }
+.fs:hover { box-shadow: 0 8px 32px rgba(139,92,246,0.3); transform: translateY(-2px); }
 
-  .molten-divider {
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #6366F1, #A855F7, #EC4899, #C0C0E0, transparent);
-    opacity: 0.35;
-  }
+/* FOOTER */
+footer { text-align: center; padding: 3rem 4vw; border-top: 1px solid var(--border); background: var(--bg); }
+.fb { font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.7rem; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-light); font-weight: 300; }
 
-  /* ─── SERVICES ─── */
-  #services { background: var(--bg2); }
-  .services-header { text-align: center; margin-bottom: 4rem; }
-  .services-header .section-label { justify-content: center; }
-  .services-header .section-title { margin-inline: auto; }
-  .services-header .section-subtitle { margin-inline: auto; }
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    max-width: 1100px;
-    margin: 0 auto;
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(168,85,247,0.1), rgba(236,72,153,0.08));
-  }
-  .service-card {
-    background: var(--bg-card);
-    padding: 2.4rem 2rem;
-    transition: background 0.4s;
-    position: relative;
-    overflow: hidden;
-  }
-  .service-card::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(168,85,247,0.04), transparent);
-    opacity: 0;
-    transition: opacity 0.4s;
-    pointer-events: none;
-  }
-  .service-card:hover::after { opacity: 1; }
-  .service-num {
-    font-family: var(--font-mono);
-    font-size: 0.65rem; font-weight: 700;
-    letter-spacing: 0.08em;
-    margin-bottom: 1.2rem;
-    background: linear-gradient(135deg, #6366F1, #A855F7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .service-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.65rem; }
-  .service-card p { font-size: 0.88rem; color: var(--fg-muted); line-height: 1.65; font-weight: 300; }
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.8s cubic-bezier(0.23,1,0.32,1), transform 0.8s cubic-bezier(0.23,1,0.32,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.rs > .reveal:nth-child(1){transition-delay:0s} .rs > .reveal:nth-child(2){transition-delay:0.08s}
+.rs > .reveal:nth-child(3){transition-delay:0.16s} .rs > .reveal:nth-child(4){transition-delay:0.24s}
+.rs > .reveal:nth-child(5){transition-delay:0.32s} .rs > .reveal:nth-child(6){transition-delay:0.4s}
 
-  /* ─── PROCESS ─── */
-  .process-track {
-    max-width: 900px;
-    margin: 4rem auto 0;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-  .process-track::before {
-    content: '';
-    position: absolute;
-    left: 28px; top: 0; bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, #6366F1, #A855F7, #EC4899, rgba(192,192,224,0.3));
-  }
-  .process-item {
-    display: flex; gap: 2rem;
-    padding: 2rem 0;
-    align-items: flex-start;
-  }
-  .process-dot {
-    width: 58px; height: 58px; min-width: 58px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono);
-    font-size: 0.72rem; font-weight: 700;
-    position: relative; z-index: 1;
-    background: var(--bg);
-    border: 2px solid;
-    transition: box-shadow 0.4s;
-  }
-  .process-item:nth-child(1) .process-dot { border-color: #6366F1; color: #6366F1; }
-  .process-item:nth-child(2) .process-dot { border-color: #8B5CF6; color: #8B5CF6; }
-  .process-item:nth-child(3) .process-dot { border-color: #A855F7; color: #A855F7; }
-  .process-item:nth-child(4) .process-dot { border-color: #D946EF; color: #D946EF; }
-  .process-item:hover .process-dot { box-shadow: 0 0 20px var(--glow-purple); }
-  .process-content h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.35rem; }
-  .process-content p { font-size: 0.88rem; color: var(--fg-muted); font-weight: 300; max-width: 500px; }
-
-  /* ─── PORTFOLIO ─── */
-  #portfolio { background: var(--bg2); }
-  .portfolio-header { text-align: center; margin-bottom: 4rem; }
-  .portfolio-header .section-label { justify-content: center; }
-  .portfolio-header .section-title { margin-inline: auto; }
-  .portfolio-header .section-subtitle { margin-inline: auto; }
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .portfolio-card {
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    transition: transform 0.4s, border-color 0.4s, box-shadow 0.4s;
-  }
-  .portfolio-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(139,92,246,0.3);
-    box-shadow: 0 20px 60px rgba(139,92,246,0.1), 0 4px 16px rgba(0,0,0,0.3);
-  }
-  .portfolio-vis {
-    width: 100%; height: 200px;
-    position: relative;
-    overflow: hidden;
-    background: var(--bg);
-  }
-  .portfolio-vis canvas { width: 100%; height: 100%; display: block; }
-  .portfolio-vis::after {
-    content: '';
-    position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
-    background: linear-gradient(to top, var(--bg-card), transparent);
-    pointer-events: none;
-  }
-  .portfolio-body { padding: 1.5rem 1.75rem; }
-  .portfolio-tag {
-    font-family: var(--font-mono);
-    font-size: 0.62rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.12em;
-    margin-bottom: 0.5rem;
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .portfolio-body h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
-  .portfolio-body p { font-size: 0.85rem; color: var(--fg-muted); font-weight: 300; }
-
-  /* ─── TESTIMONIALS ─── */
-  .testimonials { text-align: center; }
-  .testimonials-header { margin-bottom: 3.5rem; }
-  .testimonials-header .section-label { justify-content: center; }
-  .testimonials-header .section-title { margin-inline: auto; }
-  .testimonial-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .testimonial {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 2rem;
-    text-align: left;
-    transition: border-color 0.4s, box-shadow 0.4s;
-    position: relative;
-    overflow: hidden;
-  }
-  .testimonial::before {
-    content: '"';
-    position: absolute; top: -10px; left: 16px;
-    font-size: 6rem;
-    font-weight: 800;
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    opacity: 0.08;
-    pointer-events: none;
-    line-height: 1;
-  }
-  .testimonial:hover {
-    border-color: rgba(139,92,246,0.2);
-    box-shadow: 0 8px 32px rgba(139,92,246,0.06);
-  }
-  .testimonial blockquote {
-    font-size: 0.92rem; color: var(--fg-muted);
-    line-height: 1.7; font-style: italic; font-weight: 300;
-    margin-bottom: 1.25rem;
-  }
-  .testimonial-author { font-size: 0.85rem; font-weight: 600; }
-  .testimonial-role { font-size: 0.75rem; color: var(--fg-muted); font-weight: 300; }
-
-  /* ─── CONTACT ─── */
-  #contact { background: var(--bg2); }
-  .contact-wrapper { max-width: 620px; margin: 0 auto; text-align: center; }
-  .contact-wrapper .section-label { justify-content: center; }
-  .contact-wrapper .section-title { margin-inline: auto; }
-  .contact-wrapper .section-subtitle { margin-inline: auto; }
-  .contact-form {
-    margin-top: 2.5rem;
-    display: flex; flex-direction: column; gap: 1rem;
-    text-align: left;
-  }
-  .form-row { display: flex; gap: 1rem; }
-  .form-row > * { flex: 1; }
-  .contact-form label {
-    font-family: var(--font-mono);
-    font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    display: block; margin-bottom: 0.4rem;
-    color: var(--fg-muted);
-  }
-  .contact-form input,
-  .contact-form select,
-  .contact-form textarea {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    font-family: var(--font-body);
-    font-size: 0.9rem; font-weight: 300;
-    background: var(--bg);
-    color: var(--fg);
-    transition: border-color 0.3s, box-shadow 0.3s;
-    outline: none;
-  }
-  .contact-form input:focus,
-  .contact-form select:focus,
-  .contact-form textarea:focus {
-    border-color: rgba(139,92,246,0.5);
-    box-shadow: 0 0 0 3px rgba(139,92,246,0.1);
-  }
-  .contact-form input::placeholder,
-  .contact-form textarea::placeholder { color: var(--fg-muted); opacity: 0.4; }
-  .contact-form textarea { min-height: 120px; resize: vertical; }
-  .contact-form select { cursor: pointer; }
-  .contact-form select option { background: var(--bg-card); }
-  .form-submit {
-    position: relative;
-    background: linear-gradient(135deg, #6366F1, #A855F7, #EC4899);
-    color: #fff;
-    padding: 0.95rem 2rem;
-    border: none;
-    border-radius: 12px;
-    font-family: var(--font-body);
-    font-size: 0.95rem; font-weight: 600;
-    cursor: pointer;
-    overflow: hidden;
-    transition: box-shadow 0.4s, transform 0.3s;
-    margin-top: 0.5rem;
-  }
-  .form-submit::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 50%);
-    pointer-events: none;
-  }
-  .form-submit:hover {
-    box-shadow: 0 8px 32px rgba(139,92,246,0.35), 0 2px 12px rgba(236,72,153,0.2);
-    transform: translateY(-2px);
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    text-align: center;
-    padding: 3rem 4vw;
-    border-top: 1px solid var(--border);
-  }
-  .footer-brand {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    font-size: 0.7rem;
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  footer p { margin-top: 0.4rem; font-size: 0.78rem; color: var(--fg-muted); font-weight: 300; }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .reveal {
-    opacity: 0; transform: translateY(30px);
-    transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
-  .reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.07s; }
-  .reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.14s; }
-  .reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.21s; }
-  .reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.28s; }
-  .reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.35s; }
-
-  .parallax-section { will-change: transform; }
-
-  @media (max-width: 900px) {
-    .services-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 768px) {
-    nav ul { display: none; }
-    .form-row { flex-direction: column; }
-    section { padding: 5rem 5vw; }
-    .services-grid { grid-template-columns: 1fr; }
-    .process-track::before { left: 20px; }
-    .process-dot { width: 42px; height: 42px; min-width: 42px; font-size: 0.6rem; }
-  }
+@media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+  nav ul{display:none} .fr{flex-direction:column} section{padding:5rem 5vw}
+  .services-grid{grid-template-columns:1fr} .pt::before{left:20px}
+  .pd{width:42px;height:42px;min-width:42px;font-size:0.6rem}
+  #particle-section{height:60vh;min-height:350px}
+}
 </style>
 </head>
 <body>
 
 <nav>
   <a href="#" class="logo">
-    <div class="logo-icon">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" fill="none"/>
-        <path d="M12 6L16 8.5V13.5L12 16L8 13.5V8.5L12 6Z" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.7)" stroke-width="0.8"/>
-        <circle cx="12" cy="11" r="1.5" fill="white"/>
-      </svg>
-    </div>
+    <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" fill="none"/><path d="M12 6L16 8.5V13.5L12 16L8 13.5V8.5L12 6Z" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.7)" stroke-width="0.8"/><circle cx="12" cy="11" r="1.5" fill="white"/></svg></div>
     <span class="logo-name">Holocron</span>
   </a>
   <ul>
@@ -598,341 +286,186 @@
   </ul>
 </nav>
 
-<section class="hero">
-  <div class="hero-blob blob-1"></div>
-  <div class="hero-blob blob-2"></div>
-  <div class="hero-blob blob-3"></div>
-  <div class="hero-badge"><span class="dot"></span> Available for Projects</div>
-  <h1>Unlock the <span class="chrome-text">intelligence</span> hidden in your data</h1>
-  <p class="hero-sub">Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.</p>
-  <div class="hero-buttons">
-    <a href="#contact" class="btn-primary">Start a Project</a>
-    <a href="#portfolio" class="btn-secondary">View Work</a>
+<div class="hero-wrapper">
+  <div class="hero-sticky">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="dot"></span> Available for Projects</div>
+      <h1>Unlock the intelligence hidden in your data</h1>
+      <p class="hero-sub">Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-hero-primary">Start a Project</a>
+        <a href="#portfolio" class="btn-hero-secondary">View Work</a>
+      </div>
+    </div>
   </div>
-</section>
+  <div class="hero-fade"></div>
+</div>
 
-<div class="molten-divider"></div>
+<div id="particle-section">
+  <canvas id="particle-canvas"></canvas>
+  <div class="particle-overlay">
+    <h2>Built for the Data-Driven Future</h2>
+    <p>Combining deep technical expertise with modern tooling to deliver insight at scale.</p>
+  </div>
+</div>
 
-<section id="services" class="parallax-section">
-  <div class="services-header">
-    <div class="section-label chrome-text">Services</div>
+<section id="services">
+  <div class="sc sh">
+    <div class="section-label">Services</div>
     <h2 class="section-title">Everything you need to make data work for you</h2>
     <p class="section-subtitle">From raw data to boardroom-ready insights — end-to-end BI support tailored to your business.</p>
   </div>
-  <div class="services-grid reveal-stagger">
-    <div class="service-card reveal">
-      <div class="service-num">[ 01 ]</div>
-      <h3>Power BI Reports & Dashboards</h3>
-      <p>Interactive, visually clear dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not more questions.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-num">[ 02 ]</div>
-      <h3>Report Automation</h3>
-      <p>Eliminate manual copy-paste workflows. Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-num">[ 03 ]</div>
-      <h3>Data Cleaning & Transformation</h3>
-      <p>Messy spreadsheets, inconsistent formats, duplicate records — cleaned, standardized, and structured into a reliable analytical foundation.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-num">[ 04 ]</div>
-      <h3>Data Modeling & Architecture</h3>
-      <p>Scalable data models designed for performance. Star schemas, relationships, and DAX logic that keep reports fast and maintainable.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-num">[ 05 ]</div>
-      <h3>System Integration</h3>
-      <p>Connect SAP, Oracle, SQL databases, SharePoint, and other sources into a unified reporting layer — no more siloed data.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-num">[ 06 ]</div>
-      <h3>BI Strategy & Training</h3>
-      <p>Not just dashboards — a roadmap for data-driven decisions. Plus hands-on training so your team can extend reports independently.</p>
-    </div>
+  <div class="services-grid rs">
+    <div class="sq c1 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">01</span><h3>Power BI Reports & Dashboards</h3><p>Interactive dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.</p></div></div>
+    <div class="sq c2 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">02</span><h3>Report Automation</h3><p>Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.</p></div></div>
+    <div class="sq c3 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">03</span><h3>Data Cleaning & Transformation</h3><p>Messy data cleaned, standardized, and structured into a reliable analytical foundation.</p></div></div>
+    <div class="sq c4 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">04</span><h3>Data Modeling & Architecture</h3><p>Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.</p></div></div>
+    <div class="sq c5 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">05</span><h3>System Integration</h3><p>Connect SAP, Oracle, SQL, SharePoint into a unified reporting layer — no more siloed data.</p></div></div>
+    <div class="sq c6 reveal"><div class="cb"><svg viewBox="0 0 320 300" fill="none"><circle class="bt" cx="160" cy="80" r="90" fill="rgba(0,0,0,0.15)"/><ellipse class="bb" cx="160" cy="220" rx="90" ry="40" fill="rgba(0,0,0,0.15)"/></svg></div><div class="cc"><span class="cn">06</span><h3>BI Strategy & Training</h3><p>A roadmap for data-driven decisions, plus training so your team can extend reports independently.</p></div></div>
   </div>
 </section>
 
-<div class="molten-divider"></div>
-
-<section id="process" class="parallax-section">
-  <div class="services-header">
-    <div class="section-label chrome-text">Process</div>
+<section id="process">
+  <div class="sc sh">
+    <div class="section-label">Process</div>
     <h2 class="section-title">From first call to first insight</h2>
   </div>
-  <div class="process-track">
-    <div class="process-item reveal">
-      <div class="process-dot">01</div>
-      <div class="process-content">
-        <h3>Discovery</h3>
-        <p>Understanding your data landscape, goals, and pain points in a free initial consultation.</p>
-      </div>
-    </div>
-    <div class="process-item reveal">
-      <div class="process-dot">02</div>
-      <div class="process-content">
-        <h3>Design</h3>
-        <p>Wireframes and data model proposals. You sign off on the direction before any build starts.</p>
-      </div>
-    </div>
-    <div class="process-item reveal">
-      <div class="process-dot">03</div>
-      <div class="process-content">
-        <h3>Build</h3>
-        <p>Iterative development with weekly check-ins. Live demos, not surprises.</p>
-      </div>
-    </div>
-    <div class="process-item reveal">
-      <div class="process-dot">04</div>
-      <div class="process-content">
-        <h3>Launch & Support</h3>
-        <p>Deployment, documentation, and optional ongoing support to keep things running smoothly.</p>
-      </div>
-    </div>
+  <div class="pt">
+    <div class="pi reveal"><div class="pd">01</div><div class="pc"><h3>Discovery</h3><p>Understanding your data landscape, goals, and pain points in a free initial consultation.</p></div></div>
+    <div class="pi reveal"><div class="pd">02</div><div class="pc"><h3>Design</h3><p>Wireframes and data model proposals. You sign off on the direction before any build starts.</p></div></div>
+    <div class="pi reveal"><div class="pd">03</div><div class="pc"><h3>Build</h3><p>Iterative development with weekly check-ins. Live demos, not surprises.</p></div></div>
+    <div class="pi reveal"><div class="pd">04</div><div class="pc"><h3>Launch & Support</h3><p>Deployment, documentation, and optional ongoing support to keep things running smoothly.</p></div></div>
   </div>
 </section>
 
-<div class="molten-divider"></div>
-
-<section id="portfolio" class="parallax-section">
-  <div class="portfolio-header">
-    <div class="section-label chrome-text">Portfolio</div>
+<section id="portfolio">
+  <div class="sc sh">
+    <div class="section-label">Portfolio</div>
     <h2 class="section-title">Selected projects</h2>
     <p class="section-subtitle">Dashboards and reporting solutions delivered across industries.</p>
   </div>
-  <div class="portfolio-grid">
-    <div class="portfolio-card reveal">
-      <div class="portfolio-vis"><canvas id="chart1"></canvas></div>
-      <div class="portfolio-body">
-        <div class="portfolio-tag">Finance</div>
-        <h3>Financial Reporting Cockpit</h3>
-        <p>Consolidated multi-source financial reports with automated budget-vs-actuals tracking and drill-through.</p>
-      </div>
-    </div>
-    <div class="portfolio-card reveal">
-      <div class="portfolio-vis"><canvas id="chart2"></canvas></div>
-      <div class="portfolio-body">
-        <div class="portfolio-tag">Operations</div>
-        <h3>KPI Performance Dashboard</h3>
-        <p>Real-time operational KPIs with trend analysis, threshold alerts, and executive summary views.</p>
-      </div>
-    </div>
-    <div class="portfolio-card reveal">
-      <div class="portfolio-vis"><canvas id="chart3"></canvas></div>
-      <div class="portfolio-body">
-        <div class="portfolio-tag">Automation</div>
-        <h3>Automated Rolling Forecast</h3>
-        <p>Self-refreshing forecast model replacing 12+ hours of monthly manual work with a single pipeline.</p>
-      </div>
-    </div>
+  <div class="pg">
+    <div class="pk reveal"><div class="pv"><canvas id="chart1"></canvas></div><div class="pb"><div class="ptag">Finance</div><h3>Financial Reporting Cockpit</h3><p>Consolidated multi-source financial reports with automated budget-vs-actuals tracking and drill-through.</p></div></div>
+    <div class="pk reveal"><div class="pv"><canvas id="chart2"></canvas></div><div class="pb"><div class="ptag">Operations</div><h3>KPI Performance Dashboard</h3><p>Real-time operational KPIs with trend analysis, threshold alerts, and executive summary views.</p></div></div>
+    <div class="pk reveal"><div class="pv"><canvas id="chart3"></canvas></div><div class="pb"><div class="ptag">Automation</div><h3>Automated Rolling Forecast</h3><p>Self-refreshing forecast model replacing 12+ hours of monthly manual work with a single pipeline.</p></div></div>
   </div>
 </section>
 
-<div class="molten-divider"></div>
-
-<section class="testimonials parallax-section">
-  <div class="testimonials-header">
-    <div class="section-label chrome-text">Testimonials</div>
+<section class="testimonials">
+  <div class="sc sh">
+    <div class="section-label">Testimonials</div>
     <h2 class="section-title">What clients say</h2>
   </div>
-  <div class="testimonial-cards">
-    <div class="testimonial reveal">
-      <blockquote>"We went from spending two days on monthly reports to having everything update automatically. The ROI was immediate."</blockquote>
-      <div class="testimonial-author">Head of Finance</div>
-      <div class="testimonial-role">Manufacturing Company</div>
-    </div>
-    <div class="testimonial reveal">
-      <blockquote>"Finally, dashboards our management team actually uses. Clean, fast, and exactly what we needed — nothing more, nothing less."</blockquote>
-      <div class="testimonial-author">Director of Operations</div>
-      <div class="testimonial-role">Energy Sector</div>
-    </div>
+  <div class="tc">
+    <div class="tm reveal"><blockquote>"We went from spending two days on monthly reports to having everything update automatically. The ROI was immediate."</blockquote><div class="ta">Head of Finance</div><div class="tr">Manufacturing Company</div></div>
+    <div class="tm reveal"><blockquote>"Finally, dashboards our management team actually uses. Clean, fast, and exactly what we needed — nothing more, nothing less."</blockquote><div class="ta">Director of Operations</div><div class="tr">Energy Sector</div></div>
   </div>
 </section>
 
-<div class="molten-divider"></div>
-
-<section id="contact" class="parallax-section">
-  <div class="contact-wrapper">
-    <div class="section-label chrome-text">Contact</div>
-    <h2 class="section-title">Let's talk about your data</h2>
-    <p class="section-subtitle">Describe your challenge and I'll get back within 24 hours with an initial assessment — free of charge.</p>
-    <form class="contact-form" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
+<section id="contact">
+  <div class="cw">
+    <div class="section-label" style="justify-content:center;">Contact</div>
+    <h2 class="section-title" style="margin-inline:auto;">Let's talk about your data</h2>
+    <p class="section-subtitle" style="margin-inline:auto;">Describe your challenge and I'll get back within 24 hours with an initial assessment — free of charge.</p>
+    <form class="cf" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
       <input type="hidden" name="_subject" value="New Holocron inquiry">
       <input type="text" name="_gotcha" style="display:none">
-      <div class="form-row">
-        <div>
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required>
-        </div>
-        <div>
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="you@company.com" required>
-        </div>
+      <div class="fr">
+        <div><label for="name">Name</label><input type="text" id="name" name="name" placeholder="Your name" required></div>
+        <div><label for="email">Email</label><input type="email" id="email" name="email" placeholder="you@company.com" required></div>
       </div>
-      <div>
-        <label for="company">Company</label>
-        <input type="text" id="company" name="company" placeholder="Company name">
-      </div>
-      <div>
-        <label for="service">Service of Interest</label>
+      <div><label for="company">Company</label><input type="text" id="company" name="company" placeholder="Company name"></div>
+      <div><label for="service">Service of Interest</label>
         <select id="service" name="service">
           <option value="">Select a service...</option>
-          <option>Power BI Reports & Dashboards</option>
-          <option>Report Automation</option>
-          <option>Data Cleaning & Transformation</option>
-          <option>Data Modeling & Architecture</option>
-          <option>System Integration</option>
-          <option>BI Strategy & Training</option>
-          <option>Not sure yet</option>
+          <option>Power BI Reports & Dashboards</option><option>Report Automation</option>
+          <option>Data Cleaning & Transformation</option><option>Data Modeling & Architecture</option>
+          <option>System Integration</option><option>BI Strategy & Training</option><option>Not sure yet</option>
         </select>
       </div>
-      <div>
-        <label for="message">Project Description</label>
-        <textarea id="message" name="message" placeholder="Tell me about your current data setup, what's not working, and what you'd like to achieve..."></textarea>
-      </div>
-      <button type="submit" class="form-submit">Transmit Message →</button>
+      <div><label for="message">Project Description</label><textarea id="message" name="message" placeholder="Tell me about your current data setup, what's not working, and what you'd like to achieve..."></textarea></div>
+      <button type="submit" class="fs">Transmit Message →</button>
     </form>
   </div>
 </section>
 
 <footer>
-  <span class="footer-brand">Holocron</span>
+  <span class="fb">Holocron</span>
   <p>© 2026 holocrondata.net — Business Intelligence Services</p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-  // ─── SCROLL REVEAL ───
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  // ─── PARALLAX ───
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        document.querySelectorAll('.parallax-section').forEach(sec => {
-          const offset = sec.getBoundingClientRect().top * 0.025;
-          sec.style.transform = 'translateY(' + offset + 'px)';
-        });
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
-
-  // ─── ANIMATED CHARTS ───
-  function drawChart(id, type) {
-    const c = document.getElementById(id);
-    if (!c) return;
-    const ctx = c.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-    const r = c.getBoundingClientRect();
-    c.width = r.width * dpr;
-    c.height = r.height * dpr;
-    ctx.scale(dpr, dpr);
-    const w = r.width, h = r.height;
-
-    const grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, '#6366F1');
-    grad.addColorStop(0.5, '#A855F7');
-    grad.addColorStop(1, '#EC4899');
-
-    // Grid
-    ctx.strokeStyle = 'rgba(255,255,255,0.025)';
-    ctx.lineWidth = 1;
-    for (let y = 20; y < h; y += 25) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
-    for (let x = 20; x < w; x += 25) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
-
-    if (type === 'bars') {
-      const n = 14, gap = 6, bw = (w - 40 - gap*(n-1)) / n;
-      for (let i = 0; i < n; i++) {
-        const bh = 25 + Math.random() * (h - 70);
-        ctx.fillStyle = grad;
-        ctx.globalAlpha = 0.4 + Math.random() * 0.35;
-        ctx.beginPath();
-        ctx.roundRect(20 + i*(bw+gap), h - 15 - bh, bw, bh, [3,3,0,0]);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    } else if (type === 'line') {
-      const pts = [], steps = 24;
-      for (let i = 0; i <= steps; i++) pts.push({ x: 15 + (i/steps)*(w-30), y: h*0.3 + Math.sin(i*0.45)*h*0.18 + (Math.random()-0.5)*h*0.08 });
-      const gf = ctx.createLinearGradient(0,0,0,h);
-      gf.addColorStop(0, 'rgba(139,92,246,0.25)');
-      gf.addColorStop(1, 'rgba(139,92,246,0)');
-      ctx.beginPath();
-      ctx.moveTo(pts[0].x, pts[0].y);
-      for (let i = 1; i < pts.length; i++) { const xc=(pts[i].x+pts[i-1].x)/2, yc=(pts[i].y+pts[i-1].y)/2; ctx.quadraticCurveTo(pts[i-1].x, pts[i-1].y, xc, yc); }
-      ctx.lineTo(w-15, h); ctx.lineTo(15, h); ctx.closePath();
-      ctx.fillStyle = gf; ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(pts[0].x, pts[0].y);
-      for (let i = 1; i < pts.length; i++) { const xc=(pts[i].x+pts[i-1].x)/2, yc=(pts[i].y+pts[i-1].y)/2; ctx.quadraticCurveTo(pts[i-1].x, pts[i-1].y, xc, yc); }
-      ctx.strokeStyle = grad; ctx.lineWidth = 2.5; ctx.stroke();
-      pts.forEach((p,i) => { if (i%3===0) { ctx.beginPath(); ctx.arc(p.x,p.y,3.5,0,Math.PI*2); ctx.fillStyle='#A855F7'; ctx.fill(); ctx.beginPath(); ctx.arc(p.x,p.y,6,0,Math.PI*2); ctx.fillStyle='rgba(168,85,247,0.15)'; ctx.fill(); } });
-    } else {
-      for (let l = 2; l >= 0; l--) {
-        const pts = [], steps = 18, base = h*(0.55 + l*0.1);
-        for (let i = 0; i <= steps; i++) pts.push({ x: (i/steps)*w, y: base + Math.sin(i*0.5+l*1.2)*h*0.12 - l*h*0.08 });
-        ctx.beginPath(); ctx.moveTo(0, h);
-        pts.forEach(p => ctx.lineTo(p.x, p.y));
-        ctx.lineTo(w, h); ctx.closePath();
-        const ag = ctx.createLinearGradient(0,0,w,0);
-        ag.addColorStop(0, 'rgba(99,102,241,'+(0.18 - l*0.04)+')');
-        ag.addColorStop(0.5, 'rgba(168,85,247,'+(0.22 - l*0.05)+')');
-        ag.addColorStop(1, 'rgba(236,72,153,'+(0.16 - l*0.04)+')');
-        ctx.fillStyle = ag; ctx.fill();
-      }
-    }
+// HERO PARALLAX
+(function(){
+  const bg=document.getElementById('heroBg');
+  function u(){
+    const s=window.scrollY,p=Math.min(s/1500,1);
+    const c1=25-p*25,c2=75+p*25;
+    bg.style.clipPath=`polygon(${c1}% ${c1}%,${c2}% ${c1}%,${c2}% ${c2}%,${c1}% ${c2}%)`;
+    bg.style.backgroundSize=(170-p*70)+'%';
+    bg.style.opacity=s>1500?Math.max(1-(s-1500)/500,0):1;
+    requestAnimationFrame(u);
   }
+  u();
+})();
 
-  const cObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const id = e.target.id;
-        if (id === 'chart1') drawChart('chart1','bars');
-        if (id === 'chart2') drawChart('chart2','line');
-        if (id === 'chart3') drawChart('chart3','area');
-        cObs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  ['chart1','chart2','chart3'].forEach(id => { const el = document.getElementById(id); if (el) cObs.observe(el); });
-  window.addEventListener('resize', () => { drawChart('chart1','bars'); drawChart('chart2','line'); drawChart('chart3','area'); });
+// SCROLL REVEAL
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-  // Form — submit via fetch so user stays on page
-  document.getElementById('contactForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn = this.querySelector('.form-submit');
-    btn.textContent = 'Transmitting...';
-    btn.disabled = true;
-    try {
-      const res = await fetch(this.action, {
-        method: 'POST',
-        body: new FormData(this),
-        headers: { 'Accept': 'application/json' }
-      });
-      if (res.ok) {
-        btn.textContent = '✓ Transmitted';
-        btn.style.background = 'linear-gradient(135deg, #10B981, #059669)';
-        this.reset();
-        setTimeout(() => { btn.textContent = 'Transmit Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
-      } else {
-        btn.textContent = 'Error — try again';
-        btn.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
-        setTimeout(() => { btn.textContent = 'Transmit Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
-      }
-    } catch {
-      btn.textContent = 'Error — try again';
-      btn.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
-      setTimeout(() => { btn.textContent = 'Transmit Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
-    }
-  });
+// THREE.JS PARTICLE RING
+(function(){
+  const canvas=document.getElementById('particle-canvas');
+  const section=document.getElementById('particle-section');
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setClearColor(0x0A0A12,1);
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(50,1,0.1,100);
+  camera.position.set(10,-7.5,-5);
+  camera.lookAt(0,0,0);
+  scene.add(new THREE.DirectionalLight(0xffffff,0.8));
+  const p1=new THREE.PointLight(0x8B5CF6,4,50);p1.position.set(-15,0,-15);scene.add(p1);
+  const p2=new THREE.PointLight(0xEC4899,3,50);p2.position.set(10,5,10);scene.add(p2);
+  const group=new THREE.Group();scene.add(group);
+  const geo=new THREE.SphereGeometry(0.08,8,8);
+  function rr(mn,mx,ys){const a=Math.random()*Math.PI*2,r=mn+Math.random()*(mx-mn);return[Math.cos(a)*r,(Math.random()-0.5)*ys,Math.sin(a)*r]}
+  for(let i=0;i<600;i++){const[x,y,z]=rr(2,6,1.5);const c=new THREE.Color().setHSL(0.7+Math.random()*0.2,0.8,0.55);group.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.5,roughness:0.5})).translateX(x).translateY(y).translateZ(z))}
+  for(let i=0;i<600;i++){const[x,y,z]=rr(6,12,3);const c=new THREE.Color().setHSL(0.75+Math.random()*0.2,0.6,0.35);group.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.3,roughness:0.6})).translateX(x).translateY(y).translateZ(z))}
+  function resize(){const r=section.getBoundingClientRect();renderer.setSize(r.width,r.height);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
+  resize();window.addEventListener('resize',resize);
+  let mx=0,my=0;
+  section.addEventListener('mousemove',e=>{const r=section.getBoundingClientRect();mx=((e.clientX-r.left)/r.width-0.5)*2;my=((e.clientY-r.top)/r.height-0.5)*2});
+  (function a(){requestAnimationFrame(a);group.rotation.z+=0.002;group.rotation.x+=(my*0.3-group.rotation.x)*0.02;group.rotation.y+=(mx*0.3-group.rotation.y)*0.02;renderer.render(scene,camera)})();
+})();
+
+// PORTFOLIO CHARTS
+function dc(id,type){
+  const c=document.getElementById(id);if(!c)return;
+  const ctx=c.getContext('2d'),dpr=window.devicePixelRatio||1,r=c.getBoundingClientRect();
+  c.width=r.width*dpr;c.height=r.height*dpr;ctx.scale(dpr,dpr);
+  const w=r.width,h=r.height;
+  const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#6366F1');g.addColorStop(0.5,'#A855F7');g.addColorStop(1,'#EC4899');
+  ctx.strokeStyle='rgba(0,0,0,0.04)';ctx.lineWidth=1;
+  for(let y=20;y<h;y+=25){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+  if(type==='bars'){const n=14,gap=6,bw=(w-40-gap*(n-1))/n;for(let i=0;i<n;i++){const bh=25+Math.random()*(h-70);ctx.fillStyle=g;ctx.globalAlpha=0.5+Math.random()*0.3;ctx.beginPath();ctx.roundRect(20+i*(bw+gap),h-15-bh,bw,bh,[4,4,0,0]);ctx.fill()}ctx.globalAlpha=1}
+  else if(type==='line'){const pts=[],steps=24;for(let i=0;i<=steps;i++)pts.push({x:15+(i/steps)*(w-30),y:h*0.35+Math.sin(i*0.45)*h*0.18+(Math.random()-0.5)*h*0.06});const gf=ctx.createLinearGradient(0,0,0,h);gf.addColorStop(0,'rgba(139,92,246,0.2)');gf.addColorStop(1,'rgba(139,92,246,0)');ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++){const xc=(pts[i].x+pts[i-1].x)/2,yc=(pts[i].y+pts[i-1].y)/2;ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc)}ctx.lineTo(w-15,h);ctx.lineTo(15,h);ctx.closePath();ctx.fillStyle=gf;ctx.fill();ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++){const xc=(pts[i].x+pts[i-1].x)/2,yc=(pts[i].y+pts[i-1].y)/2;ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc)}ctx.strokeStyle=g;ctx.lineWidth=2.5;ctx.stroke()}
+  else{for(let l=2;l>=0;l--){const pts=[],steps=18,base=h*(0.55+l*0.1);for(let i=0;i<=steps;i++)pts.push({x:(i/steps)*w,y:base+Math.sin(i*0.5+l*1.2)*h*0.12-l*h*0.08});ctx.beginPath();ctx.moveTo(0,h);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(w,h);ctx.closePath();const ag=ctx.createLinearGradient(0,0,w,0);ag.addColorStop(0,`rgba(99,102,241,${0.18-l*0.04})`);ag.addColorStop(0.5,`rgba(168,85,247,${0.22-l*0.05})`);ag.addColorStop(1,`rgba(236,72,153,${0.16-l*0.04})`);ctx.fillStyle=ag;ctx.fill()}}
+}
+const co=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){if(x.target.id==='chart1')dc('chart1','bars');if(x.target.id==='chart2')dc('chart2','line');if(x.target.id==='chart3')dc('chart3','area');co.unobserve(x.target)}})},{threshold:0.3});
+['chart1','chart2','chart3'].forEach(id=>{const el=document.getElementById(id);if(el)co.observe(el)});
+window.addEventListener('resize',()=>{dc('chart1','bars');dc('chart2','line');dc('chart3','area')});
+
+// FORM
+document.getElementById('contactForm').addEventListener('submit',async function(e){
+  e.preventDefault();const btn=this.querySelector('.fs');btn.textContent='Transmitting...';btn.disabled=true;
+  try{const res=await fetch(this.action,{method:'POST',body:new FormData(this),headers:{'Accept':'application/json'}});
+  if(res.ok){btn.textContent='✓ Transmitted';btn.style.background='linear-gradient(135deg,#10B981,#059669)';this.reset();setTimeout(()=>{btn.textContent='Transmit Message →';btn.style.background='';btn.disabled=false},3000)}
+  else{btn.textContent='Error — try again';btn.style.background='linear-gradient(135deg,#EF4444,#DC2626)';setTimeout(()=>{btn.textContent='Transmit Message →';btn.style.background='';btn.disabled=false},3000)}}
+  catch{btn.textContent='Error — try again';btn.style.background='linear-gradient(135deg,#EF4444,#DC2626)';setTimeout(()=>{btn.textContent='Transmit Message →';btn.style.background='';btn.disabled=false},3000)}
+});
 </script>
-
 </body>
 </html>
