@@ -756,24 +756,26 @@
     <div class="section-label chrome-text">Contact</div>
     <h2 class="section-title">Let's talk about your data</h2>
     <p class="section-subtitle">Describe your challenge and I'll get back within 24 hours with an initial assessment — free of charge.</p>
-    <form class="contact-form" onsubmit="handleSubmit(event)">
+    <form class="contact-form" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
+      <input type="hidden" name="_subject" value="New Holocron inquiry">
+      <input type="text" name="_gotcha" style="display:none">
       <div class="form-row">
         <div>
           <label for="name">Name</label>
-          <input type="text" id="name" placeholder="Your name" required>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
         </div>
         <div>
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="you@company.com" required>
+          <input type="email" id="email" name="email" placeholder="you@company.com" required>
         </div>
       </div>
       <div>
         <label for="company">Company</label>
-        <input type="text" id="company" placeholder="Company name">
+        <input type="text" id="company" name="company" placeholder="Company name">
       </div>
       <div>
         <label for="service">Service of Interest</label>
-        <select id="service">
+        <select id="service" name="service">
           <option value="">Select a service...</option>
           <option>Power BI Reports & Dashboards</option>
           <option>Report Automation</option>
@@ -786,7 +788,7 @@
       </div>
       <div>
         <label for="message">Project Description</label>
-        <textarea id="message" placeholder="Tell me about your current data setup, what's not working, and what you'd like to achieve..."></textarea>
+        <textarea id="message" name="message" placeholder="Tell me about your current data setup, what's not working, and what you'd like to achieve..."></textarea>
       </div>
       <button type="submit" class="form-submit">Transmit Message →</button>
     </form>
@@ -795,7 +797,7 @@
 
 <footer>
   <span class="footer-brand">Holocron</span>
-  <p>© 2026 Holocron — Business Intelligence Services</p>
+  <p>© 2026 holocrondata.net — Business Intelligence Services</p>
 </footer>
 
 <script>
@@ -902,14 +904,34 @@
   ['chart1','chart2','chart3'].forEach(id => { const el = document.getElementById(id); if (el) cObs.observe(el); });
   window.addEventListener('resize', () => { drawChart('chart1','bars'); drawChart('chart2','line'); drawChart('chart3','area'); });
 
-  // Form
-  function handleSubmit(e) {
+  // Form — submit via fetch so user stays on page
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('.form-submit');
-    btn.textContent = '✓ Transmitted';
-    btn.style.background = 'linear-gradient(135deg, #10B981, #059669)';
-    setTimeout(() => { btn.textContent = 'Transmit Message →'; btn.style.background = ''; e.target.reset(); }, 2500);
-  }
+    const btn = this.querySelector('.form-submit');
+    btn.textContent = 'Transmitting...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        btn.textContent = '✓ Transmitted';
+        btn.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+        this.reset();
+        setTimeout(() => { btn.textContent = 'Transmit Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+      } else {
+        btn.textContent = 'Error — try again';
+        btn.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+        setTimeout(() => { btn.textContent = 'Transmit Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+      }
+    } catch {
+      btn.textContent = 'Error — try again';
+      btn.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+      setTimeout(() => { btn.textContent = 'Transmit Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+    }
+  });
 </script>
 
 </body>
