@@ -19,92 +19,41 @@ body { font-family: var(--font); background: var(--bg); color: var(--fg); line-h
 .scroll-section.visible { opacity: 1; transform: translateY(0); }
 
 /* NAV */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 1.5rem; height: 56px;
-  background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; height: 56px; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
 .nav-left { display: flex; align-items: center; gap: 1.25rem; }
 .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); }
 .logo-mark { width: 24px; height: 24px; }
 .logo-mark svg { width: 100%; height: 100%; display: block; }
 .logo-text { font-weight: 700; font-size: 0.88rem; letter-spacing: -0.02em; }
-
-/* Nav dropdown */
 .nav-items { display: flex; gap: 0; align-items: center; }
 .nav-item { position: relative; }
-.nav-item > a, .nav-trigger {
-  text-decoration: none; color: var(--fg-muted); font-size: 0.825rem; font-weight: 500;
-  padding: 0.4rem 0.7rem; border-radius: 6px; transition: color 0.15s, background 0.15s;
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  background: none; border: none; cursor: pointer; font-family: var(--font);
-}
+.nav-item > a, .nav-trigger { text-decoration: none; color: var(--fg-muted); font-size: 0.825rem; font-weight: 500; padding: 0.4rem 0.7rem; border-radius: 6px; transition: color 0.15s, background 0.15s; display: inline-flex; align-items: center; gap: 0.3rem; background: none; border: none; cursor: pointer; font-family: var(--font); }
 .nav-item > a:hover, .nav-trigger:hover { color: var(--fg); background: var(--bg-muted); }
-.nav-trigger svg { width: 12px; height: 12px; transition: transform 0.2s; }
-.nav-item:hover .nav-trigger svg { transform: rotate(180deg); }
-.nav-dropdown {
-  position: absolute; top: calc(100% + 4px); left: 0;
-  background: white; border: 1px solid var(--border); border-radius: 10px;
-  padding: 0.5rem; min-width: 280px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-  opacity: 0; pointer-events: none; transform: translateY(-4px);
-  transition: opacity 0.15s, transform 0.15s;
-}
-.nav-item:hover .nav-dropdown { opacity: 1; pointer-events: auto; transform: translateY(0); }
-.nav-dropdown a {
-  display: block; padding: 0.6rem 0.75rem; border-radius: 6px;
-  text-decoration: none; transition: background 0.1s;
-}
+.nav-chevron { width: 12px; height: 12px; transition: transform 0.2s; flex-shrink: 0; }
+.nav-item:hover .nav-chevron { transform: rotate(180deg); }
+.nav-dropdown { position: absolute; top: 100%; left: 0; padding-top: 4px; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
+.nav-dropdown-inner { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 0.5rem; min-width: 280px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.nav-item:hover .nav-dropdown { opacity: 1; pointer-events: auto; }
+.nav-dropdown a { display: block; padding: 0.6rem 0.75rem; border-radius: 6px; text-decoration: none; transition: background 0.1s; }
 .nav-dropdown a:hover { background: var(--bg-muted); }
-.nav-dropdown a .dd-title { font-size: 0.82rem; font-weight: 600; color: var(--fg); margin-bottom: 0.1rem; }
-.nav-dropdown a .dd-desc { font-size: 0.72rem; color: var(--fg-muted); line-height: 1.4; }
-
+.dd-title { font-size: 0.82rem; font-weight: 600; color: var(--fg); margin-bottom: 0.1rem; }
+.dd-desc { font-size: 0.72rem; color: var(--fg-muted); line-height: 1.4; }
 .nav-right { display: flex; align-items: center; gap: 0.5rem; }
 .lang-toggle { display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-.lang-btn {
-  padding: 0.3rem 0.55rem; cursor: pointer; background: none; border: none;
-  font-family: var(--font); font-size: 0.72rem; font-weight: 600; color: var(--fg-muted);
-  transition: background 0.15s, color 0.15s; min-width: 32px; text-align: center;
-}
+.lang-btn { padding: 0.3rem 0.55rem; cursor: pointer; background: none; border: none; font-family: var(--font); font-size: 0.72rem; font-weight: 600; color: var(--fg-muted); transition: background 0.15s, color 0.15s; min-width: 32px; text-align: center; }
 .lang-btn.active { background: var(--fg); color: white; }
-.nav-cta {
-  background: var(--fg); color: white; border: none;
-  padding: 0.4rem 1rem; border-radius: 6px;
-  font-family: var(--font); font-size: 0.8rem; font-weight: 600;
-  cursor: pointer; text-decoration: none; transition: opacity 0.15s;
-}
+.nav-cta { background: var(--fg); color: white; border: none; padding: 0.4rem 1rem; border-radius: 6px; font-family: var(--font); font-size: 0.8rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: opacity 0.15s; }
 .nav-cta:hover { opacity: 0.85; }
 
 /* HERO */
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 7rem 1.5rem 5rem;
-}
-.hero-announce {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  border: 1px solid var(--border); border-radius: 100px;
-  padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500;
-  color: var(--fg-muted); margin-bottom: 2rem;
-}
-.hero-announce .badge {
-  background: var(--fg); color: white; font-size: 0.65rem; font-weight: 700;
-  padding: 0.1rem 0.45rem; border-radius: 100px;
-}
-.hero h1 {
-  font-size: clamp(2.4rem, 5.5vw, 3.8rem); font-weight: 800;
-  letter-spacing: -0.04em; line-height: 1.12; max-width: 720px;
-}
-.shuffle-slot {
-  display: inline-block; position: relative; overflow: hidden;
-  vertical-align: bottom; color: var(--accent); min-width: 5em; text-align: left;
-}
-.shuffle-slot .shuffle-inner {
-  display: inline-block; white-space: nowrap;
-  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.25s;
-}
+.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 7rem 1.5rem 5rem; }
+.hero-announce { display: inline-flex; align-items: center; gap: 0.4rem; border: 1px solid var(--border); border-radius: 100px; padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500; color: var(--fg-muted); margin-bottom: 2rem; }
+.hero-announce .badge { background: var(--fg); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 100px; }
+.hero h1 { font-size: clamp(2.4rem, 5.5vw, 3.8rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.12; max-width: 720px; }
+/* Centered shuffle */
+.shuffle-line { display: block; line-height: 1.12; }
+.shuffle-slot { display: inline-block; position: relative; overflow: hidden; vertical-align: bottom; color: var(--accent); }
+.shuffle-slot .shuffle-inner { display: inline-block; white-space: nowrap; transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.25s; }
 .shuffle-slot .shuffle-inner.exit { transform: translateY(-110%); opacity: 0; }
 .shuffle-slot .shuffle-inner.enter { transform: translateY(110%); opacity: 0; }
 .hero-sub { max-width: 500px; margin: 1.5rem auto 0; font-size: 1rem; color: var(--fg-muted); }
@@ -122,15 +71,11 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .section-desc { color: var(--fg-muted); margin-top: 0.6rem; font-size: 0.95rem; max-width: 500px; margin-inline: auto; }
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
-/* CARD GRID — shared for services + process */
+/* CARD GRID */
 .card-grid { display: grid; gap: 1rem; }
 .card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
 .card-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
-.card-item {
-  border: 1px solid var(--border); border-radius: 12px;
-  padding: 1.75rem 1.5rem; transition: border-color 0.2s, box-shadow 0.2s;
-  display: flex; flex-direction: column;
-}
+.card-item { border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem 1.5rem; transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
 .card-item:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
 .card-num { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--fg-light); margin-bottom: 1rem; }
 .card-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
@@ -138,17 +83,9 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 
 /* PRICING */
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; }
-.pricing-card {
-  border: 1px solid var(--border); border-radius: 12px;
-  padding: 2rem 1.75rem; display: flex; flex-direction: column;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.pricing-card.featured { border-color: var(--fg); box-shadow: 0 4px 24px rgba(0,0,0,0.06); position: relative; }
-.pricing-card.featured::before {
-  content: attr(data-badge); position: absolute; top: -10px; right: 1.5rem;
-  background: var(--fg); color: white; font-size: 0.68rem; font-weight: 700;
-  padding: 0.2rem 0.6rem; border-radius: 100px;
-}
+.pricing-card { border: 1px solid var(--border); border-radius: 12px; padding: 2rem 1.75rem; display: flex; flex-direction: column; transition: border-color 0.2s, box-shadow 0.2s; position: relative; }
+.pricing-card.featured { border-color: var(--fg); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.pricing-rec { font-size: 0.7rem; font-weight: 600; color: var(--fg-muted); margin-bottom: 0.5rem; letter-spacing: 0.02em; }
 .pricing-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
 .pricing-desc { font-size: 0.82rem; color: var(--fg-muted); margin-bottom: 1.25rem; }
 .pricing-price { margin-bottom: 1.5rem; }
@@ -180,11 +117,7 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .form-row { display: flex; gap: 0.75rem; }
 .form-row > * { flex: 1; }
 .contact-form label { font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.35rem; }
-.contact-form input, .contact-form select, .contact-form textarea {
-  width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: 6px;
-  font-family: var(--font); font-size: 0.85rem; background: var(--bg); color: var(--fg);
-  transition: border-color 0.15s, box-shadow 0.15s; outline: none;
-}
+.contact-form input, .contact-form select, .contact-form textarea { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font); font-size: 0.85rem; background: var(--bg); color: var(--fg); transition: border-color 0.15s, box-shadow 0.15s; outline: none; }
 .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { border-color: var(--fg); box-shadow: 0 0 0 2px rgba(9,9,11,0.08); }
 .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--fg-light); }
 .contact-form textarea { min-height: 100px; resize: vertical; }
@@ -199,28 +132,22 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-left">
     <a href="#" class="logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none">
-          <rect x="2" y="2" width="20" height="20" rx="4" fill="#09090B"/>
-          <path d="M12 7v10M7 12h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </div>
+      <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" fill="#09090B"/><path d="M12 7v10M7 12h10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
       <span class="logo-text">Holocron</span>
     </a>
     <div class="nav-items">
       <div class="nav-item">
-        <button class="nav-trigger" data-de="Leistungen" data-en="Services">Leistungen <svg viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-        <div class="nav-dropdown">
+        <button class="nav-trigger"><span data-de="Leistungen" data-en="Services">Leistungen</span> <svg class="nav-chevron" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="nav-dropdown"><div class="nav-dropdown-inner">
           <a href="#services"><div class="dd-title" data-de="Power BI Dashboards" data-en="Power BI Dashboards">Power BI Dashboards</div><div class="dd-desc" data-de="Interaktive Reports und KPI-Übersichten" data-en="Interactive reports and KPI overviews">Interaktive Reports und KPI-Übersichten</div></a>
           <a href="#services"><div class="dd-title" data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</div><div class="dd-desc" data-de="Automatische Aktualisierung Ihrer Reports" data-en="Automated refresh of your reports">Automatische Aktualisierung Ihrer Reports</div></a>
           <a href="#services"><div class="dd-title" data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</div><div class="dd-desc" data-de="Strukturierte, zuverlässige Datengrundlage" data-en="Structured, reliable data foundation">Strukturierte, zuverlässige Datengrundlage</div></a>
           <a href="#services"><div class="dd-title" data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</div><div class="dd-desc" data-de="Skalierbare Modelle und DAX-Logik" data-en="Scalable models and DAX logic">Skalierbare Modelle und DAX-Logik</div></a>
           <a href="#services"><div class="dd-title" data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</div><div class="dd-desc" data-de="Roadmap und Hands-on-Training" data-en="Roadmap and hands-on training">Roadmap und Hands-on-Training</div></a>
-        </div>
+        </div></div>
       </div>
       <div class="nav-item"><a href="#process" data-de="Ablauf" data-en="Process">Ablauf</a></div>
       <div class="nav-item"><a href="#pricing" data-de="Preise" data-en="Pricing">Preise</a></div>
@@ -228,20 +155,16 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
     </div>
   </div>
   <div class="nav-right">
-    <div class="lang-toggle">
-      <button class="lang-btn active" data-lang="de">DE</button>
-      <button class="lang-btn" data-lang="en">EN</button>
-    </div>
+    <div class="lang-toggle"><button class="lang-btn active" data-lang="de">DE</button><button class="lang-btn" data-lang="en">EN</button></div>
     <a href="#contact" class="nav-cta" data-de="Kontakt" data-en="Contact">Kontakt</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-announce"><span class="badge" data-de="Neu" data-en="New">Neu</span><span data-de="Verfügbar für Projekte" data-en="Available for projects">Verfügbar für Projekte</span></div>
   <h1>
     <span data-de="Entdecken Sie" data-en="Unlock the">Entdecken Sie</span><br>
-    <span class="shuffle-slot"><span class="shuffle-inner" id="shufflePhrase">das Potenzial</span></span><br>
+    <span class="shuffle-line"><span class="shuffle-slot"><span class="shuffle-inner" id="shufflePhrase">das Potenzial</span></span></span><br>
     <span data-de="Ihrer Daten" data-en="of your data">Ihrer Daten</span>
   </h1>
   <p class="hero-sub" data-de="Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt." data-en="Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.">Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt.</p>
@@ -253,7 +176,6 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
 
 <hr class="divider">
 
-<!-- SERVICES — numbered cards like process -->
 <section id="services" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Leistungen" data-en="Services">Leistungen</div>
@@ -271,7 +193,6 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
 
 <hr class="divider">
 
-<!-- PROCESS -->
 <section id="process" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Ablauf" data-en="Process">Ablauf</div>
@@ -287,7 +208,6 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
 
 <hr class="divider">
 
-<!-- PRICING -->
 <section id="pricing" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Preise" data-en="Pricing">Preise</div>
@@ -296,9 +216,9 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
   </div>
   <div class="pricing-grid">
     <div class="pricing-card">
-      <div class="pricing-name">Starter</div>
+      <div class="pricing-name">Basic</div>
       <div class="pricing-desc" data-de="Einzelnes Dashboard oder Report" data-en="Single dashboard or report">Einzelnes Dashboard oder Report</div>
-      <div class="pricing-price"><span class="amount">€990</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
+      <div class="pricing-price"><span class="amount">€1.000</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
       <ul class="pricing-features">
         <li data-de="1 Power BI Dashboard" data-en="1 Power BI dashboard">1 Power BI Dashboard</li>
         <li data-de="Datenbereinigung inkl." data-en="Data cleaning included">Datenbereinigung inkl.</li>
@@ -306,10 +226,11 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
         <li data-de="2 Revisionsrunden" data-en="2 revision rounds">2 Revisionsrunden</li>
         <li data-de="Dokumentation" data-en="Documentation">Dokumentation</li>
       </ul>
-      <a href="#contact" class="pricing-btn pricing-btn-outline pkg-select" data-pkg="Starter" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
+      <a href="#contact" class="pricing-btn pricing-btn-outline pkg-select" data-pkg="Basic" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
-    <div class="pricing-card featured" data-badge="Beliebt">
-      <div class="pricing-name">Professional</div>
+    <div class="pricing-card featured">
+      <div class="pricing-rec" data-de="Empfohlen" data-en="Recommended">Empfohlen</div>
+      <div class="pricing-name">Advanced</div>
       <div class="pricing-desc" data-de="Komplettes Reporting-Projekt" data-en="Complete reporting project">Komplettes Reporting-Projekt</div>
       <div class="pricing-price"><span class="amount">€2.500</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
       <ul class="pricing-features">
@@ -320,10 +241,10 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
         <li data-de="Team-Schulung (1h)" data-en="Team training (1h)">Team-Schulung (1h)</li>
         <li data-de="14 Tage Support" data-en="14 days support">14 Tage Support</li>
       </ul>
-      <a href="#contact" class="pricing-btn pricing-btn-dark pkg-select" data-pkg="Professional" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
+      <a href="#contact" class="pricing-btn pricing-btn-dark pkg-select" data-pkg="Advanced" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
     <div class="pricing-card">
-      <div class="pricing-name">Enterprise</div>
+      <div class="pricing-name">Custom</div>
       <div class="pricing-desc" data-de="Maßgeschneiderte BI-Lösung" data-en="Tailored BI solution">Maßgeschneiderte BI-Lösung</div>
       <div class="pricing-price"><span class="amount" data-de="Auf Anfrage" data-en="On Request">Auf Anfrage</span></div>
       <ul class="pricing-features">
@@ -333,14 +254,13 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
         <li data-de="Team-Schulungen" data-en="Team training">Team-Schulungen</li>
         <li data-de="Priorisierter Support" data-en="Priority support">Priorisierter Support</li>
       </ul>
-      <a href="#contact" class="pricing-btn pricing-btn-outline pkg-select" data-pkg="Enterprise" data-de="Gespräch vereinbaren" data-en="Book a Call">Gespräch vereinbaren</a>
+      <a href="#contact" class="pricing-btn pricing-btn-outline pkg-select" data-pkg="Custom" data-de="Gespräch vereinbaren" data-en="Book a Call">Gespräch vereinbaren</a>
     </div>
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- PORTFOLIO -->
 <section id="portfolio" class="scroll-section">
   <div class="section-header">
     <div class="section-label" data-de="Projekte" data-en="Portfolio">Projekte</div>
@@ -355,7 +275,6 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
 
 <hr class="divider">
 
-<!-- CONTACT -->
 <section id="contact" class="scroll-section">
   <div class="contact-wrapper">
     <div class="section-header">
@@ -368,15 +287,15 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
       <input type="hidden" name="_replyto" value="holocrondata@outlook.de">
       <input type="text" name="_gotcha" style="display:none">
       <div class="form-row">
-        <div><label for="name" data-de="Name" data-en="Name">Name</label><input type="text" id="name" name="name" placeholder="Ihr Name" required></div>
-        <div><label for="email">E-Mail</label><input type="email" id="email" name="email" placeholder="name@firma.de" required></div>
+        <div><label for="name" data-de="Name" data-en="Name">Name</label><input type="text" id="name" name="name" data-de-ph="Ihr Name" data-en-ph="Your name" placeholder="Ihr Name" required></div>
+        <div><label for="email">E-Mail</label><input type="email" id="email" name="email" data-de-ph="name@firma.de" data-en-ph="name@company.com" placeholder="name@firma.de" required></div>
       </div>
-      <div><label for="company" data-de="Unternehmen" data-en="Company">Unternehmen</label><input type="text" id="company" name="company" placeholder="Firmenname"></div>
+      <div><label for="company" data-de="Unternehmen" data-en="Company">Unternehmen</label><input type="text" id="company" name="company" data-de-ph="Firmenname" data-en-ph="Company name" placeholder="Firmenname"></div>
       <div class="form-row">
         <div><label for="service" data-de="Leistung" data-en="Service">Leistung</label>
           <select id="service" name="service">
             <option value="" data-de="Bitte wählen..." data-en="Select...">Bitte wählen...</option>
-            <option>Power BI Reports & Dashboards</option>
+            <option data-de="Power BI Reports & Dashboards" data-en="Power BI Reports & Dashboards">Power BI Reports & Dashboards</option>
             <option data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</option>
             <option data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</option>
             <option data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</option>
@@ -387,13 +306,13 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
         <div><label for="package" data-de="Paket" data-en="Package">Paket</label>
           <select id="package" name="package">
             <option value="" data-de="Kein Paket gewählt" data-en="No package selected">Kein Paket gewählt</option>
-            <option value="Starter">Starter — €990</option>
-            <option value="Professional">Professional — €2.500</option>
-            <option value="Enterprise" data-de="Enterprise — Auf Anfrage" data-en="Enterprise — On Request">Enterprise — Auf Anfrage</option>
+            <option value="Basic">Basic — €1.000</option>
+            <option value="Advanced">Advanced — €2.500</option>
+            <option value="Custom" data-de="Custom — Auf Anfrage" data-en="Custom — On Request">Custom — Auf Anfrage</option>
           </select>
         </div>
       </div>
-      <div><label for="message" data-de="Projektbeschreibung" data-en="Project Description">Projektbeschreibung</label><textarea id="message" name="message" placeholder="Erzählen Sie mir von Ihrem aktuellen Setup und Ihren Zielen..."></textarea></div>
+      <div><label for="message" data-de="Projektbeschreibung" data-en="Project Description">Projektbeschreibung</label><textarea id="message" name="message" data-de-ph="Erzählen Sie mir von Ihrem aktuellen Setup und Ihren Zielen..." data-en-ph="Tell me about your current setup and goals..." placeholder="Erzählen Sie mir von Ihrem aktuellen Setup und Ihren Zielen..."></textarea></div>
       <button type="submit" class="form-submit" data-de="Nachricht senden →" data-en="Send Message →">Nachricht senden →</button>
     </form>
   </div>
@@ -436,12 +355,15 @@ document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
     btn.addEventListener('click', () => {
       const lang = btn.dataset.lang;
       btns.forEach(b => b.classList.toggle('active', b === btn));
+      // Update text content for spans/divs/buttons/labels/options with data-de/data-en
       document.querySelectorAll('[data-' + lang + ']').forEach(el => {
         const val = el.getAttribute('data-' + lang);
-        if (val) { if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val; else el.textContent = val; }
+        if (val) el.textContent = val;
       });
-      const f = document.querySelector('.pricing-card.featured');
-      if (f) f.dataset.badge = lang === 'de' ? 'Beliebt' : 'Popular';
+      // Update placeholders
+      document.querySelectorAll('[data-' + lang + '-ph]').forEach(el => {
+        el.placeholder = el.getAttribute('data-' + lang + '-ph');
+      });
       window._setShuffleLang(lang);
     });
   });
@@ -449,12 +371,9 @@ document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
 
 // PRICING → CONTACT: pre-select package
 document.querySelectorAll('.pkg-select').forEach(btn => {
-  btn.addEventListener('click', (e) => {
+  btn.addEventListener('click', () => {
     const pkg = btn.dataset.pkg;
-    setTimeout(() => {
-      const sel = document.getElementById('package');
-      if (sel) { for (let o of sel.options) { if (o.value === pkg) { sel.value = pkg; break; } } }
-    }, 400);
+    setTimeout(() => { const sel = document.getElementById('package'); if (sel) sel.value = pkg; }, 400);
   });
 });
 
