@@ -43,16 +43,10 @@ nav {
 }
 .nav-left { display: flex; align-items: center; gap: 1.5rem; }
 .logo { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; color: var(--fg); }
-.logo-mark {
-  width: 28px; height: 28px;
-  position: relative;
-}
+.logo-mark { width: 28px; height: 28px; }
 .logo-mark svg { width: 100%; height: 100%; }
-.logo-mark .logo-ring {
-  transform-origin: center;
-  animation: logo-spin 20s linear infinite;
-}
-@keyframes logo-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.logo-mark .logo-ring { transform-origin: center; animation: logo-spin 20s linear infinite; }
+@keyframes logo-spin { to { transform: rotate(360deg); } }
 .logo-mark:hover .logo-ring { animation-duration: 3s; }
 .logo span { font-weight: 700; font-size: 0.9rem; letter-spacing: -0.02em; }
 .nav-links { display: flex; gap: 0.25rem; }
@@ -63,9 +57,7 @@ nav {
 .nav-links a:hover { color: var(--fg); background: var(--bg-muted); }
 .nav-right { display: flex; align-items: center; gap: 0.5rem; }
 .lang-toggle {
-  display: flex; align-items: center;
-  border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
-  font-size: 0.75rem;
+  display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
 }
 .lang-btn {
   padding: 0.3rem 0.6rem; cursor: pointer; background: none; border: none;
@@ -102,22 +94,28 @@ nav {
   font-size: clamp(2.4rem, 5.5vw, 3.8rem); font-weight: 800;
   letter-spacing: -0.04em; line-height: 1.12; max-width: 720px;
 }
-.shuffle-block {
-  display: inline;
-}
-.shuffle-word {
-  display: inline-block; position: relative; overflow: hidden;
-  vertical-align: bottom; color: var(--accent);
-}
-.shuffle-inner {
+/* Shuffle: entire "article + word" swaps as one unit */
+.shuffle-slot {
   display: inline-block;
+  position: relative;
+  overflow: hidden;
+  vertical-align: bottom;
+  color: var(--accent);
+  /* fixed width to prevent layout shifts — wide enough for longest phrase */
+  min-width: 4.5em;
+  text-align: left;
+}
+.shuffle-slot .shuffle-inner {
+  display: inline-block;
+  white-space: nowrap;
   transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.25s;
 }
-.shuffle-inner.exit { transform: translateY(-110%); opacity: 0; }
-.shuffle-inner.enter { transform: translateY(110%); opacity: 0; }
+.shuffle-slot .shuffle-inner.exit { transform: translateY(-110%); opacity: 0; }
+.shuffle-slot .shuffle-inner.enter { transform: translateY(110%); opacity: 0; }
+
 .hero-sub {
   max-width: 500px; margin: 1.5rem auto 0;
-  font-size: 1rem; color: var(--fg-muted); font-weight: 400;
+  font-size: 1rem; color: var(--fg-muted);
 }
 .hero-buttons { display: flex; gap: 0.75rem; margin-top: 2rem; }
 .btn-dark {
@@ -147,7 +145,7 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .section-desc { color: var(--fg-muted); margin-top: 0.6rem; font-size: 0.95rem; max-width: 500px; margin-inline: auto; }
 .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
-/* SERVICES — equal height */
+/* SERVICES — 5 items: 3+2 grid */
 .services-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
@@ -159,8 +157,10 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
   transition: background 0.2s;
   display: flex; flex-direction: column;
 }
-.service-item:nth-child(3n) { border-right: none; }
+/* 5 items: first row 3, second row 2 */
+.service-item:nth-child(3) { border-right: none; }
 .service-item:nth-child(n+4) { border-bottom: none; }
+.service-item:last-child { border-right: none; }
 .service-item:hover { background: var(--bg-muted); }
 .service-icon {
   width: 36px; height: 36px;
@@ -183,7 +183,7 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .process-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.35rem; }
 .process-card p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; flex: 1; }
 
-/* PRICING — equal height */
+/* PRICING */
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; }
 .pricing-card {
   border: 1px solid var(--border); border-radius: 12px;
@@ -227,23 +227,12 @@ section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
   transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
 }
 .portfolio-card:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
-.portfolio-vis { height: 180px; background: var(--bg-muted); position: relative; overflow: hidden; }
+.portfolio-vis { height: 180px; background: var(--bg-muted); overflow: hidden; }
 .portfolio-vis canvas { width: 100%; height: 100%; display: block; }
 .portfolio-body { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
 .portfolio-tag { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-light); margin-bottom: 0.35rem; }
 .portfolio-body h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
 .portfolio-body p { font-size: 0.82rem; color: var(--fg-muted); flex: 1; }
-
-/* TESTIMONIALS */
-.testimonial-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-.testimonial-card {
-  border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem;
-  transition: border-color 0.2s; display: flex; flex-direction: column;
-}
-.testimonial-card:hover { border-color: var(--border-hover); }
-.testimonial-card blockquote { font-size: 0.88rem; color: var(--fg-muted); line-height: 1.65; font-style: italic; margin-bottom: 1rem; flex: 1; }
-.testimonial-author { font-size: 0.82rem; font-weight: 600; }
-.testimonial-role { font-size: 0.75rem; color: var(--fg-light); }
 
 /* CONTACT */
 .contact-wrapper { max-width: 560px; margin: 0 auto; }
@@ -277,15 +266,16 @@ footer {
 }
 
 @media(max-width:900px){
-  .services-grid, .pricing-grid, .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .services-grid .service-item:nth-child(2n) { border-right: none; }
+  .services-grid .service-item { border-bottom: 1px solid var(--border) !important; }
+  .services-grid .service-item:nth-last-child(-n+1) { border-bottom: none !important; }
+  .pricing-grid, .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   .process-grid { grid-template-columns: repeat(2, 1fr); }
-  .service-item:nth-child(2n) { border-right: none; }
-  .service-item { border-bottom: 1px solid var(--border) !important; }
-  .service-item:nth-last-child(-n+2) { border-bottom: none !important; }
 }
 @media(max-width:640px){
   .nav-links { display: none; }
-  .services-grid, .pricing-grid, .portfolio-grid, .process-grid, .testimonial-grid { grid-template-columns: 1fr; }
+  .services-grid, .pricing-grid, .portfolio-grid, .process-grid { grid-template-columns: 1fr; }
   .service-item { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
   .service-item:last-child { border-bottom: none !important; }
   .form-row { flex-direction: column; }
@@ -300,11 +290,7 @@ footer {
   <div class="nav-left">
     <a href="#" class="logo">
       <div class="logo-mark">
-        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M14 1L26 8V20L14 27L2 20V8L14 1Z" fill="#09090B"/>
-          <circle class="logo-ring" cx="14" cy="14" r="8" stroke="white" stroke-width="1.2" fill="none" stroke-dasharray="4 3"/>
-          <circle cx="14" cy="14" r="3" fill="white"/>
-        </svg>
+        <svg viewBox="0 0 28 28" fill="none"><path d="M14 1L26 8V20L14 27L2 20V8L14 1Z" fill="#09090B"/><circle class="logo-ring" cx="14" cy="14" r="8" stroke="white" stroke-width="1.2" fill="none" stroke-dasharray="4 3"/><circle cx="14" cy="14" r="3" fill="white"/></svg>
       </div>
       <span>Holocron</span>
     </a>
@@ -328,7 +314,7 @@ footer {
   <div class="hero-announce"><span class="badge">Neu</span><span data-de="Verfügbar für Projekte" data-en="Available for projects">Verfügbar für Projekte</span></div>
   <h1>
     <span data-de="Entdecken Sie" data-en="Unlock the">Entdecken Sie</span><br>
-    <span class="shuffle-block"><span id="shufflePrefix" data-de-0="das" data-de-1="den" data-de-2="die" data-en-0="the" data-en-1="the" data-en-2="the">das</span> <span class="shuffle-word"><span class="shuffle-inner" id="shuffleWord">Potenzial</span></span></span><br>
+    <span class="shuffle-slot"><span class="shuffle-inner" id="shufflePhrase">das Potenzial</span></span><br>
     <span data-de="Ihrer Daten" data-en="of your data">Ihrer Daten</span>
   </h1>
   <p class="hero-sub" data-de="Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt." data-en="Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.">Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt.</p>
@@ -351,7 +337,6 @@ footer {
     <div class="service-item"><div class="service-icon">⚙️</div><h3 data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</h3><p data-de="Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand." data-en="Automated pipelines and scheduled refreshes keep your reports accurate — without lifting a finger.">Automatisierte Pipelines und geplante Aktualisierungen halten Ihre Reports aktuell — ohne manuellen Aufwand.</p></div>
     <div class="service-item"><div class="service-icon">🧹</div><h3 data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</h3><p data-de="Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige Grundlage überführt." data-en="Messy data cleaned, standardized, and structured into a reliable analytical foundation.">Unstrukturierte Daten werden bereinigt, standardisiert und in eine zuverlässige Grundlage überführt.</p></div>
     <div class="service-item"><div class="service-icon">🗄️</div><h3 data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</h3><p data-de="Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports." data-en="Scalable star schemas, relationships, and DAX logic that keep reports fast and maintainable.">Skalierbare Star-Schemas, Beziehungen und DAX-Logik für schnelle und wartbare Reports.</p></div>
-    <div class="service-item"><div class="service-icon">🔗</div><h3 data-de="Systemintegration" data-en="System Integration">Systemintegration</h3><p data-de="SAP, Oracle, SQL, SharePoint — alles in einer einheitlichen Reporting-Schicht vereint." data-en="Connect SAP, Oracle, SQL, SharePoint into a unified reporting layer.">SAP, Oracle, SQL, SharePoint — alles in einer einheitlichen Reporting-Schicht vereint.</p></div>
     <div class="service-item"><div class="service-icon">🎯</div><h3 data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</h3><p data-de="Eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen für Ihr Team." data-en="A roadmap for data-driven decisions, plus hands-on training for your team.">Eine Roadmap für datengetriebene Entscheidungen plus Hands-on-Schulungen für Ihr Team.</p></div>
   </div>
 </section>
@@ -384,11 +369,11 @@ footer {
     <div class="pricing-card">
       <div class="pricing-name">Starter</div>
       <div class="pricing-desc" data-de="Einzelnes Dashboard oder Report" data-en="Single dashboard or report">Einzelnes Dashboard oder Report</div>
-      <div class="pricing-price"><span class="amount">€1.500</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
+      <div class="pricing-price"><span class="amount">€990</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
       <ul class="pricing-features">
         <li data-de="1 Power BI Dashboard" data-en="1 Power BI dashboard">1 Power BI Dashboard</li>
-        <li data-de="Bis zu 3 Datenquellen" data-en="Up to 3 data sources">Bis zu 3 Datenquellen</li>
         <li data-de="Datenbereinigung inkl." data-en="Data cleaning included">Datenbereinigung inkl.</li>
+        <li data-de="Einfaches Datenmodell" data-en="Simple data model">Einfaches Datenmodell</li>
         <li data-de="2 Revisionsrunden" data-en="2 revision rounds">2 Revisionsrunden</li>
         <li data-de="Dokumentation" data-en="Documentation">Dokumentation</li>
       </ul>
@@ -396,30 +381,28 @@ footer {
     </div>
     <div class="pricing-card featured" data-badge="Beliebt">
       <div class="pricing-name">Professional</div>
-      <div class="pricing-desc" data-de="Komplettes Reporting-Setup" data-en="Complete reporting setup">Komplettes Reporting-Setup</div>
-      <div class="pricing-price"><span class="amount">€4.500</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
+      <div class="pricing-desc" data-de="Komplettes Reporting-Projekt" data-en="Complete reporting project">Komplettes Reporting-Projekt</div>
+      <div class="pricing-price"><span class="amount">€2.500</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
       <ul class="pricing-features">
-        <li data-de="Bis zu 5 Dashboards" data-en="Up to 5 dashboards">Bis zu 5 Dashboards</li>
-        <li data-de="Unbegrenzte Datenquellen" data-en="Unlimited data sources">Unbegrenzte Datenquellen</li>
+        <li data-de="Bis zu 3 Dashboards" data-en="Up to 3 dashboards">Bis zu 3 Dashboards</li>
         <li data-de="Datenmodellierung & ETL" data-en="Data modeling & ETL">Datenmodellierung & ETL</li>
         <li data-de="Report-Automatisierung" data-en="Report automation">Report-Automatisierung</li>
         <li data-de="4 Revisionsrunden" data-en="4 revision rounds">4 Revisionsrunden</li>
-        <li data-de="Team-Schulung (2h)" data-en="Team training (2h)">Team-Schulung (2h)</li>
-        <li data-de="30 Tage Support" data-en="30 days support">30 Tage Support</li>
+        <li data-de="Team-Schulung (1h)" data-en="Team training (1h)">Team-Schulung (1h)</li>
+        <li data-de="14 Tage Support" data-en="14 days support">14 Tage Support</li>
       </ul>
       <a href="#contact" class="pricing-btn pricing-btn-dark" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
     </div>
     <div class="pricing-card">
       <div class="pricing-name">Enterprise</div>
       <div class="pricing-desc" data-de="Maßgeschneiderte BI-Lösung" data-en="Tailored BI solution">Maßgeschneiderte BI-Lösung</div>
-      <div class="pricing-price"><span class="amount" data-de="Individuell" data-en="Custom">Individuell</span></div>
+      <div class="pricing-price"><span class="amount" data-de="Auf Anfrage" data-en="On Request">Auf Anfrage</span></div>
       <ul class="pricing-features">
-        <li data-de="Unbegrenzte Dashboards" data-en="Unlimited dashboards">Unbegrenzte Dashboards</li>
-        <li data-de="Systemintegration (SAP, Oracle)" data-en="System integration (SAP, Oracle)">Systemintegration (SAP, Oracle)</li>
+        <li data-de="Individueller Projektumfang" data-en="Custom project scope">Individueller Projektumfang</li>
         <li data-de="BI-Strategieberatung" data-en="BI strategy consulting">BI-Strategieberatung</li>
         <li data-de="Laufende Betreuung" data-en="Ongoing support">Laufende Betreuung</li>
-        <li data-de="SLA & Priorisierung" data-en="SLA & prioritization">SLA & Priorisierung</li>
-        <li data-de="Dedizierter Ansprechpartner" data-en="Dedicated contact person">Dedizierter Ansprechpartner</li>
+        <li data-de="Team-Schulungen" data-en="Team training">Team-Schulungen</li>
+        <li data-de="Priorisierter Support" data-en="Priority support">Priorisierter Support</li>
       </ul>
       <a href="#contact" class="pricing-btn pricing-btn-outline" data-de="Gespräch vereinbaren" data-en="Book a Call">Gespräch vereinbaren</a>
     </div>
@@ -442,19 +425,6 @@ footer {
 
 <hr class="divider">
 
-<section class="scroll-section">
-  <div class="section-header">
-    <div class="section-label" data-de="Referenzen" data-en="Testimonials">Referenzen</div>
-    <h2 class="section-title" data-de="Das sagen Kunden" data-en="What clients say">Das sagen Kunden</h2>
-  </div>
-  <div class="testimonial-grid">
-    <div class="testimonial-card"><blockquote data-de="„Wir sind von zwei Tagen monatlicher Reportarbeit zu vollständig automatisierten Updates gewechselt. Der ROI war sofort spürbar."" data-en="&ldquo;We went from two days of monthly report work to fully automated updates. The ROI was immediate.&rdquo;">„Wir sind von zwei Tagen monatlicher Reportarbeit zu vollständig automatisierten Updates gewechselt. Der ROI war sofort spürbar."</blockquote><div class="testimonial-author">Head of Finance</div><div class="testimonial-role" data-de="Fertigungsunternehmen" data-en="Manufacturing Company">Fertigungsunternehmen</div></div>
-    <div class="testimonial-card"><blockquote data-de="„Endlich Dashboards, die unser Management tatsächlich nutzt. Klar, schnell, genau richtig."" data-en="&ldquo;Finally, dashboards our management actually uses. Clean, fast, exactly right.&rdquo;">„Endlich Dashboards, die unser Management tatsächlich nutzt. Klar, schnell, genau richtig."</blockquote><div class="testimonial-author">Director of Operations</div><div class="testimonial-role" data-de="Energiesektor" data-en="Energy Sector">Energiesektor</div></div>
-  </div>
-</section>
-
-<hr class="divider">
-
 <section id="contact" class="scroll-section">
   <div class="contact-wrapper">
     <div class="section-header">
@@ -464,6 +434,7 @@ footer {
     </div>
     <form class="contact-form" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
       <input type="hidden" name="_subject" value="Neue Holocron Anfrage">
+      <input type="hidden" name="_replyto" value="holocrondata@outlook.de">
       <input type="text" name="_gotcha" style="display:none">
       <div class="form-row">
         <div><label for="name" data-de="Name" data-en="Name">Name</label><input type="text" id="name" name="name" placeholder="Ihr Name" required></div>
@@ -475,7 +446,7 @@ footer {
           <option value="" data-de="Bitte wählen..." data-en="Select a service...">Bitte wählen...</option>
           <option>Power BI Reports & Dashboards</option><option data-de="Report-Automatisierung" data-en="Report Automation">Report-Automatisierung</option>
           <option data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</option><option data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</option>
-          <option data-de="Systemintegration" data-en="System Integration">Systemintegration</option><option data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</option><option data-de="Noch unsicher" data-en="Not sure yet">Noch unsicher</option>
+          <option data-de="BI-Strategie & Schulungen" data-en="BI Strategy & Training">BI-Strategie & Schulungen</option><option data-de="Noch unsicher" data-en="Not sure yet">Noch unsicher</option>
         </select>
       </div>
       <div><label for="message" data-de="Projektbeschreibung" data-en="Project Description">Projektbeschreibung</label><textarea id="message" name="message" placeholder="Erzählen Sie mir von Ihrem aktuellen Setup und Ihren Zielen..."></textarea></div>
@@ -496,33 +467,28 @@ const obs = new IntersectionObserver(e => {
 }, { threshold: 0.06 });
 document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
 
-// WORD SHUFFLE — with article prefix
+// WORD SHUFFLE — full phrase "article + word" as single unit
 (function() {
-  const wordsDE = ['Potenzial', 'Wert', 'Intelligenz'];
-  const prefDE  = ['das', 'den', 'die'];
-  const wordsEN = ['potential', 'value', 'intelligence'];
+  const phrasesDE = ['das Potenzial', 'den Wert', 'die Intelligenz'];
+  const phrasesEN = ['the potential', 'the value', 'the intelligence'];
   let idx = 0, lang = 'de';
-  const wordEl = document.getElementById('shuffleWord');
-  const prefEl = document.getElementById('shufflePrefix');
+  const el = document.getElementById('shufflePhrase');
 
   setInterval(() => {
-    const words = lang === 'de' ? wordsDE : wordsEN;
-    const prefs = lang === 'de' ? prefDE : ['the','the','the'];
-    wordEl.classList.add('exit');
+    const phrases = lang === 'de' ? phrasesDE : phrasesEN;
+    el.classList.add('exit');
     setTimeout(() => {
-      idx = (idx + 1) % words.length;
-      prefEl.textContent = prefs[idx];
-      wordEl.textContent = words[idx];
-      wordEl.classList.remove('exit');
-      wordEl.classList.add('enter');
-      requestAnimationFrame(() => requestAnimationFrame(() => wordEl.classList.remove('enter')));
+      idx = (idx + 1) % phrases.length;
+      el.textContent = phrases[idx];
+      el.classList.remove('exit');
+      el.classList.add('enter');
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('enter')));
     }, 280);
   }, 2800);
 
   window._setShuffleLang = (l) => {
     lang = l; idx = 0;
-    wordEl.textContent = (l === 'de' ? wordsDE : wordsEN)[0];
-    prefEl.textContent = (l === 'de' ? prefDE : ['the'])[0];
+    el.textContent = (l === 'de' ? phrasesDE : phrasesEN)[0];
   };
 })();
 
@@ -540,7 +506,6 @@ document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
           else el.textContent = val;
         }
       });
-      // Update featured badge
       const f = document.querySelector('.pricing-card.featured');
       if (f) f.dataset.badge = lang === 'de' ? 'Beliebt' : 'Popular';
       window._setShuffleLang(lang);
