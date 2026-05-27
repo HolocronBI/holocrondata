@@ -1,49 +1,234 @@
 ---
-import Base from '../layouts/Base.astro';
-
-// Fetch all blog posts, sorted by date
 const posts = (await Astro.glob('./blog/*.md')).sort(
   (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
 );
+const featured = posts[0];
+const rest = posts.slice(1);
 ---
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Holocron</title>
+<meta name="description" content="Praktisches Wissen zu Power BI, Datenmodellierung und Business Intelligence für den Mittelstand.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='4' y='4' width='24' height='24' rx='4' fill='%2309090B'/%3E%3Cpath d='M16 10v12M10 16h12' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #FFFFFF; --bg-muted: #FAFAFA; --fg: #09090B; --fg-muted: #71717A; --fg-light: #A1A1AA;
+  --border: #E4E4E7; --border-hover: #D4D4D8; --accent: #2563EB;
+  --font: 'Inter', -apple-system, sans-serif; --font-mono: 'JetBrains Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-<Base title="Blog — Holocron Data" description="Insights zu Power BI, Datenmodellierung und Business Intelligence für den Mittelstand.">
-  <div style="padding-top: var(--nav-h);">
-    <section style="padding-bottom: 0; border-bottom: 1px solid var(--border);">
-      <div class="container">
-        <p class="section-label">Blog</p>
-        <h1 style="font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 16px;">Insights & Praxis-Tipps</h1>
-        <p style="color: var(--text-muted); max-width: 520px; padding-bottom: 48px; font-size: 1.05rem;">
-          Praktisches Wissen zu Power BI, Datenmodellierung und Business Intelligence — für den Mittelstand.
-        </p>
+/* NAV — identical to main site */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; height: 56px; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-left { display: flex; align-items: center; gap: 1.25rem; }
+.logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); }
+.logo-mark { width: 24px; height: 24px; }
+.logo-mark svg { width: 100%; height: 100%; display: block; }
+.logo-text { font-weight: 700; font-size: 0.88rem; letter-spacing: -0.02em; }
+.nav-items { display: flex; gap: 0; align-items: center; }
+.nav-item { position: relative; display: flex; align-items: center; }
+.nav-item > a { text-decoration: none; color: var(--fg-muted); font-size: 0.825rem; font-weight: 500; padding: 0.4rem 0.7rem; border-radius: 6px; transition: color 0.15s, background 0.15s; display: inline-flex; align-items: center; height: 32px; }
+.nav-item > a:hover { color: var(--fg); background: var(--bg-muted); }
+.nav-item > a.active { color: var(--fg); }
+.nav-right { display: flex; align-items: center; gap: 0.5rem; }
+.nav-cta { background: var(--fg); color: white; border: none; padding: 0.4rem 1rem; border-radius: 6px; font-family: var(--font); font-size: 0.8rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: opacity 0.15s; }
+.nav-cta:hover { opacity: 0.85; }
+
+/* PAGE LAYOUT */
+.page { padding-top: 56px; }
+
+/* BLOG HEADER */
+.blog-header { padding: 4rem 1.5rem 3rem; max-width: 1100px; margin: 0 auto; border-bottom: 1px solid var(--border); }
+.blog-header-inner { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.blog-label { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-muted); margin-bottom: 0.6rem; }
+.blog-header h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
+.blog-header-right { flex-shrink: 0; }
+.blog-count { font-size: 0.78rem; color: var(--fg-light); font-family: var(--font-mono); }
+
+/* FEATURED POST */
+.featured-section { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; border-bottom: 1px solid var(--border); }
+.featured-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-light); margin-bottom: 1.5rem; }
+.featured-card { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; text-decoration: none; color: inherit; }
+.featured-card:hover .featured-title { color: var(--accent); }
+.featured-vis { background: var(--bg-muted); border: 1px solid var(--border); border-radius: 12px; aspect-ratio: 16/9; overflow: hidden; position: relative; }
+.featured-vis canvas { width: 100%; height: 100%; display: block; }
+.featured-tag { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 1rem; }
+.featured-title { font-size: clamp(1.3rem, 2.5vw, 1.75rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 1rem; transition: color 0.15s; }
+.featured-excerpt { font-size: 0.9rem; color: var(--fg-muted); line-height: 1.65; margin-bottom: 1.5rem; }
+.featured-meta { display: flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: var(--fg-light); font-family: var(--font-mono); }
+.featured-meta .sep { opacity: 0.4; }
+.read-more { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: var(--fg); transition: gap 0.2s; }
+.featured-card:hover .read-more { gap: 0.7rem; }
+
+/* POST GRID */
+.grid-section { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+.grid-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+.grid-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-light); }
+.post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.post-card { background: var(--bg); padding: 1.75rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.5rem; transition: background 0.15s; }
+.post-card:hover { background: var(--bg-muted); }
+.post-card:hover .post-title { color: var(--accent); }
+.post-tag { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-light); }
+.post-title { font-size: 0.95rem; font-weight: 600; line-height: 1.4; letter-spacing: -0.01em; transition: color 0.15s; flex: 1; }
+.post-excerpt { font-size: 0.82rem; color: var(--fg-muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.post-meta { font-size: 0.72rem; color: var(--fg-light); font-family: var(--font-mono); margin-top: 0.5rem; }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 5rem 1.5rem; }
+.empty-mono { font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg-light); margin-bottom: 0.75rem; }
+
+/* CTA STRIP */
+.cta-strip { border-top: 1px solid var(--border); padding: 4rem 1.5rem; }
+.cta-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.cta-text h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
+.cta-text p { font-size: 0.875rem; color: var(--fg-muted); }
+.btn-dark { background: var(--fg); color: white; padding: 0.65rem 1.4rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.875rem; transition: opacity 0.15s; white-space: nowrap; }
+.btn-dark:hover { opacity: 0.85; }
+
+/* FOOTER */
+footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; font-size: 0.78rem; color: var(--fg-light); }
+
+@media(max-width: 800px) {
+  .featured-card { grid-template-columns: 1fr; gap: 1.5rem; }
+  .post-grid { grid-template-columns: 1fr; }
+  .blog-header-inner { flex-direction: column; align-items: flex-start; }
+}
+@media(max-width: 640px) { .nav-items { display: none; } footer { flex-direction: column; gap: 0.5rem; text-align: center; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="/" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" fill="#09090B"/><path d="M12 7v10M7 12h10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <span class="logo-text">Holocron</span>
+    </a>
+    <div class="nav-items">
+      <div class="nav-item"><a href="/#services">Leistungen</a></div>
+      <div class="nav-item"><a href="/#process">Ablauf</a></div>
+      <div class="nav-item"><a href="/#pricing">Preise</a></div>
+      <div class="nav-item"><a href="/#portfolio">Projekte</a></div>
+      <div class="nav-item"><a href="/blog" class="active">Blog</a></div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a href="/#contact" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="blog-header">
+    <div class="blog-header-inner">
+      <div>
+        <div class="blog-label">Blog</div>
+        <h1>Insights & Praxis-Tipps</h1>
       </div>
-    </section>
+      <div class="blog-header-right">
+        <div class="blog-count">{posts.length} {posts.length === 1 ? 'Beitrag' : 'Beiträge'}</div>
+      </div>
+    </div>
+  </div>
 
-    <section>
-      <div class="container">
-        {posts.length === 0 ? (
-          <div style="text-align: center; padding: 80px 0; color: var(--text-muted);">
-            <p style="font-family: var(--font-mono); font-size: 13px; margin-bottom: 12px;">// Erste Beiträge erscheinen bald</p>
-            <p>Der Blog startet in Kürze.</p>
+  {posts.length === 0 ? (
+    <div class="empty">
+      <div class="empty-mono">// Erste Beiträge erscheinen bald</div>
+      <p style="color: var(--fg-muted); font-size: 0.9rem;">Der Blog startet in Kürze.</p>
+    </div>
+  ) : (
+    <>
+      {featured && (
+        <div class="featured-section">
+          <div class="featured-label">Neuester Beitrag</div>
+          <a href={featured.url} class="featured-card">
+            <div class="featured-vis">
+              <canvas id="featuredChart"></canvas>
+            </div>
+            <div class="featured-content">
+              <div class="featured-tag">{featured.frontmatter.tag || 'Blog'}</div>
+              <div class="featured-title">{featured.frontmatter.title}</div>
+              <div class="featured-excerpt">{featured.frontmatter.excerpt}</div>
+              <div class="featured-meta">
+                <span>{new Date(featured.frontmatter.date).toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
+                {featured.frontmatter.readTime && <><span class="sep">·</span><span>{featured.frontmatter.readTime} min Lesezeit</span></>}
+              </div>
+              <div class="read-more" style="margin-top: 1.25rem;">Beitrag lesen →</div>
+            </div>
+          </a>
+        </div>
+      )}
+
+      {rest.length > 0 && (
+        <div class="grid-section">
+          <div class="grid-header">
+            <div class="grid-label">Alle Beiträge</div>
           </div>
-        ) : (
-          <div class="blog-grid">
-            {posts.map(post => (
-              <a href={post.url} class="blog-card" style="text-decoration: none; color: inherit;">
-                <div class="blog-card-body">
-                  <div class="blog-card-tag">{post.frontmatter.tag || 'Blog'}</div>
-                  <div class="blog-card-title">{post.frontmatter.title}</div>
-                  <div class="blog-card-excerpt">{post.frontmatter.excerpt}</div>
-                  <div class="blog-card-meta">
-                    <span>{new Date(post.frontmatter.date).toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
-                    {post.frontmatter.readTime && <span>· {post.frontmatter.readTime} min</span>}
-                  </div>
-                </div>
+          <div class="post-grid">
+            {rest.map(post => (
+              <a href={post.url} class="post-card">
+                <div class="post-tag">{post.frontmatter.tag || 'Blog'}</div>
+                <div class="post-title">{post.frontmatter.title}</div>
+                <div class="post-excerpt">{post.frontmatter.excerpt}</div>
+                <div class="post-meta">{new Date(post.frontmatter.date).toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' })}{post.frontmatter.readTime ? ` · ${post.frontmatter.readTime} min` : ''}</div>
               </a>
             ))}
           </div>
-        )}
+        </div>
+      )}
+    </>
+  )}
+
+  <div class="cta-strip">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2>Bereit, Ihre Daten in Ordnung zu bringen?</h2>
+        <p>Ich helfe mittelständischen Unternehmen, verlässliche BI-Strukturen aufzubauen.</p>
       </div>
-    </section>
+      <a href="/#contact" class="btn-dark">Projekt anfragen →</a>
+    </div>
   </div>
-</Base>
+
+</div>
+
+<footer>
+  <span>© 2026 Holocron — holocrondata.net</span>
+  <span>Business Intelligence Services</span>
+</footer>
+
+<script>
+function drawChart(id) {
+  const c = document.getElementById(id); if (!c) return;
+  const ctx = c.getContext('2d'), dpr = window.devicePixelRatio || 1, r = c.getBoundingClientRect();
+  c.width = r.width * dpr; c.height = r.height * dpr; ctx.scale(dpr, dpr);
+  const w = r.width, h = r.height;
+  ctx.strokeStyle = 'rgba(0,0,0,0.04)'; ctx.lineWidth = 1;
+  for (let y = 20; y < h; y += 30) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+  const n = 20, gap = 3, bw = (w - 48 - gap * (n-1)) / n;
+  for (let i = 0; i < n; i++) {
+    const bh = 24 + Math.random() * (h - 64);
+    ctx.fillStyle = '#09090B'; ctx.globalAlpha = 0.07 + Math.random() * 0.12;
+    ctx.beginPath(); ctx.roundRect(24 + i * (bw + gap), h - 12 - bh, bw, bh, [3,3,0,0]); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  const pts = []; const steps = 30;
+  for (let i = 0; i <= steps; i++) pts.push({ x: 0 + (i/steps)*w, y: h*0.45 + Math.sin(i*0.38)*h*0.2 + (Math.random()-0.5)*h*0.05 });
+  const gf = ctx.createLinearGradient(0,0,0,h); gf.addColorStop(0,'rgba(37,99,235,0.12)'); gf.addColorStop(1,'rgba(37,99,235,0)');
+  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+  for (let i=1;i<pts.length;i++) { const xc=(pts[i].x+pts[i-1].x)/2, yc=(pts[i].y+pts[i-1].y)/2; ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc); }
+  ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath(); ctx.fillStyle=gf; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+  for (let i=1;i<pts.length;i++) { const xc=(pts[i].x+pts[i-1].x)/2, yc=(pts[i].y+pts[i-1].y)/2; ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc); }
+  ctx.strokeStyle='#2563EB'; ctx.globalAlpha=0.5; ctx.lineWidth=2; ctx.stroke(); ctx.globalAlpha=1;
+}
+window.addEventListener('load', () => drawChart('featuredChart'));
+window.addEventListener('resize', () => drawChart('featuredChart'));
+</script>
+</body>
+</html>
