@@ -1,295 +1,380 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-
 <Base>
-  <!-- HERO -->
-  <section id="hero" style="padding-top: calc(var(--nav-h) + 80px); padding-bottom: 96px; min-height: 90vh; display: flex; align-items: center;">
-    <div class="container">
-      <p class="section-label" data-de="Freelance BI Beratung" data-en="Freelance BI Consulting">Freelance BI Beratung</p>
-      <h1 style="max-width: 800px; margin-bottom: 24px;">
-        <span data-de="Ihre Daten." data-en="Your data.">Ihre Daten.</span><br>
-        <span id="shuffle-word" style="color: var(--accent);">Klar.</span>
-      </h1>
-      <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 560px; margin-bottom: 40px; line-height: 1.7;"
-        data-de="Ich helfe mittelständischen Unternehmen, ihre Daten in verlässliche Entscheidungsgrundlagen zu verwandeln — mit Power BI, sauberen Datenmodellen und automatisierten Reports."
-        data-en="I help mid-sized companies turn their data into reliable decision-making tools — with Power BI, clean data models and automated reports.">
-        Ich helfe mittelständischen Unternehmen, ihre Daten in verlässliche Entscheidungsgrundlagen zu verwandeln — mit Power BI, sauberen Datenmodellen und automatisierten Reports.
-      </p>
-      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <a href="#kontakt" class="btn btn-primary" data-de="Projekt anfragen" data-en="Request project">Projekt anfragen</a>
-        <a href="#leistungen" class="btn btn-secondary" data-de="Leistungen ansehen" data-en="View services">Leistungen ansehen</a>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #FFFFFF; --bg-muted: #FAFAFA; --fg: #09090B; --fg-muted: #71717A; --fg-light: #A1A1AA;
+  --border: #E4E4E7; --border-hover: #D4D4D8; --accent: #2563EB;
+  --font: 'Inter', -apple-system, sans-serif; --font-mono: 'JetBrains Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+.scroll-section { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+.scroll-section.visible { opacity: 1; transform: translateY(0); }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; height: 56px; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-left { display: flex; align-items: center; gap: 1.25rem; }
+.logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); }
+.logo-mark { width: 24px; height: 24px; }
+.logo-mark svg { width: 100%; height: 100%; display: block; }
+.logo-text { font-weight: 700; font-size: 0.88rem; letter-spacing: -0.02em; }
+.nav-items { display: flex; gap: 0; align-items: center; }
+.nav-item { position: relative; display: flex; align-items: center; }
+.nav-item > a, .nav-trigger { text-decoration: none; color: var(--fg-muted); font-size: 0.825rem; font-weight: 500; padding: 0.4rem 0.7rem; border-radius: 6px; transition: color 0.15s, background 0.15s; display: inline-flex; align-items: center; gap: 0.3rem; background: none; border: none; cursor: pointer; font-family: var(--font); line-height: 1; height: 32px; }
+.nav-item > a:hover, .nav-trigger:hover { color: var(--fg); background: var(--bg-muted); }
+.nav-chevron { width: 12px; height: 12px; transition: transform 0.2s; flex-shrink: 0; }
+.nav-item:hover .nav-chevron { transform: rotate(180deg); }
+.nav-dropdown { position: absolute; top: 100%; left: 0; padding-top: 4px; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
+.nav-dropdown-inner { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 0.5rem; min-width: 280px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.nav-item:hover .nav-dropdown { opacity: 1; pointer-events: auto; }
+.nav-dropdown a { display: block; padding: 0.6rem 0.75rem; border-radius: 6px; text-decoration: none; transition: background 0.1s; }
+.nav-dropdown a:hover { background: var(--bg-muted); }
+.dd-title { font-size: 0.82rem; font-weight: 600; color: var(--fg); margin-bottom: 0.1rem; }
+.dd-desc { font-size: 0.72rem; color: var(--fg-muted); line-height: 1.4; }
+.nav-right { display: flex; align-items: center; gap: 0.5rem; }
+.lang-toggle { display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.lang-btn { padding: 0.3rem 0.55rem; cursor: pointer; background: none; border: none; font-family: var(--font); font-size: 0.72rem; font-weight: 600; color: var(--fg-muted); transition: background 0.15s, color 0.15s; min-width: 32px; text-align: center; }
+.lang-btn.active { background: var(--fg); color: white; }
+.nav-cta { background: var(--fg); color: white; border: none; padding: 0.4rem 1rem; border-radius: 6px; font-family: var(--font); font-size: 0.8rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: opacity 0.15s; }
+.nav-cta:hover { opacity: 0.85; }
+.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 7rem 1.5rem 5rem; }
+.hero-announce { display: inline-flex; align-items: center; gap: 0.4rem; border: 1px solid var(--border); border-radius: 100px; padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500; color: var(--fg-muted); margin-bottom: 2rem; }
+.hero-announce .badge { background: var(--fg); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 100px; }
+.hero h1 { font-size: clamp(2.4rem, 5.5vw, 3.8rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.12; max-width: 720px; }
+.shuffle-line { display: block; line-height: 1.12; }
+.shuffle-slot { display: inline-block; position: relative; overflow: hidden; vertical-align: bottom; color: var(--accent); }
+.shuffle-slot .shuffle-inner { display: inline-block; white-space: nowrap; transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.25s; }
+.shuffle-slot .shuffle-inner.exit { transform: translateY(-110%); opacity: 0; }
+.shuffle-slot .shuffle-inner.enter { transform: translateY(110%); opacity: 0; }
+.hero-sub { max-width: 500px; margin: 1.5rem auto 0; font-size: 1rem; color: var(--fg-muted); }
+.hero-buttons { display: flex; gap: 0.75rem; margin-top: 2rem; }
+.btn-dark { background: var(--fg); color: white; padding: 0.65rem 1.6rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.875rem; transition: opacity 0.15s; }
+.btn-dark:hover { opacity: 0.85; }
+.btn-outline { background: white; color: var(--fg); padding: 0.65rem 1.6rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.875rem; border: 1px solid var(--border); transition: background 0.15s; }
+.btn-outline:hover { background: var(--bg-muted); }
+section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 3rem; }
+.section-label { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-muted); margin-bottom: 0.75rem; }
+.section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
+.section-desc { color: var(--fg-muted); margin-top: 0.6rem; font-size: 0.95rem; max-width: 500px; margin-inline: auto; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+.card-grid { display: grid; gap: 1rem; }
+.card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.card-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.card-item { border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem 1.5rem; transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+.card-item:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+.card-num { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--fg-light); margin-bottom: 1rem; }
+.card-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+.card-item p { font-size: 0.84rem; color: var(--fg-muted); line-height: 1.55; flex: 1; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; }
+.pricing-card { border: 1px solid var(--border); border-radius: 12px; padding: 2rem 1.75rem; display: flex; flex-direction: column; transition: border-color 0.2s, box-shadow 0.2s; position: relative; }
+.pricing-card.featured { border-color: var(--fg); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.pricing-rec { font-size: 0.7rem; font-weight: 600; color: var(--fg-muted); margin-bottom: 0.5rem; letter-spacing: 0.02em; height: 1rem; }
+.pricing-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
+.pricing-desc { font-size: 0.82rem; color: var(--fg-muted); margin-bottom: 1.25rem; }
+.pricing-price { margin-bottom: 1.5rem; }
+.pricing-price .amount { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.04em; }
+.pricing-price .period { font-size: 0.85rem; color: var(--fg-muted); }
+.pricing-features { list-style: none; margin-bottom: 2rem; flex: 1; }
+.pricing-features li { font-size: 0.84rem; color: var(--fg-muted); padding: 0.35rem 0; display: flex; align-items: center; gap: 0.5rem; }
+.pricing-features li::before { content: '✓'; font-weight: 700; color: var(--fg); font-size: 0.8rem; }
+.pricing-btn { width: 100%; padding: 0.6rem; border-radius: 6px; font-family: var(--font); font-size: 0.85rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; transition: opacity 0.15s; margin-top: auto; }
+.pricing-btn-dark { background: var(--fg); color: white; border: none; }
+.pricing-btn-dark:hover { opacity: 0.85; }
+.pricing-btn-outline { background: white; color: var(--fg); border: 1px solid var(--border); }
+.pricing-btn-outline:hover { background: var(--bg-muted); }
+.portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.portfolio-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+.portfolio-card:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+.portfolio-vis { height: 180px; background: var(--bg-muted); overflow: hidden; }
+.portfolio-vis canvas { width: 100%; height: 100%; display: block; }
+.portfolio-body { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+.portfolio-tag { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-light); margin-bottom: 0.35rem; }
+.portfolio-body h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+.portfolio-body p { font-size: 0.82rem; color: var(--fg-muted); flex: 1; }
+.contact-wrapper { max-width: 560px; margin: 0 auto; }
+.contact-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+.form-row { display: flex; gap: 0.75rem; }
+.form-row > * { flex: 1; }
+.contact-form label { font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.35rem; }
+.contact-form input, .contact-form select, .contact-form textarea { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font); font-size: 0.85rem; background: var(--bg); color: var(--fg); transition: border-color 0.15s, box-shadow 0.15s; outline: none; }
+.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { border-color: var(--fg); box-shadow: 0 0 0 2px rgba(9,9,11,0.08); }
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--fg-light); }
+.contact-form textarea { min-height: 100px; resize: vertical; }
+.form-submit { background: var(--fg); color: white; border: none; padding: 0.65rem; border-radius: 6px; font-family: var(--font); font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+.form-submit:hover { opacity: 0.85; }
+footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; font-size: 0.78rem; color: var(--fg-light); }
+/* Blog card styles */
+.blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.blog-card { border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.5rem; transition: border-color 0.2s, box-shadow 0.2s; }
+.blog-card:hover { border-color: var(--border-hover); box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+.blog-tag { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-light); }
+.blog-title { font-size: 0.95rem; font-weight: 600; line-height: 1.4; }
+.blog-excerpt { font-size: 0.82rem; color: var(--fg-muted); flex: 1; }
+.blog-meta { font-size: 0.75rem; color: var(--fg-light); font-family: var(--font-mono); }
+@media(max-width:900px){ .card-grid.cols-3, .pricing-grid, .portfolio-grid, .blog-grid { grid-template-columns: repeat(2, 1fr); } .card-grid.cols-4 { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width:640px){ .nav-items { display: none; } .card-grid.cols-3, .card-grid.cols-4, .pricing-grid, .portfolio-grid, .blog-grid { grid-template-columns: 1fr; } .form-row { flex-direction: column; } section { padding: 3.5rem 1.25rem; } footer { flex-direction: column; gap: 0.5rem; text-align: center; } }
+</style>
+
+<nav>
+  <div class="nav-left">
+    <a href="#" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" fill="#09090B"/><path d="M12 7v10M7 12h10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <span class="logo-text">Holocron</span>
+    </a>
+    <div class="nav-items">
+      <div class="nav-item">
+        <button class="nav-trigger"><span data-de="Leistungen" data-en="Services">Leistungen</span> <svg class="nav-chevron" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <div class="nav-dropdown"><div class="nav-dropdown-inner">
+          <a href="#services"><div class="dd-title" data-de="Daten-Bestandsaufnahme" data-en="Data Audit">Daten-Bestandsaufnahme</div><div class="dd-desc" data-de="Analyse Ihrer Datenquellen, Qualität und Struktur" data-en="Analysis of your data sources, quality, and structure">Analyse Ihrer Datenquellen, Qualität und Struktur</div></a>
+          <a href="#services"><div class="dd-title" data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</div><div class="dd-desc" data-de="Excel- und Quelldaten bereinigen und standardisieren" data-en="Clean and standardize Excel and source data">Excel- und Quelldaten bereinigen und standardisieren</div></a>
+          <a href="#services"><div class="dd-title" data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</div><div class="dd-desc" data-de="Skalierbare Modelle und DAX-Logik in Power BI" data-en="Scalable models and DAX logic in Power BI">Skalierbare Modelle und DAX-Logik in Power BI</div></a>
+          <a href="#services"><div class="dd-title" data-de="Report-Erstellung" data-en="Report Development">Report-Erstellung</div><div class="dd-desc" data-de="Interaktive Power BI Dashboards und Reports" data-en="Interactive Power BI dashboards and reports">Interaktive Power BI Dashboards und Reports</div></a>
+        </div></div>
       </div>
+      <div class="nav-item"><a href="#process" data-de="Ablauf" data-en="Process">Ablauf</a></div>
+      <div class="nav-item"><a href="#pricing" data-de="Preise" data-en="Pricing">Preise</a></div>
+      <div class="nav-item"><a href="#portfolio" data-de="Projekte" data-en="Portfolio">Projekte</a></div>
+      <div class="nav-item"><a href="/blog">Blog</a></div>
     </div>
-  </section>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle"><button class="lang-btn active" data-lang="de">DE</button><button class="lang-btn" data-lang="en">EN</button></div>
+    <a href="#contact" class="nav-cta" data-de="Kontakt" data-en="Contact">Kontakt</a>
+  </div>
+</nav>
 
-  <!-- LEISTUNGEN -->
-  <section id="leistungen" style="background: var(--surface);">
-    <div class="container">
-      <p class="section-label" data-de="Leistungen" data-en="Services">Leistungen</p>
-      <h2 style="margin-bottom: 12px;" data-de="Was ich anbiete" data-en="What I offer">Was ich anbiete</h2>
-      <p style="color: var(--text-muted); max-width: 480px; margin-bottom: 48px;"
-        data-de="Von der Datenaufnahme bis zum fertigen Dashboard — strukturiert und nachvollziehbar."
-        data-en="From data intake to finished dashboard — structured and transparent.">
-        Von der Datenaufnahme bis zum fertigen Dashboard — strukturiert und nachvollziehbar.
-      </p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px;">
-        {[
-          { icon: '🔍', de_title: 'Daten-Bestandsaufnahme', en_title: 'Data Audit', de_desc: 'Ich analysiere Ihre bestehende Datenlandschaft und identifiziere Lücken, Redundanzen und Potenziale.', en_desc: 'I analyse your existing data landscape and identify gaps, redundancies and opportunities.' },
-          { icon: '🧹', de_title: 'Datenbereinigung', en_title: 'Data Cleaning', de_desc: 'Inkonsistente, fehlerhafte oder unvollständige Daten werden bereinigt und für die Weiterverarbeitung vorbereitet.', en_desc: 'Inconsistent, erroneous or incomplete data is cleaned and prepared for further processing.' },
-          { icon: '🏗️', de_title: 'Datenmodellierung', en_title: 'Data Modelling', de_desc: 'Aufbau eines stabilen, skalierbaren Datenmodells als Grundlage für verlässliche Analysen.', en_desc: 'Building a stable, scalable data model as the foundation for reliable analyses.' },
-          { icon: '📊', de_title: 'Report-Erstellung', en_title: 'Report Creation', de_desc: 'Klare Power BI Dashboards und automatisierte Reports, die Ihre KPIs auf einen Blick sichtbar machen.', en_desc: 'Clear Power BI dashboards and automated reports that make your KPIs visible at a glance.' },
-        ].map(s => (
-          <div class="card">
-            <div style="font-size: 28px; margin-bottom: 16px;">{s.icon}</div>
-            <h3 style="margin-bottom: 10px;" data-de={s.de_title} data-en={s.en_title}>{s.de_title}</h3>
-            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;" data-de={s.de_desc} data-en={s.en_desc}>{s.de_desc}</p>
-          </div>
-        ))}
+<section class="hero">
+  <div class="hero-announce"><span class="badge" data-de="Neu" data-en="New">Neu</span><span data-de="Verfügbar für Projekte" data-en="Available for projects">Verfügbar für Projekte</span></div>
+  <h1>
+    <span style="display:block" data-de="Entdecken Sie" data-en="Unlock the">Entdecken Sie</span>
+    <span class="shuffle-line"><span class="shuffle-slot"><span class="shuffle-inner" id="shufflePhrase">das Potenzial</span></span></span>
+    <span style="display:block" data-de="Ihrer Daten" data-en="of your data">Ihrer Daten</span>
+  </h1>
+  <p class="hero-sub" data-de="Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt." data-en="Business Intelligence consulting that transforms raw data into automated reports and dashboards your team will actually use.">Business Intelligence Beratung, die Rohdaten in automatisierte Reports und Dashboards verwandelt, die Ihr Team tatsächlich nutzt.</p>
+  <div class="hero-buttons">
+    <a href="#contact" class="btn-dark" data-de="Projekt starten →" data-en="Start a Project →">Projekt starten →</a>
+    <a href="#portfolio" class="btn-outline" data-de="Projekte ansehen" data-en="View Work">Projekte ansehen</a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="services" class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Leistungen" data-en="Services">Leistungen</div>
+    <h2 class="section-title" data-de="Alles, was Sie brauchen, um datengetrieben zu arbeiten" data-en="Everything you need to work data-driven">Alles, was Sie brauchen, um datengetrieben zu arbeiten</h2>
+    <p class="section-desc" data-de="Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen." data-en="From raw data to actionable insights — tailored BI solutions.">Von Rohdaten bis zu fertigen Insights — maßgeschneiderte BI-Lösungen.</p>
+  </div>
+  <div class="card-grid cols-4">
+    <div class="card-item"><div class="card-num">01</div><h3 data-de="Daten-Bestandsaufnahme" data-en="Data Audit">Daten-Bestandsaufnahme</h3><p data-de="Analyse Ihrer bestehenden Datenquellen, Qualität und Struktur — als Grundlage für alle weiteren Schritte." data-en="Analysis of your existing data sources, quality, and structure — as the foundation for all next steps.">Analyse Ihrer bestehenden Datenquellen, Qualität und Struktur — als Grundlage für alle weiteren Schritte.</p></div>
+    <div class="card-item"><div class="card-num">02</div><h3 data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</h3><p data-de="Bereinigung und Standardisierung Ihrer Excel- und Quelldaten — saubere Daten als Basis für zuverlässiges Reporting." data-en="Cleaning and standardizing your Excel and source data — clean data as the basis for reliable reporting.">Bereinigung und Standardisierung Ihrer Excel- und Quelldaten — saubere Daten als Basis für zuverlässiges Reporting.</p></div>
+    <div class="card-item"><div class="card-num">03</div><h3 data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</h3><p data-de="Erstellung skalierbarer Datenmodelle in Power BI — Star-Schemas, Beziehungen und DAX-Logik für performante Reports." data-en="Building scalable data models in Power BI — star schemas, relationships, and DAX logic for performant reports.">Erstellung skalierbarer Datenmodelle in Power BI — Star-Schemas, Beziehungen und DAX-Logik für performante Reports.</p></div>
+    <div class="card-item"><div class="card-num">04</div><h3 data-de="Report-Erstellung" data-en="Report Development">Report-Erstellung</h3><p data-de="Interaktive Power BI Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen." data-en="Interactive Power BI dashboards that surface KPIs, trends, and anomalies — so stakeholders get answers, not questions.">Interaktive Power BI Dashboards, die KPIs, Trends und Anomalien sichtbar machen — damit Stakeholder Antworten bekommen.</p></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="process" class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Ablauf" data-en="Process">Ablauf</div>
+    <h2 class="section-title" data-de="Vom ersten Gespräch zum ersten Insight" data-en="From first call to first insight">Vom ersten Gespräch zum ersten Insight</h2>
+  </div>
+  <div class="card-grid cols-4">
+    <div class="card-item"><div class="card-num">01</div><h3 data-de="Discovery" data-en="Discovery">Discovery</h3><p data-de="Ihre Datenlandschaft, Ziele und Schmerzpunkte verstehen — in einem kostenlosen Erstgespräch." data-en="Understanding your data landscape, goals, and pain points in a free consultation.">Ihre Datenlandschaft, Ziele und Schmerzpunkte verstehen — in einem kostenlosen Erstgespräch.</p></div>
+    <div class="card-item"><div class="card-num">02</div><h3 data-de="Design" data-en="Design">Design</h3><p data-de="Wireframes und Datenmodell-Vorschläge. Sie geben grünes Licht, bevor gebaut wird." data-en="Wireframes and data model proposals. You sign off before any build starts.">Wireframes und Datenmodell-Vorschläge. Sie geben grünes Licht, bevor gebaut wird.</p></div>
+    <div class="card-item"><div class="card-num">03</div><h3 data-de="Build" data-en="Build">Build</h3><p data-de="Iterative Entwicklung mit wöchentlichen Check-ins. Live-Demos statt Überraschungen." data-en="Iterative development with weekly check-ins. Live demos, not surprises.">Iterative Entwicklung mit wöchentlichen Check-ins. Live-Demos statt Überraschungen.</p></div>
+    <div class="card-item"><div class="card-num">04</div><h3 data-de="Launch" data-en="Launch">Launch</h3><p data-de="Deployment, Dokumentation und optionaler laufender Support." data-en="Deployment, documentation, and optional ongoing support.">Deployment, Dokumentation und optionaler laufender Support.</p></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="pricing" class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Preise" data-en="Pricing">Preise</div>
+    <h2 class="section-title" data-de="Transparente Pakete für jede Projektgröße" data-en="Transparent packages for every project size">Transparente Pakete für jede Projektgröße</h2>
+    <p class="section-desc" data-de="Alle Preise zzgl. MwSt. Individuelle Angebote auf Anfrage." data-en="All prices excl. VAT. Custom quotes on request.">Alle Preise zzgl. MwSt. Individuelle Angebote auf Anfrage.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-rec">&nbsp;</div>
+      <div class="pricing-name">Insight</div>
+      <div class="pricing-desc" data-de="Bestandsaufnahme & Datenbereinigung" data-en="Data audit & cleaning">Bestandsaufnahme & Datenbereinigung</div>
+      <div class="pricing-price"><span class="amount">€750</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
+      <ul class="pricing-features">
+        <li data-de="Daten-Bestandsaufnahme" data-en="Data audit">Daten-Bestandsaufnahme</li>
+        <li data-de="Bereinigung eines Datensets (Excel / Quelle)" data-en="Cleaning of one dataset (Excel / source)">Bereinigung eines Datensets (Excel / Quelle)</li>
+        <li data-de="Kurzbericht mit Empfehlungen" data-en="Summary report with recommendations">Kurzbericht mit Empfehlungen</li>
+        <li data-de="1 Revisionsrunde" data-en="1 revision round">1 Revisionsrunde</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-outline pkg-select" data-pkg="Insight" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-rec" data-de="Empfohlen" data-en="Recommended">Empfohlen</div>
+      <div class="pricing-name">Build</div>
+      <div class="pricing-desc" data-de="Datenmodell & Dashboard-Erstellung" data-en="Data model & dashboard development">Datenmodell & Dashboard-Erstellung</div>
+      <div class="pricing-price"><span class="amount">€2.000</span><span class="period" data-de=" / Projekt" data-en=" / project"> / Projekt</span></div>
+      <ul class="pricing-features">
+        <li data-de="Datenbereinigung (Excel & Quellsysteme)" data-en="Data cleaning (Excel & source systems)">Datenbereinigung (Excel & Quellsysteme)</li>
+        <li data-de="Datenmodell-Erstellung (Star Schema)" data-en="Data model creation (star schema)">Datenmodell-Erstellung (Star Schema)</li>
+        <li data-de="1 interaktives Power BI Dashboard" data-en="1 interactive Power BI dashboard">1 interaktives Power BI Dashboard</li>
+        <li data-de="Dokumentation" data-en="Documentation">Dokumentation</li>
+        <li data-de="2 Revisionsrunden" data-en="2 revision rounds">2 Revisionsrunden</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-dark pkg-select" data-pkg="Build" data-de="Anfrage senden" data-en="Get Started">Anfrage senden</a>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-rec">&nbsp;</div>
+      <div class="pricing-name">Scale</div>
+      <div class="pricing-desc" data-de="Individuelles BI-Projekt" data-en="Custom BI project">Individuelles BI-Projekt</div>
+      <div class="pricing-price"><span class="amount" data-de="Auf Anfrage" data-en="On Request">Auf Anfrage</span></div>
+      <ul class="pricing-features">
+        <li data-de="Individueller Projektumfang" data-en="Custom project scope">Individueller Projektumfang</li>
+        <li data-de="Mehrere Dashboards & Reports" data-en="Multiple dashboards & reports">Mehrere Dashboards & Reports</li>
+        <li data-de="Laufende Betreuung" data-en="Ongoing support">Laufende Betreuung</li>
+        <li data-de="Team-Schulungen" data-en="Team training">Team-Schulungen</li>
+        <li data-de="Priorisierter Support" data-en="Priority support">Priorisierter Support</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-outline pkg-select" data-pkg="Scale" data-de="Gespräch vereinbaren" data-en="Book a Call">Gespräch vereinbaren</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="portfolio" class="scroll-section">
+  <div class="section-header">
+    <div class="section-label" data-de="Projekte" data-en="Portfolio">Projekte</div>
+    <h2 class="section-title" data-de="Ausgewählte Projekte" data-en="Selected projects">Ausgewählte Projekte</h2>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart1"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Finance</div><h3>Financial Reporting Cockpit</h3><p data-de="Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich." data-en="Consolidated financial reports with automated budget-vs-actuals tracking.">Konsolidierte Finanzberichte mit automatisiertem Budget-Ist-Vergleich.</p></div></div>
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart2"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Operations</div><h3>KPI Performance Dashboard</h3><p data-de="Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts." data-en="Real-time KPIs with trend analysis and threshold alerts.">Echtzeit-KPIs mit Trendanalyse und Schwellenwert-Alerts.</p></div></div>
+    <div class="portfolio-card"><div class="portfolio-vis"><canvas id="chart3"></canvas></div><div class="portfolio-body"><div class="portfolio-tag">Automation</div><h3>Rolling Forecast</h3><p data-de="Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich." data-en="Self-refreshing forecast replacing 12+ hours of monthly manual work.">Selbstaktualisierende Prognose — ersetzt 12+ Stunden manueller Arbeit monatlich.</p></div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="contact" class="scroll-section">
+  <div class="contact-wrapper">
+    <div class="section-header">
+      <div class="section-label" data-de="Kontakt" data-en="Contact">Kontakt</div>
+      <h2 class="section-title" data-de="Lassen Sie uns über Ihre Daten sprechen" data-en="Let's talk about your data">Lassen Sie uns über Ihre Daten sprechen</h2>
+      <p class="section-desc" data-de="Beschreiben Sie Ihre Herausforderung — ich melde mich innerhalb von 24 Stunden." data-en="Describe your challenge — I'll get back within 24 hours.">Beschreiben Sie Ihre Herausforderung — ich melde mich innerhalb von 24 Stunden.</p>
+    </div>
+    <form class="contact-form" id="contactForm" action="https://formspree.io/f/mbdqjadp" method="POST">
+      <input type="hidden" name="_subject" value="Neue Holocron Anfrage">
+      <input type="hidden" name="_replyto" value="holocrondata@outlook.de">
+      <input type="text" name="_gotcha" style="display:none">
+      <div class="form-row">
+        <div><label for="name" data-de="Name" data-en="Name">Name</label><input type="text" id="name" name="name" data-de-ph="Ihr Name" data-en-ph="Your name" placeholder="Ihr Name" required></div>
+        <div><label for="email">E-Mail</label><input type="email" id="email" name="email" data-de-ph="name@firma.de" data-en-ph="name@company.com" placeholder="name@firma.de" required></div>
       </div>
-    </div>
-  </section>
-
-  <!-- ABLAUF -->
-  <section id="ablauf">
-    <div class="container">
-      <p class="section-label" data-de="Ablauf" data-en="Process">Ablauf</p>
-      <h2 style="margin-bottom: 48px;" data-de="So arbeiten wir zusammen" data-en="How we work together">So arbeiten wir zusammen</h2>
-      <div style="display: flex; flex-direction: column; gap: 0; max-width: 640px;">
-        {[
-          { num: '01', de_title: 'Erstgespräch', en_title: 'Initial call', de_desc: 'Wir klären Ihre Situation, Ziele und den groben Scope in einem 30-minütigen Call.', en_desc: 'We clarify your situation, goals and rough scope in a 30-minute call.' },
-          { num: '02', de_title: 'Analyse & Angebot', en_title: 'Analysis & proposal', de_desc: 'Ich analysiere Ihre Datenquellen und erstelle ein konkretes Angebot mit Zeitplan.', en_desc: 'I analyse your data sources and create a concrete proposal with timeline.' },
-          { num: '03', de_title: 'Umsetzung', en_title: 'Implementation', de_desc: 'Wöchentliche Updates, transparente Kommunikation, iterative Lieferung.', en_desc: 'Weekly updates, transparent communication, iterative delivery.' },
-          { num: '04', de_title: 'Übergabe', en_title: 'Handover', de_desc: 'Vollständige Dokumentation und Einweisung Ihres Teams — damit Sie unabhängig bleiben.', en_desc: 'Complete documentation and briefing of your team — so you stay independent.' },
-        ].map((step, i) => (
-          <div style={`display: flex; gap: 24px; padding: 32px 0; ${i < 3 ? 'border-bottom: 1px solid var(--border);' : ''}`}>
-            <div style="font-family: var(--font-mono); font-size: 13px; color: var(--accent); font-weight: 500; min-width: 28px; padding-top: 2px;">{step.num}</div>
-            <div>
-              <h3 style="margin-bottom: 8px;" data-de={step.de_title} data-en={step.en_title}>{step.de_title}</h3>
-              <p style="font-size: 14px; color: var(--text-muted);" data-de={step.de_desc} data-en={step.en_desc}>{step.de_desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- PREISE -->
-  <section id="preise" style="background: var(--surface);">
-    <div class="container">
-      <p class="section-label" data-de="Preise" data-en="Pricing">Preise</p>
-      <h2 style="margin-bottom: 12px;" data-de="Transparente Pakete" data-en="Transparent packages">Transparente Pakete</h2>
-      <p style="color: var(--text-muted); margin-bottom: 48px; max-width: 440px;"
-        data-de="Feste Preise, klare Leistungen. Kein Stundensatz-Roulette."
-        data-en="Fixed prices, clear deliverables. No hourly rate roulette.">
-        Feste Preise, klare Leistungen. Kein Stundensatz-Roulette.
-      </p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 900px;">
-        {[
-          {
-            name: 'Insight',
-            price: '€ 750',
-            de_desc: 'Daten-Bestandsaufnahme & Statusbericht',
-            en_desc: 'Data audit & status report',
-            items_de: ['Analyse Ihrer Datenquellen', 'Dokumentierter Statusbericht', 'Handlungsempfehlungen', '1 Revisions-Runde'],
-            items_en: ['Analysis of your data sources', 'Documented status report', 'Recommendations for action', '1 revision round'],
-            pkg: 'insight'
-          },
-          {
-            name: 'Build',
-            price: '€ 2.000',
-            de_desc: 'Datenmodell + Power BI Dashboard',
-            en_desc: 'Data model + Power BI dashboard',
-            items_de: ['Datenbereinigung & Modellierung', 'Power BI Dashboard (bis 5 Seiten)', 'Automatisierter Datenrefresh', '2 Revisions-Runden', 'Übergabe & Einweisung'],
-            items_en: ['Data cleaning & modelling', 'Power BI dashboard (up to 5 pages)', 'Automated data refresh', '2 revision rounds', 'Handover & briefing'],
-            pkg: 'build',
-            featured: true
-          },
-          {
-            name: 'Scale',
-            price: 'Auf Anfrage',
-            de_desc: 'Individuelle BI-Lösung & laufende Betreuung',
-            en_desc: 'Custom BI solution & ongoing support',
-            items_de: ['Alles aus Build', 'Laufende Betreuung (monatlich)', 'Erweiterte Datenquellen', 'Individuelle Anforderungen'],
-            items_en: ['Everything from Build', 'Ongoing support (monthly)', 'Extended data sources', 'Custom requirements'],
-            pkg: 'scale'
-          },
-        ].map(p => (
-          <div class="card" style={p.featured ? 'border-color: var(--accent); position: relative;' : ''}>
-            {p.featured && <div style="position: absolute; top: -12px; left: 24px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.04em;" data-de="Beliebt" data-en="Popular">Beliebt</div>}
-            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">{p.name}</div>
-            <div style="font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px;">{p.price}</div>
-            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);" data-de={p.de_desc} data-en={p.en_desc}>{p.de_desc}</p>
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px;">
-              {p.items_de.map((item, idx) => (
-                <li style="font-size: 14px; display: flex; gap: 10px; align-items: flex-start;">
-                  <span style="color: var(--accent); margin-top: 1px;">✓</span>
-                  <span data-de={item} data-en={p.items_en[idx]}>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <a href={`#kontakt`} class="btn btn-primary" style="width: 100%; justify-content: center;"
-              data-pkg={p.pkg}
-              data-de="Paket anfragen" data-en="Request package">Paket anfragen</a>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJEKTE -->
-  <section id="projekte">
-    <div class="container">
-      <p class="section-label" data-de="Projekte" data-en="Projects">Projekte</p>
-      <h2 style="margin-bottom: 12px;" data-de="Ausgewählte Arbeiten" data-en="Selected work">Ausgewählte Arbeiten</h2>
-      <p style="color: var(--text-muted); margin-bottom: 48px;" data-de="Beispielprojekte zur Veranschaulichung der Arbeit." data-en="Example projects to illustrate the work.">Beispielprojekte zur Veranschaulichung der Arbeit.</p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
-        {[
-          {
-            de_title: 'Vertriebs-Dashboard',
-            en_title: 'Sales Dashboard',
-            de_tag: 'Power BI · NordTech GmbH',
-            en_tag: 'Power BI · NordTech GmbH',
-            de_desc: 'Konsolidierung von Verkaufsdaten aus 3 Quellen in ein zentrales Power BI Dashboard mit automatisiertem Monatsabschluss.',
-            en_desc: 'Consolidation of sales data from 3 sources into a central Power BI dashboard with automated month-end close.',
-            color: '#EFF6FF'
-          },
-          {
-            de_title: 'Datenmodell-Migration',
-            en_title: 'Data Model Migration',
-            de_tag: 'Datenmodellierung · Mittelstand',
-            en_tag: 'Data Modelling · SME',
-            de_desc: 'Migration eines gewachsenen Excel-basierten Reportings in ein sauberes Stern-Schema für schnellere Analysen.',
-            en_desc: 'Migration of a grown Excel-based reporting system into a clean star schema for faster analyses.',
-            color: '#F0FDF4'
-          },
-          {
-            de_title: 'Automatisierter Monatsbericht',
-            en_title: 'Automated Monthly Report',
-            de_tag: 'Report-Automation · Power BI',
-            en_tag: 'Report Automation · Power BI',
-            de_desc: 'Vollautomatischer PDF-Export und E-Mail-Versand des Monatsberichts — spart 8 Stunden manuelle Arbeit pro Monat.',
-            en_desc: 'Fully automated PDF export and email delivery of monthly report — saves 8 hours of manual work per month.',
-            color: '#FFF7ED'
-          },
-        ].map(proj => (
-          <div class="card">
-            <div style={`height: 180px; background: ${proj.color}; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;`}>
-              <canvas width="280" height="140" class="project-canvas" data-type={proj.de_title}></canvas>
-            </div>
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 10px;" data-de={proj.de_tag} data-en={proj.en_tag}>{proj.de_tag}</div>
-            <h3 style="margin-bottom: 8px;" data-de={proj.de_title} data-en={proj.en_title}>{proj.de_title}</h3>
-            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;" data-de={proj.de_desc} data-en={proj.en_desc}>{proj.de_desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- KONTAKT -->
-  <section id="kontakt" style="background: var(--surface);">
-    <div class="container" style="max-width: 640px;">
-      <p class="section-label" data-de="Kontakt" data-en="Contact">Kontakt</p>
-      <h2 style="margin-bottom: 12px;" data-de="Projekt anfragen" data-en="Request a project">Projekt anfragen</h2>
-      <p style="color: var(--text-muted); margin-bottom: 40px;" data-de="Beschreiben Sie kurz Ihr Anliegen — ich melde mich innerhalb von 24 Stunden." data-en="Briefly describe your request — I'll get back to you within 24 hours.">Beschreiben Sie kurz Ihr Anliegen — ich melde mich innerhalb von 24 Stunden.</p>
-
-      <form action="https://formspree.io/f/mbdqjadp" method="POST" style="display: flex; flex-direction: column; gap: 16px;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div>
-            <label style="font-size: 13px; font-weight: 500; display: block; margin-bottom: 6px;" data-de="Name" data-en="Name">Name</label>
-            <input type="text" name="name" required
-              style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: var(--font-sans); outline: none; transition: border-color 0.15s;"
-              data-de-ph="Max Mustermann" data-en-ph="John Smith" placeholder="Max Mustermann" />
-          </div>
-          <div>
-            <label style="font-size: 13px; font-weight: 500; display: block; margin-bottom: 6px;">E-Mail</label>
-            <input type="email" name="email" required
-              style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: var(--font-sans); outline: none; transition: border-color 0.15s;"
-              placeholder="max@firma.de" />
-          </div>
-        </div>
-
-        <div>
-          <label style="font-size: 13px; font-weight: 500; display: block; margin-bottom: 6px;" data-de="Paket" data-en="Package">Paket</label>
-          <select name="paket" id="paketSelect"
-            style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: var(--font-sans); outline: none; background: var(--bg);">
-            <option value="" data-de="Bitte wählen..." data-en="Please select...">Bitte wählen...</option>
-            <option value="insight">Insight — € 750</option>
-            <option value="build">Build — € 2.000</option>
-            <option value="scale" data-de="Scale — Auf Anfrage" data-en="Scale — On request">Scale — Auf Anfrage</option>
-            <option value="sonstiges" data-de="Sonstiges" data-en="Other">Sonstiges</option>
+      <div><label for="company" data-de="Unternehmen" data-en="Company">Unternehmen</label><input type="text" id="company" name="company" data-de-ph="Firmenname" data-en-ph="Company name" placeholder="Firmenname"></div>
+      <div class="form-row">
+        <div><label for="service" data-de="Leistung" data-en="Service">Leistung</label>
+          <select id="service" name="service">
+            <option value="" data-de="Bitte wählen..." data-en="Select...">Bitte wählen...</option>
+            <option data-de="Daten-Bestandsaufnahme" data-en="Data Audit">Daten-Bestandsaufnahme</option>
+            <option data-de="Datenbereinigung" data-en="Data Cleaning">Datenbereinigung</option>
+            <option data-de="Datenmodellierung" data-en="Data Modeling">Datenmodellierung</option>
+            <option data-de="Report-Erstellung" data-en="Report Development">Report-Erstellung</option>
+            <option data-de="Noch unsicher" data-en="Not sure yet">Noch unsicher</option>
           </select>
         </div>
-
-        <div>
-          <label style="font-size: 13px; font-weight: 500; display: block; margin-bottom: 6px;" data-de="Nachricht" data-en="Message">Nachricht</label>
-          <textarea name="message" rows="5" required
-            style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: var(--font-sans); outline: none; resize: vertical; transition: border-color 0.15s;"
-            data-de-ph="Kurze Beschreibung Ihres Projekts..." data-en-ph="Brief description of your project..."
-            placeholder="Kurze Beschreibung Ihres Projekts..."></textarea>
+        <div><label for="package" data-de="Paket" data-en="Package">Paket</label>
+          <select id="package" name="package">
+            <option value="" data-de="Kein Paket gewählt" data-en="No package selected">Kein Paket gewählt</option>
+            <option value="Insight">Insight — €750</option>
+            <option value="Build">Build — €2.000</option>
+            <option value="Scale" data-de="Scale — Auf Anfrage" data-en="Scale — On Request">Scale — Auf Anfrage</option>
+          </select>
         </div>
+      </div>
+      <div><label for="message" data-de="Projektbeschreibung" data-en="Project Description">Projektbeschreibung</label><textarea id="message" name="message" data-de-ph="Erzählen Sie mir von Ihrem aktuellen Setup und Ihren Zielen..." data-en-ph="Tell me about your current setup and goals..." placeholder="Erzählen Sie mir von Ihrem aktuellen Setup und Ihren Zielen..."></textarea></div>
+      <button type="submit" class="form-submit" data-de="Nachricht senden →" data-en="Send Message →">Nachricht senden →</button>
+    </form>
+  </div>
+</section>
 
-        <button type="submit" class="btn btn-primary" style="align-self: flex-start;" data-de="Nachricht senden" data-en="Send message">Nachricht senden</button>
-      </form>
-    </div>
-  </section>
-</Base>
+<footer>
+  <span>© 2026 Holocron — holocrondata.net</span>
+  <span data-de="Business Intelligence Services" data-en="Business Intelligence Services">Business Intelligence Services</span>
+</footer>
 
 <script>
-  // Word shuffle animation
-  const words = { de: ['Klar.', 'Strukturiert.', 'Verwertbar.', 'Verlässlich.'], en: ['Clear.', 'Structured.', 'Actionable.', 'Reliable.'] };
-  let idx = 0;
-  let lang = 'de';
-  const el = document.getElementById('shuffle-word');
-  setInterval(() => {
-    idx = (idx + 1) % words.de.length;
-    if (el) el.textContent = words[lang as keyof typeof words][idx];
-  }, 2000);
+const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); } }); }, { threshold: 0.06 });
+document.querySelectorAll('.scroll-section').forEach(el => obs.observe(el));
 
-  // Package pre-select
-  document.querySelectorAll('[data-pkg]').forEach(btn => {
+(function() {
+  const phrasesDE = ['das Potenzial', 'den Wert', 'die Intelligenz'];
+  const phrasesEN = ['the potential', 'the value', 'the intelligence'];
+  let idx = 0, lang = 'de';
+  const el = document.getElementById('shufflePhrase');
+  setInterval(() => {
+    const phrases = lang === 'de' ? phrasesDE : phrasesEN;
+    el.classList.add('exit');
+    setTimeout(() => {
+      idx = (idx + 1) % phrases.length;
+      el.textContent = phrases[idx];
+      el.classList.remove('exit');
+      el.classList.add('enter');
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('enter')));
+    }, 280);
+  }, 2800);
+  window._setShuffleLang = (l) => { lang = l; idx = 0; el.textContent = (l === 'de' ? phrasesDE : phrasesEN)[0]; };
+})();
+
+(function() {
+  const btns = document.querySelectorAll('.lang-btn');
+  btns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const pkg = btn.getAttribute('data-pkg');
-      const sel = document.getElementById('paketSelect') as HTMLSelectElement;
-      if (sel && pkg) sel.value = pkg;
+      const lang = btn.dataset.lang;
+      btns.forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (val) el.textContent = val;
+      });
+      document.querySelectorAll('[data-' + lang + '-ph]').forEach(el => {
+        el.placeholder = el.getAttribute('data-' + lang + '-ph');
+      });
+      window._setShuffleLang(lang);
     });
   });
+})();
 
-  // Canvas charts
-  document.querySelectorAll('.project-canvas').forEach(canvas => {
-    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
-    if (!ctx) return;
-    const type = canvas.getAttribute('data-type');
-    ctx.clearRect(0, 0, 280, 140);
-
-    if (type === 'Vertriebs-Dashboard') {
-      const data = [60, 85, 72, 95, 88, 110, 102];
-      const max = Math.max(...data);
-      const barW = 28, gap = 12, startX = 18;
-      data.forEach((v, i) => {
-        const h = (v / max) * 90;
-        ctx.fillStyle = i === 6 ? '#2563EB' : '#BFDBFE';
-        ctx.beginPath();
-        ctx.roundRect(startX + i * (barW + gap), 120 - h, barW, h, [4, 4, 0, 0]);
-        ctx.fill();
-      });
-    } else if (type === 'Datenmodell-Migration') {
-      const nodes = [[70, 70], [140, 35], [210, 70], [140, 105]];
-      ctx.strokeStyle = '#BFDBFE'; ctx.lineWidth = 1.5;
-      [[0,1],[0,3],[1,2],[3,2]].forEach(([a,b]) => {
-        ctx.beginPath(); ctx.moveTo(nodes[a][0], nodes[a][1]); ctx.lineTo(nodes[b][0], nodes[b][1]); ctx.stroke();
-      });
-      nodes.forEach(([x, y], i) => {
-        ctx.beginPath(); ctx.arc(x, y, i === 0 ? 14 : 9, 0, Math.PI * 2);
-        ctx.fillStyle = i === 0 ? '#2563EB' : '#93C5FD'; ctx.fill();
-      });
-    } else {
-      const pts = [20, 55, 40, 35, 80, 50, 120, 25, 160, 40, 200, 20, 240, 30, 260, 22];
-      ctx.beginPath(); ctx.moveTo(pts[0], pts[1]);
-      for (let i = 2; i < pts.length; i += 2) ctx.lineTo(pts[i], pts[i+1]);
-      ctx.strokeStyle = '#2563EB'; ctx.lineWidth = 2.5; ctx.stroke();
-      ctx.lineTo(pts[pts.length-2], 130); ctx.lineTo(pts[0], 130); ctx.closePath();
-      ctx.fillStyle = 'rgba(37,99,235,0.08)'; ctx.fill();
-    }
+document.querySelectorAll('.pkg-select').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const pkg = btn.dataset.pkg;
+    setTimeout(() => { const sel = document.getElementById('package'); if (sel) sel.value = pkg; }, 400);
   });
+});
+
+function dc(id, type) {
+  const c = document.getElementById(id); if (!c) return;
+  const ctx = c.getContext('2d'), dpr = window.devicePixelRatio || 1, r = c.getBoundingClientRect();
+  c.width = r.width * dpr; c.height = r.height * dpr; ctx.scale(dpr, dpr);
+  const w = r.width, h = r.height;
+  ctx.strokeStyle = 'rgba(0,0,0,0.04)'; ctx.lineWidth = 1;
+  for (let y = 20; y < h; y += 25) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+  if (type === 'bars') { const n = 16, gap = 4, bw = (w - 40 - gap * (n - 1)) / n; for (let i = 0; i < n; i++) { const bh = 20 + Math.random() * (h - 60); ctx.fillStyle = '#09090B'; ctx.globalAlpha = 0.1 + Math.random() * 0.15; ctx.beginPath(); ctx.roundRect(20 + i * (bw + gap), h - 10 - bh, bw, bh, [3, 3, 0, 0]); ctx.fill(); } ctx.globalAlpha = 1; }
+  else if (type === 'line') { const pts = [], steps = 24; for (let i = 0; i <= steps; i++) pts.push({ x: 15 + (i / steps) * (w - 30), y: h * 0.35 + Math.sin(i * 0.45) * h * 0.18 + (Math.random() - 0.5) * h * 0.06 }); const gf = ctx.createLinearGradient(0, 0, 0, h); gf.addColorStop(0, 'rgba(9,9,11,0.07)'); gf.addColorStop(1, 'rgba(9,9,11,0)'); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) { const xc = (pts[i].x + pts[i - 1].x) / 2, yc = (pts[i].y + pts[i - 1].y) / 2; ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, xc, yc); } ctx.lineTo(w - 15, h); ctx.lineTo(15, h); ctx.closePath(); ctx.fillStyle = gf; ctx.fill(); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++) { const xc = (pts[i].x + pts[i - 1].x) / 2, yc = (pts[i].y + pts[i - 1].y) / 2; ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, xc, yc); } ctx.strokeStyle = '#09090B'; ctx.globalAlpha = 0.2; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1; }
+  else { for (let l = 2; l >= 0; l--) { const pts = [], steps = 18, base = h * (0.55 + l * 0.1); for (let i = 0; i <= steps; i++) pts.push({ x: (i / steps) * w, y: base + Math.sin(i * 0.5 + l * 1.2) * h * 0.12 - l * h * 0.08 }); ctx.beginPath(); ctx.moveTo(0, h); pts.forEach(p => ctx.lineTo(p.x, p.y)); ctx.lineTo(w, h); ctx.closePath(); ctx.fillStyle = `rgba(9,9,11,${0.06 - l * 0.015})`; ctx.fill(); } }
+}
+const co = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { if (x.target.id === 'chart1') dc('chart1', 'bars'); if (x.target.id === 'chart2') dc('chart2', 'line'); if (x.target.id === 'chart3') dc('chart3', 'area'); co.unobserve(x.target); } }); }, { threshold: 0.3 });
+['chart1', 'chart2', 'chart3'].forEach(id => { const el = document.getElementById(id); if (el) co.observe(el); });
+window.addEventListener('resize', () => { dc('chart1', 'bars'); dc('chart2', 'line'); dc('chart3', 'area'); });
+
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault(); const btn = this.querySelector('.form-submit'); const orig = btn.textContent; btn.textContent = '...'; btn.disabled = true;
+  try { const res = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+    if (res.ok) { btn.textContent = '✓'; this.reset(); setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2500); }
+    else { btn.textContent = 'Fehler'; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2500); } }
+  catch { btn.textContent = 'Fehler'; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2500); }
+});
 </script>
+</Base>
