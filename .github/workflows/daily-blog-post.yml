@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -26,30 +25,10 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/generate-post.mjs
 
-      - name: Read metadata
-        id: meta
+      - name: Commit and push directly to main
         run: |
-          echo "title=$(cat /tmp/post_title.txt)" >> $GITHUB_OUTPUT
-          echo "slug=$(cat /tmp/post_slug.txt)" >> $GITHUB_OUTPUT
-          echo "date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
-
-      - name: Commit and push branch
-        run: |
-          BRANCH="blog/auto-${{ steps.meta.outputs.date }}-${{ steps.meta.outputs.slug }}"
           git config user.name "Holocron Bot"
           git config user.email "bot@holocrondata.net"
-          git checkout -b "$BRANCH"
           git add src/pages/blog/
-          git commit -m "blog: ${{ steps.meta.outputs.title }}"
-          git push origin "$BRANCH"
-          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
-
-      - name: Open Pull Request
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr create \
-            --title "Blog: ${{ steps.meta.outputs.title }}" \
-            --body "Neuer Beitrag vom ${{ steps.meta.outputs.date }}. Unter **Files changed** pruefen, dann **Merge** zum Veroeffentlichen." \
-            --base main \
-            --head "$BRANCH"
+          git commit -m "blog: auto post $(date +%Y-%m-%d)"
+          git push origin main
