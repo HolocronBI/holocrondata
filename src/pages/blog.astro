@@ -133,7 +133,7 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
         <div class="featured-section">
           <div class="featured-label">Neuester Beitrag</div>
           <a href={featured.url} class="featured-card">
-            <div class="featured-vis"><canvas id="featuredChart"></canvas></div>
+            <div class="featured-vis" id="featuredVis"></div>
             <div>
               <div class="featured-tag">{featured.frontmatter.tag || 'Blog'}</div>
               <div class="featured-title">{featured.frontmatter.title}</div>
@@ -148,14 +148,14 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
         </div>
       )}
 
-      {rest.length > 0 && (
+      {allPosts.length > 0 && (
         <div class="list-section">
           <div class="list-header">
             <div class="list-label">Alle Beiträge</div>
             <div class="list-count" id="pageCount"></div>
           </div>
           <div class="post-list" id="postList">
-            {rest.map((post, i) => (
+            {allPosts.map((post, i) => (
               <a href={post.url} class="post-row" data-index={i}>
                 <div class="post-row-tag">{post.frontmatter.tag || 'Blog'}</div>
                 <div class="post-row-title">{post.frontmatter.title}</div>
@@ -186,32 +186,117 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
 </footer>
 
 <script>
-function drawChart(id) {
-  const c = document.getElementById(id); if (!c) return;
-  const ctx = c.getContext('2d'), dpr = window.devicePixelRatio || 1, r = c.getBoundingClientRect();
-  c.width = r.width * dpr; c.height = r.height * dpr; ctx.scale(dpr, dpr);
-  const w = r.width, h = r.height;
-  ctx.strokeStyle = 'rgba(0,0,0,0.04)'; ctx.lineWidth = 1;
-  for (let y = 20; y < h; y += 30) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
-  const n = 20, gap = 3, bw = (w - 48 - gap * (n-1)) / n;
-  for (let i = 0; i < n; i++) {
-    const bh = 24 + Math.random() * (h - 64);
-    ctx.fillStyle = '#09090B'; ctx.globalAlpha = 0.07 + Math.random() * 0.12;
-    ctx.beginPath(); ctx.roundRect(24 + i * (bw + gap), h - 12 - bh, bw, bh, [3,3,0,0]); ctx.fill();
+// Animated flowing curves visual
+(function() {
+  const container = document.getElementById('featuredVis');
+  if (!container) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.display = 'block';
+  container.appendChild(canvas);
+
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+  let animId;
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const r = container.getBoundingClientRect();
+    canvas.width = r.width * dpr;
+    canvas.height = r.height * dpr;
+    ctx.scale(dpr, dpr);
   }
-  ctx.globalAlpha = 1;
-  const pts = [], steps = 30;
-  for (let i = 0; i <= steps; i++) pts.push({ x: (i/steps)*w, y: h*0.45 + Math.sin(i*0.38)*h*0.2 + (Math.random()-0.5)*h*0.05 });
-  const gf = ctx.createLinearGradient(0,0,0,h); gf.addColorStop(0,'rgba(37,99,235,0.12)'); gf.addColorStop(1,'rgba(37,99,235,0)');
-  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
-  for (let i=1;i<pts.length;i++) { const xc=(pts[i].x+pts[i-1].x)/2, yc=(pts[i].y+pts[i-1].y)/2; ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc); }
-  ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath(); ctx.fillStyle=gf; ctx.fill();
-  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
-  for (let i=1;i<pts.length;i++) { const xc=(pts[i].x+pts[i-1].x)/2, yc=(pts[i].y+pts[i-1].y)/2; ctx.quadraticCurveTo(pts[i-1].x,pts[i-1].y,xc,yc); }
-  ctx.strokeStyle='#2563EB'; ctx.globalAlpha=0.5; ctx.lineWidth=2; ctx.stroke(); ctx.globalAlpha=1;
-}
-window.addEventListener('load', () => drawChart('featuredChart'));
-window.addEventListener('resize', () => drawChart('featuredChart'));
+
+  function draw() {
+    const r = container.getBoundingClientRect();
+    const w = r.width, h = r.height;
+    ctx.clearRect(0, 0, w, h);
+
+    // Subtle grid
+    ctx.strokeStyle = 'rgba(0,0,0,0.04)';
+    ctx.lineWidth = 1;
+    for (let y = 0; y < h; y += h / 5) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+    for (let x = 0; x < w; x += w / 8) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    }
+
+    // 3 flowing curves, different speeds and amplitudes
+    const curves = [
+      { speed: 0.4, amp: 0.18, base: 0.55, alpha: 0.18, width: 2.5, color: '37,99,235' },
+      { speed: 0.25, amp: 0.12, base: 0.45, alpha: 0.10, width: 1.5, color: '37,99,235' },
+      { speed: 0.6, amp: 0.08, base: 0.65, alpha: 0.07, width: 1, color: '9,9,11' },
+    ];
+
+    curves.forEach(c => {
+      const steps = 80;
+      const pts = [];
+      for (let i = 0; i <= steps; i++) {
+        const x = (i / steps) * w;
+        const y = h * c.base
+          + Math.sin(i * 0.18 + t * c.speed) * h * c.amp
+          + Math.sin(i * 0.07 + t * c.speed * 0.6) * h * c.amp * 0.5;
+        pts.push({ x, y });
+      }
+
+      // Fill under curve
+      const gf = ctx.createLinearGradient(0, 0, 0, h);
+      gf.addColorStop(0, `rgba(${c.color},${c.alpha})`);
+      gf.addColorStop(1, `rgba(${c.color},0)`);
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) {
+        const xc = (pts[i].x + pts[i-1].x) / 2;
+        const yc = (pts[i].y + pts[i-1].y) / 2;
+        ctx.quadraticCurveTo(pts[i-1].x, pts[i-1].y, xc, yc);
+      }
+      ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
+      ctx.fillStyle = gf; ctx.fill();
+
+      // Stroke
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) {
+        const xc = (pts[i].x + pts[i-1].x) / 2;
+        const yc = (pts[i].y + pts[i-1].y) / 2;
+        ctx.quadraticCurveTo(pts[i-1].x, pts[i-1].y, xc, yc);
+      }
+      ctx.strokeStyle = `rgba(${c.color},${c.alpha * 3})`;
+      ctx.lineWidth = c.width;
+      ctx.stroke();
+    });
+
+    // Floating data points on top curve
+    const mainCurve = curves[0];
+    [0.15, 0.35, 0.55, 0.72, 0.88].forEach(pct => {
+      const i = Math.floor(pct * 80);
+      const x = (i / 80) * w;
+      const y = h * mainCurve.base
+        + Math.sin(i * 0.18 + t * mainCurve.speed) * h * mainCurve.amp
+        + Math.sin(i * 0.07 + t * mainCurve.speed * 0.6) * h * mainCurve.amp * 0.5;
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = '#2563EB';
+      ctx.globalAlpha = 0.7;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(37,99,235,0.15)';
+      ctx.fill();
+    });
+
+    t += 0.012;
+    animId = requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  window.addEventListener('resize', () => { cancelAnimationFrame(animId); resize(); draw(); });
+})();
 
 // Pagination
 const PER_PAGE = 9;
