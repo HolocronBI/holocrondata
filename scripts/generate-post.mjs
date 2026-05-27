@@ -119,6 +119,8 @@ TONREGELN — strikt einhalten:
 - Professionell, direkt, ehrlich — kein Marketing-Sprech, keine Buzzwords
 - Am Ende ein sanfter CTA auf /kontakt — kein Druck, keine Versprechen
 - Zielgruppe: Geschaeftsfuehrer und Entscheider in Unternehmen mit 50-500 Mitarbeitern
+- Verwende NIEMALS Code-Bloecke, technische Listings oder Monospace-Formatierungen
+- Beispiele werden in normalem Fliesstext beschrieben, nicht als Code dargestellt
 
 Antworte NUR mit einem validen JSON-Objekt. Keine Backticks, keine Praembel, nur JSON.`;
 
@@ -132,7 +134,7 @@ Antworte mit diesem JSON:
   "excerpt": "2-3 praegnante Saetze als Vorschau, ca. 120 Zeichen",
   "tag": "${topic.category}",
   "readTime": 5,
-  "content": "Vollstaendiger Markdown-Inhalt, mindestens 600 Woerter, mit ##-Ueberschriften, Wir-Form durchgehend, konkrete Beispiele, sanfter CTA am Ende"
+  "content": "Vollstaendiger Markdown-Inhalt, mindestens 600 Woerter, mit ##-Ueberschriften, Wir-Form durchgehend, konkrete Beispiele in Prosa beschrieben (KEIN Code, KEINE Code-Bloecke, KEINE technischen Listings), sanfter CTA am Ende"
 }`;
 
 const response = await fetch('https://api.anthropic.com/v1/messages', {
