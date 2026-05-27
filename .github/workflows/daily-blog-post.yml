@@ -1,0 +1,169 @@
+name: Daily Blog Post
+
+on:
+  schedule:
+    # Runs every day at 07:00 UTC (09:00 German time)
+    - cron: '0 7 * * *'
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  generate-post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate blog post with Claude
+        id: generate
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+
+          const today = new Date();
+          const dateStr = today.toISOString().split('T')[0];
+
+          // Alternate between topic categories
+          const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+          const topicCategory = dayOfYear % 2 === 0 ? 'power-bi' : 'mittelstand-data';
+
+          const systemPrompt = `Du bist ein erfahrener Business Intelligence Berater und Autor, der für das Blog von Holocron Data schreibt.
+          Holocron Data ist ein Freelance-BI-Beratungsunternehmen, das sich auf den deutschen Mittelstand spezialisiert hat.
+          Kernleistungen: Daten-Bestandsaufnahme, Datenbereinigung, Datenmodellierung, Power BI Reports.
+          Ton: professionell, direkt, praxisnah — kein Marketing-Sprech, keine Buzzwords.
+          Zielgruppe: Geschäftsführer und Entscheider in mittelständischen Unternehmen (50–500 Mitarbeiter).
+          
+          Du antwortest NUR mit einem validen JSON-Objekt, ohne Markdown-Backticks, ohne Präambel.`;
+
+          const topicPrompts = {
+            'power-bi': `Schreibe einen praxisnahen deutschen Blog-Beitrag über Power BI für den Mittelstand.
+            Mögliche Themen: DAX-Tipps, Dashboard-Design-Prinzipien, Datenrefresh-Automatisierung, Row-Level Security, 
+            Power Query Transformationen, Star Schema vs. Flat Table, KPI-Visualisierungen, Report-Templates.
+            Wähle ein konkretes, spezifisches Thema — keine allgemeinen Übersichtsartikel.`,
+            'mittelstand-data': `Schreibe einen praxisnahen deutschen Blog-Beitrag über Datenmanagement für den Mittelstand.
+            Mögliche Themen: Warum Datenqualität wichtig ist, Excel vs. Datenbank, ERP-Daten nutzbar machen,
+            Datensilos aufbrechen, ROI von BI-Projekten, Datenbereinigung in der Praxis, Bestandsaufnahme starten,
+            Reporting-Automatisierung, typische Datenfehler und wie man sie vermeidet.
+            Wähle ein konkretes, spezifisches Thema — keine allgemeinen Übersichtsartikel.`
+          };
+
+          const userPrompt = `${topicPrompts[topicCategory]}
+          
+          Antworte mit diesem JSON-Format (alle Felder auf Deutsch):
+          {
+            "title": "Der vollständige Titel des Artikels",
+            "slug": "url-freundlicher-slug-mit-bindestrichen",
+            "excerpt": "2-3 Sätze Zusammenfassung für die Blog-Übersicht (ca. 100-130 Zeichen)",
+            "tag": "Eine der folgenden Kategorien: Power BI | Datenmodellierung | Datenqualität | Report-Automation | BI-Strategie",
+            "readTime": 5,
+            "content": "Der vollständige Markdown-Inhalt des Artikels. Mindestens 600 Wörter. Verwende ##-Überschriften, keine #. Strukturiert, mit konkreten Beispielen. Am Ende ein sanfter CTA auf /kontakt ohne aggressive Verkaufssprache."
+          }`;
+
+          async function generatePost() {
+            const response = await fetch('https://api.anthropic.com/v1/messages', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': process.env.ANTHROPIC_API_KEY,
+                'anthropic-version': '2023-06-01'
+              },
+              body: JSON.stringify({
+                model: 'claude-sonnet-4-20250514',
+                max_tokens: 3000,
+                system: systemPrompt,
+                messages: [{ role: 'user', content: userPrompt }]
+              })
+            });
+
+            if (!response.ok) {
+              throw new Error(`API error: ${response.status} ${await response.text()}`);
+            }
+
+            const data = await response.json();
+            const text = data.content[0].text.trim();
+            
+            // Strip markdown fences if present
+            const clean = text.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim();
+            const post = JSON.parse(clean);
+
+            // Build the markdown file
+            const frontmatter = `---
+layout: ../../layouts/BlogPost.astro
+title: "${post.title.replace(/"/g, '\\"')}"
+excerpt: "${post.excerpt.replace(/"/g, '\\"')}"
+date: ${dateStr}
+tag: ${post.tag}
+readTime: ${post.readTime}
+---
+
+`;
+            const fileContent = frontmatter + post.content;
+            const fileName = `src/pages/blog/${post.slug}.md`;
+
+            fs.writeFileSync(fileName, fileContent, 'utf8');
+            console.log(`Generated: ${fileName}`);
+
+            // Write outputs for next steps
+            fs.writeFileSync('/tmp/post_title.txt', post.title);
+            fs.writeFileSync('/tmp/post_slug.txt', post.slug);
+            fs.writeFileSync('/tmp/post_file.txt', fileName);
+          }
+
+          generatePost().catch(err => {
+            console.error('Generation failed:', err);
+            process.exit(1);
+          });
+          EOF
+
+      - name: Read post metadata
+        id: meta
+        run: |
+          echo "title=$(cat /tmp/post_title.txt)" >> $GITHUB_OUTPUT
+          echo "slug=$(cat /tmp/post_slug.txt)" >> $GITHUB_OUTPUT
+          echo "file=$(cat /tmp/post_file.txt)" >> $GITHUB_OUTPUT
+          echo "date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+
+      - name: Create branch and commit
+        run: |
+          BRANCH="blog/auto-post-${{ steps.meta.outputs.date }}-${{ steps.meta.outputs.slug }}"
+          git config user.name "Holocron Bot"
+          git config user.email "bot@holocrondata.net"
+          git checkout -b "$BRANCH"
+          git add "${{ steps.meta.outputs.file }}"
+          git commit -m "blog: ${{ steps.meta.outputs.title }}"
+          git push origin "$BRANCH"
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+
+      - name: Open Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "📝 Neuer Beitrag: ${{ steps.meta.outputs.title }}" \
+            --body "## Neuer Blog-Beitrag bereit zur Veröffentlichung
+
+          **Titel:** ${{ steps.meta.outputs.title }}
+          **Datum:** ${{ steps.meta.outputs.date }}
+          **Datei:** \`${{ steps.meta.outputs.file }}\`
+
+          ### Vorschau
+          Nach dem Merge wird der Beitrag automatisch auf [holocrondata.net/blog](https://holocrondata.net/blog) veröffentlicht.
+
+          ### So freigeben:
+          1. Überprüfe den Inhalt unter **Files changed**
+          2. Klicke **Merge pull request** wenn alles passt
+          3. Vercel deployt automatisch — fertig ✓
+
+          > Generiert von Holocron Bot · [Workflow anzeigen](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
+            --base main \
+            --head "$BRANCH"

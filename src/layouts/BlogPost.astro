@@ -1,0 +1,40 @@
+---
+import Base from './Base.astro';
+
+const { frontmatter } = Astro.props;
+const formattedDate = new Date(frontmatter.date).toLocaleDateString('de-DE', {
+  day: '2-digit', month: 'long', year: 'numeric'
+});
+---
+
+<Base title={`${frontmatter.title} — Holocron Data`} description={frontmatter.excerpt}>
+  <div style="padding-top: var(--nav-h);">
+    <div class="post-header">
+      <div class="container">
+        <p class="section-label">{frontmatter.tag || 'Blog'}</p>
+        <h1>{frontmatter.title}</h1>
+        <div class="post-meta" style="margin-top: 16px;">
+          <span>{formattedDate}</span>
+          {frontmatter.readTime && <span>· {frontmatter.readTime} min Lesezeit</span>}
+        </div>
+      </div>
+    </div>
+
+    <div class="post-body">
+      <slot />
+    </div>
+
+    <div class="post-cta container">
+      <h3>Bereit, Ihre Daten in Ordnung zu bringen?</h3>
+      <p>Ich helfe mittelständischen Unternehmen, verlässliche BI-Strukturen aufzubauen — pragmatisch und ohne Umwege.</p>
+      <a href="/#kontakt" class="btn btn-primary">Projekt anfragen</a>
+    </div>
+
+    <div style="border-top: 1px solid var(--border); padding: 40px 0; text-align: center;">
+      <a href="/blog" style="font-size: 14px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 8px; transition: color 0.15s;"
+        onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">
+        ← Zurück zum Blog
+      </a>
+    </div>
+  </div>
+</Base>
