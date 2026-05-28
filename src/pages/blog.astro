@@ -70,7 +70,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; a
 .post-row { display: grid; grid-template-columns: 100px 1fr auto; gap: 1.5rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; transition: background 0.1s; }
 .post-row:first-child { border-top: 1px solid var(--border); }
 .post-row:hover .post-row-title { color: var(--accent); }
-.post-row-tag { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.post-row-tag { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-light); white-space: nowrap; overflow: hidden; max-width: 90px; }
 .post-row-title { font-size: 0.9rem; font-weight: 500; line-height: 1.4; transition: color 0.15s; }
 .post-row-date { font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg-light); white-space: nowrap; }
 
@@ -157,7 +157,17 @@ footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: fle
           <div class="post-list" id="postList">
             {allPosts.map((post, i) => (
               <a href={post.url} class="post-row" data-index={i}>
-                <div class="post-row-tag">{post.frontmatter.tag || 'Blog'}</div>
+                <div class="post-row-tag">{
+                  (post.frontmatter.tag || 'Blog')
+                    .replace('Daten bereinigen', 'Bereinigung')
+                    .replace('Daten verstehen', 'Grundlagen')
+                    .replace('Modelle & Reports', 'Power BI')
+                    .replace('Automatisierung', 'Automation')
+                    .replace('Datenqualität', 'Qualität')
+                    .replace('Datenmodellierung', 'Modellierung')
+                    .replace('Report-Automation', 'Automation')
+                    .replace('BI-Strategie', 'Strategie')
+                }</div>
                 <div class="post-row-title">{post.frontmatter.title}</div>
                 <div class="post-row-date">{new Date(post.frontmatter.date).toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
               </a>
