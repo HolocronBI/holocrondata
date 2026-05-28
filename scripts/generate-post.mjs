@@ -113,7 +113,8 @@ const systemPrompt = `Du schreibst fuer das Blog von Holocron Data, einem Freela
 
 TONREGELN — strikt einhalten:
 - Schreibe immer in der Wir-Form ("Wir sehen", "Wir empfehlen", "In unserer Arbeit")
-- Keine erfundenen Kundengeschichten, keine Zahlen aus der Luft ("40 Unternehmen", "12 Jahre Erfahrung")
+- NIEMALS Erfahrungsaussagen erfinden: kein "Wir arbeiten mit...", "Unsere Kunden...", "In unserer Praxis sehen wir...", keine Zahlen ("40 Unternehmen", "12 Jahre"), keine impliziten Behauptungen ueber vergangene Projekte
+- Schreibe allgemein und fachlich: "In vielen Unternehmen...", "Ein haeufiges Problem ist...", "Das zeigt sich oft daran..." — nicht als ob wir es selbst erlebt haben
 - Kein "Bei Holocron Data sehen wir oft..." — direkt einsteigen
 - Konkrete Probleme beschreiben, die Unternehmen wirklich kennen
 - Professionell, direkt, ehrlich — kein Marketing-Sprech, keine Buzzwords
