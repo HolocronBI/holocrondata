@@ -24,12 +24,6 @@ body { font-family: var(--font); background: var(--bg); color: var(--fg); line-h
 .skip-link { position: absolute; left: -9999px; top: 0; z-index: 200; background: var(--fg); color: white; padding: 0.6rem 1rem; border-radius: 0 0 8px 0; font-size: 0.85rem; font-weight: 600; text-decoration: none; }
 .skip-link:focus { left: 0; }
 
-body::after {
-  content: ''; position: fixed; inset: 0; z-index: 999; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-  opacity: 0.02; mix-blend-mode: multiply;
-}
-
 .scroll-section { opacity: 0; transform: translateY(28px); filter: blur(4px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease), filter 0.9s var(--ease); }
 .scroll-section.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
 .scroll-section .anim-child { opacity: 0; }
