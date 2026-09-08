@@ -1,66 +1,64 @@
 ---
 layout: ../../layouts/BlogPost.astro
 title: "DAX für Einsteiger: Die 3 Formeln, die man wirklich braucht"
-excerpt: "DAX muss nicht kompliziert sein. Wir zeigen die drei Formeln, mit denen Anfänger sofort produktiv werden – ohne theoretischen Ballast."
-date: 2026-05-31
+excerpt: "DAX muss nicht kompliziert sein. Wir zeigen die drei Formeln, mit denen man in Power BI und Excel bereits 80 Prozent aller Aufgaben löst."
+date: 2026-09-08
 tag: Modelle & Reports
 readTime: 5
 ---
 
-## DAX: Der erste Schritt ist überschaubar
+## DAX für Einsteiger: Die 3 Formeln, die man wirklich braucht
 
-Wer sich zum ersten Mal mit DAX auseinandersetzt, steht oft vor einer überwältigenden Fülle an Funktionen und Konzepten. Die Dokumentation ist umfangreich, die Community-Foren sind voller Diskussionen zu Edge Cases – und man fragt sich schnell, ob man wirklich alles verstehen muss, bevor man seine erste aussagekräftige Kennzahl baut.
+Wer sich zum ersten Mal mit DAX auseinandersetzt, wird von der Fülle an Funktionen überwältigt. Hunderte Formeln, komplexe Syntax, kryptische Fehlermeldungen. Das wirkt abschreckend — und oft unnötig. Wir haben festgestellt, dass Einsteiger häufig denken, sie müssen alles verstehen, bevor sie anfangen. Das stimmt nicht.
 
-Wir können das beruhigen: Das ist nicht der Fall. In unserer Arbeit mit Unternehmen zeigt sich immer wieder, dass drei grundlegende Formeln ausreichen, um die allermeisten Standard-Anforderungen in Berichten und Dashboards umzusetzen. Alles andere ist Verfeinerung – wichtig, aber nicht am Anfang nötig.
+In der Praxis zeigt sich immer wieder: Mit drei grundlegenden Formeln lassen sich bereits die meisten Anforderungen in Power BI und Excel abdecken. Alles andere ergibt sich dann aus der Routine. Wir möchten Ihnen diese drei Formeln näherbringen — nicht theoretisch, sondern praktisch und direkt anwendbar.
 
-Wenn wir verstehen, wie diese drei Formeln funktionieren, bekommen wir nicht nur schnell erste Erfolge hin. Wir schaffen uns auch eine solide Grundlage, um später komplexere Probleme zu lösen.
+## 1. SUMME — Das Fundament
 
-## 1. SUMX – Die universelle Summe
+Die erste Formel ist nicht wirklich neu, aber in DAX hat sie eine andere Form als in klassischen Excel-Formeln. SUMME in DAX funktioniert auf Tabellenebene, nicht nur auf einzelne Zellen. Das ist der entscheidende Unterschied.
 
-Die erste Formel heißt SUMX. Sie ist so grundlegend, dass sie fast überall auftaucht.
+Stellen Sie sich ein Unternehmen vor, das eine Power BI-Abfrage erstellen möchte: Wie viel haben wir insgesamt verkauft? Eine klassische Aufgabe. Statt einzelne Zellen zu addieren, schreiben wir eine Formel, die automatisch über alle Zeilen einer Spalte summiert. Das Ergebnis passt sich automatisch an, wenn neue Daten hinzukommen.
 
-Beim klassischen Summieren in einem Bericht könnte man meinen, dass ein einfaches SUM ausreicht. Und tatsächlich funktioniert das oft. Aber sobald wir mit mehreren Tabellen arbeiten, unterschiedliche Filter haben oder auf Basis einer Tabelle etwas Neues berechnen müssen, zeigt sich die Grenze des Einfachen schnell.
+Wir sehen häufig, dass Geschäftsführer und Controller diese Denkweise zunächst fremd finden. Sie sind es gewohnt, in Einzelzellen zu denken. DAX denkt in Spalten und Tabellen. Das zu verstehen, ist der erste große Schritt. Sobald man diese Perspektive einnimmt, wird vieles einfacher.
 
-SUMX funktioniert anders: Wir geben der Funktion eine Tabelle vor – zum Beispiel eine Kundenliste – und eine Berechnung, die für jede Zeile dieser Tabelle durchgeführt werden soll. Die Funktion iteriert dann durch jede Zeile, führt die Berechnung durch und summiert alle Ergebnisse auf.
+Praktisch angewendet: Ein Unternehmen mit Verkaufsdaten möchte den Gesamtumsatz anzeigen. Die Formel fasst alle Umsätze zusammen — unabhängig davon, wie viele Datensätze es gibt. Neue Verkäufe werden automatisch berücksichtigt.
 
-Ein praktisches Beispiel: Wir wollen den Gesamtumsatz pro Kunde berechnen, aber nur für Transaktionen aus dem letzten Monat und nur für Kunden, die mehr als zehn Produkte gekauft haben. Mit SUMX können wir genau das ausdrücken. Wir sagen der Funktion, welche Tabelle sie durchlaufen soll, und dann schreiben wir die Logik hin: "Für jede Zeile: Nimm den Umsatz, aber nur wenn das Datum im letzten Monat liegt und die Produktmenge größer als zehn ist."
+## 2. CALCULATE — Die Flexibilität
 
-Das Wichtigste beim Lernen von SUMX ist nicht die Syntax – die findet man in der Dokumentation. Das Wichtigste ist zu verstehen, dass diese Funktion uns Kontrolle gibt. Sie macht es möglich, Berechnungen auszudrücken, die sonst nur mit vielen Umwegen zu lösen wären.
+Die zweite Formel ist CALCULATE. Sie ist der Grund, warum DAX so mächtig ist — und warum viele Anfänger Schwierigkeiten damit haben. CALCULATE ermöglicht es, Bedingungen zu setzen. Sie sagt dem System: "Berechne das, aber nur unter diesen Voraussetzungen."
 
-## 2. CALCULATE – Der Filter-Magier
+Ein praktisches Beispiel: Ein Vertriebsleiter möchte nicht nur den Gesamtumsatz sehen, sondern den Umsatz nur für eine bestimmte Region oder nur für ein bestimmtes Produkt. Ohne CALCULATE müsste man für jede Variante separate Spalten erstellen. Mit CALCULATE schreiben wir eine Formel, die flexibel bleibt.
 
-Die zweite Formel ist CALCULATE. Sie ist vielleicht noch wichtiger als SUMX, weil sie das Fundament vieler fortgeschrittener Techniken bildet.
+Was macht CALCULATE so nützlich? Sie kann Filter kombinieren. Eine Bedingung, zwei Bedingungen, drei Bedingungen — alles in einer Formel. Das erspart enorm viel Arbeit bei der Verwaltung von Berichten.
 
-CALCULATE ermöglicht es uns, eine Berechnung durchzuführen, aber mit geänderten Filterkontext. Das klingt abstrakt, wird aber sofort konkret, wenn wir ein Beispiel sehen.
+Wir erleben regelmäßig, dass Unternehmen vorher mit Excel-Umwegen arbeiten: mehrere Hilfsspalten, separate Tabellenblätter, manuelle Anpassungen. CALCULATE macht das unnötig. Die Formel wird einmal geschrieben, und dann funktioniert sie für alle Kombinationen von Bedingungen, die man im Bericht durchspielen möchte.
 
-Stellen wir uns vor, wir wollen im Bericht den aktuellen Monatsumsatz anzeigen, daneben aber auch den Umsatz vom gleichen Monat des Vorjahres zum Vergleich. Das Problem: Unser Bericht ist nach Monat gefiltert. Wenn wir einfach den Umsatz vom Vorjahr abfragen, bekommen wir wieder den aktuellen Monat – nicht das Vorjahr.
+Ein konkreter Ablauf: Ein Unternehmen hat Umsatzdaten nach Monat, Region und Produktkategorie. Der Controller möchte sehen, wie viel in Q3 2023 in der Region "Nord" verkauft wurde. Die Formel setzt beide Filter gleichzeitig — ohne dass er neue Daten aufbereiten muss.
 
-Hier kommt CALCULATE ins Spiel. Wir können damit sagen: "Berechne die Umsatzsumme, aber ändere dabei den Filter auf das Vorjahr." Die Funktion ignoriert den aktuellen Filter, setzt einen neuen Filter und führt die Berechnung in diesem neuen Kontext durch.
+## 3. RELATED — Die Verbindung
 
-Das funktioniert nicht nur mit Datumswechseln. CALCULATE erlaubt es uns, beliebige Filter zu setzen oder zu entfernen. Das macht es zur vielseitigsten Waffe im DAX-Arsenal eines Anfängers. Und es ist nicht mal besonders schwierig – wir müssen nur verstehen, dass Filter von außen nach innen wirken und dass wir sie bewusst setzen können.
+Die dritte Formel ist RELATED. Sie ist weniger bekannt als die anderen beiden, aber oft entscheidend für gut strukturierte Datenmodelle.
 
-## 3. RELATED – Die Verbindung zwischen Tabellen
+Wer mit mehreren Tabellen arbeitet — beispielsweise eine Verkaufstabelle und eine Kundentabelle — braucht Formeln, die Informationen aus unterschiedlichen Tabellen zusammenbringen. RELATED macht genau das. Sie verbindet Zeilen zwischen Tabellen, ohne komplizierte Umwege zu nehmen.
 
-Die dritte Formel ist RELATED. Sie ist kürzer und weniger spektakulär als die anderen beiden, aber genauso wichtig.
+Das Problem ohne RELATED ist vertraut: Ein Analyst hat Verkaufsdaten und möchte wissen, welcher Kunde es war. Beide Informationen sind da — aber in verschiedenen Tabellen. Ohne RELATED müsste man entweder Daten duplizieren (schlecht für die Wartung) oder mit unhandlichen Umwegen arbeiten.
 
-In modernen BI-Systemen arbeiten wir mit mehreren Tabellen, die durch Beziehungen miteinander verbunden sind. Eine Verkaufstabelle hängt an einer Kundentabelle, die mit einer Kategorie-Tabelle verbunden ist – und so weiter. Diese Struktur ist sauberer und performanter als alles in eine große Tabelle zu packen.
+RETED sorgt dafür, dass die Beziehungen zwischen Tabellen auch in Formeln genutzt werden können. Das ist insbesondere bei größeren Datenmodellen wertvoll — und es fördert saubere Strukturen, statt dass Daten wahllos kombiniert werden.
 
-Aber wie greifen wir auf Daten aus einer anderen Tabelle zu, wenn wir gerade in einer Formel sind? Dafür gibt es RELATED. Wenn wir in der Verkaufstabelle sitzen und den Kundentyp wissen möchten, können wir RELATED verwenden, um die Kundenart aus der Kundentabelle zu holen.
+Ein Szenario aus der Praxis: Ein Unternehmen hat eine Tabelle mit Bestellungen und eine separate Tabelle mit Kundeninformationen. Eine Formel soll für jede Bestellung den Namen des Kunden abrufen. RELATED holt diese Information automatisch, solange die Beziehungen im Modell korrekt definiert sind.
 
-Das ist unglaublich praktisch, weil es bedeutet, dass wir unsere Tabellen sauber trennen können und trotzdem überall Zugriff auf die Informationen haben, die wir brauchen. RELATED ist sozusagen der Klebstoff, der die Tabellen zusammenhält.
+## Wann sind diese drei Formeln ausreichend?
 
-## Warum diese drei?
+Wir möchten ehrlich sein: Es gibt Szenarien, die komplexere Formeln erfordern. Zeitreihenberechnungen, fensterbasierte Analysen oder sehr spezielle Logik manchmal verlangen nach erweiterten Funktionen.
 
-Wir könnten hundert DAX-Funktionen lernen. Aber diese drei decken zusammen ein riesiges Spektrum an Anforderungen ab.
+Aber in unserem Alltag, bei typischen geschäftlichen Anfragen — Umsätze nach Kategorie, Vergleiche zwischen Perioden, aggregierte Metriken nach verschiedenen Dimensionen — diese drei Formeln decken den größeren Teil ab. Wer diese gut beherrscht, hat eine solide Grundlage, um später zu spezialisieren.
 
-Mit SUMX iterieren wir durch Tabellen und machen komplexe Berechnungen. Mit CALCULATE ändern wir Filter und ermöglichen Vergleiche zwischen verschiedenen Zeiträumen oder Kategorien. Mit RELATED verbinden wir Tabellen und holen uns Daten, wo wir sie brauchen.
+Der Schlüssel ist nicht, jede DAX-Funktion zu kennen. Der Schlüssel ist, die grundlegenden Konzepte zu verstehen: Wie arbeite ich mit Tabellen statt Einzelzellen? Wie setze ich Bedingungen? Wie verbinde ich mehrere Datenquellen? Diese Fragen beantworten die drei Formeln oben.
 
-Fast jeder Bericht, der einen minimalen Anspruch an Komplexität hat, verwendet mindestens zwei dieser drei Formeln. Und wenn man diese drei sicher beherrscht, ist der Schritt zu anderen Funktionen wie FILTER oder SUMPRODUCT oder DAX-Iteratoren nicht mehr weit.
+## Nächste Schritte
 
-## Der nächste Schritt
+Wer neu in DAX anfängt, raten wir: Bauen Sie kleine Übungen auf. Erstellen Sie ein einfaches Modell, versuchen Sie diese drei Formeln, schauen Sie, was passiert. Die Fehler sind Teil des Lernens — und DAX gibt in der Regel aussagekräftige Fehlermeldungen.
 
-Das Wichtigste ist, mit diesen drei Formeln zu experimentieren. Kleine Testfälle bauen, Fehler machen, die Fehlermeldungen lesen, verstehen, warum etwas nicht funktioniert hat – das ist der Weg zum Verständnis.
+Wenn Sie jedoch merken, dass Ihre Anforderungen über Basis-Berichte hinausgehen — komplexe Forecasts, spezialisierte KPIs oder Modelle mit vielen Abhängigkeiten — lohnt sich ein strukturierter Ansatz. Dann wird ein gut durchdachtes Datenmodell und professionelle Unterstützung wertvoll.
 
-Wer diese Grundlagen sicher anwendet, hat für die meisten praktischen Aufgaben schon alle Werkzeuge in der Hand. Alles andere kommt mit der Zeit.
-
-Wenn ihr bei der Umsetzung auf Fragen stoßt oder unsicher seid, wie diese Formeln auf eure konkrete Situation passen – [schreibt uns gerne an](/kontakt). Wir helfen euch, die richtige Struktur für eure Daten zu finden und die ersten Formeln zum Laufen zu bringen.
+Wir helfen gerne dabei, Ihre Reporting-Struktur zu bewerten und Sie zu zeigen, wie DAX in Ihrem spezifischen Kontext sinnvoll einsetzbar ist. [Sprechen Sie mit uns](/kontakt) — unverbindlich und konkret.
