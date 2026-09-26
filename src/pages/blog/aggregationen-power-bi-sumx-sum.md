@@ -1,62 +1,76 @@
 ---
 layout: ../../layouts/BlogPost.astro
 title: "Aggregationen in Power BI richtig einsetzen: Was SUMX von SUM unterscheidet"
-excerpt: "SUM und SUMX liefern oft unterschiedliche Ergebnisse – obwohl beide Summen berechnen. Wir zeigen, wann welche Funktion die richtige Wahl ist und wie man typische Fehler vermeidet."
-date: 2026-06-18
+excerpt: "SUM und SUMX sehen ähnlich aus, arbeiten aber grundlegend unterschiedlich. Wir erklären, wann welche Funktion die richtige Wahl ist – und wo Anfänger häufig scheitern."
+date: 2026-09-26
 tag: Modelle & Reports
 readTime: 5
 ---
 
-## Das Problem mit der Auswahl der richtigen Aggregation
+## Das Dilemma mit den Aggregationsfunktionen
 
-In vielen BI-Projekten entstehen Fehler nicht durch fehlende Funktionen, sondern durch die Wahl der falschen. Das zeigt sich besonders bei Aggregationsfunktionen in Power BI. SUM und SUMX sind sich auf den ersten Blick sehr ähnlich – beide addieren Werte. Doch in der Praxis führen sie zu völlig unterschiedlichen Ergebnissen, wenn die Datenstruktur komplex wird.
+In Power BI gibt es oft mehrere Wege, um dieselbe Aufgabe zu lösen. Bei Aggregationen zeigt sich das besonders deutlich: Wir können Daten mit SUM zusammenfassen oder mit SUMX. Beide Funktionen liefern häufig das gleiche Ergebnis – aber eben nicht immer. Und genau da liegt das Problem.
 
-Wir sehen häufig, dass Entscheider auf Berichte schauen und sich fragen, warum die Gesamtsumme nicht stimmt. Die Ursache liegt oft darin, dass die falsche Aggregationsfunktion verwendet wurde. Das Problem verschärft sich, wenn Daten aus mehreren Tabellen kombiniert werden oder wenn auf granularer Ebene Berechnungen stattfinden müssen.
+Wer anfängt, mit Power BI zu arbeiten, wird schnell verwirrt. Die Dokumentation erklärt die technischen Unterschiede, aber nicht, wann man welche Funktion wirklich braucht. Das führt zu fehlerhaften Modellen, zu Performance-Problemen und zu Reports, die plötzlich falsche Zahlen zeigen, wenn die Daten sich ändern.
 
-## Wie SUM funktioniert – und wo seine Grenzen liegen
+Wir schauen uns an, wie SUM und SUMX wirklich funktionieren – und vor allem: wann wir welche Funktion einsetzen sollten.
 
-SUM ist die klassische Aggregationsfunktion. Sie fasst alle Werte einer Spalte zusammen. Das funktioniert wunderbar, solange es um einfache Addition geht: Alle Verkaufszahlen addieren, alle Kosten aufsummieren, alle Mengen zusammentragen.
+## Wie SUM arbeitet: Die klassische Aggregation
 
-Doch SUM hat eine Besonderheit: Die Funktion arbeitet auf der Ebene, auf der sie aufgerufen wird. Wenn wir SUM in einem visuellen Element verwenden, das nach Kunde und Monat gefiltert ist, berechnet SUM die Summe nur über die bereits gefilterten und aggregierten Zeilen.
+SUM ist die einfachste Variante. Wir geben eine Spalte an, und Power BI addiert alle Werte in dieser Spalte. Wenn wir zum Beispiel den Gesamtumsatz aller Verkäufe berechnen wollen, schreiben wir SUM auf eine Spalte, die die Umsätze enthält. Power BI geht Zeile für Zeile durch und addiert auf.
 
-Ein Beispiel: Ein Unternehmen hat eine Tabelle mit Verkäufen. Jede Zeile enthält einen Verkauf mit Betrag, Kunde und Produkt. Wenn wir einen Report erstellen, der Umsätze pro Kunde zeigt, funktioniert SUM perfekt. Aber sobald wir Zwischenberechnungen auf Zeilenbasis durchführen müssen – also zum Beispiel einen Rabatt berechnen, der sich auf die Menge bezieht, bevor wir summieren – wird SUM schnell zum Problem.
+Das klingt logisch und funktioniert in vielen Fällen auch tadellos. Solange die Daten, die wir aggregieren wollen, bereits in der Tabelle existieren, arbeitet SUM zuverlässig und schnell. Power BI kann diese Funktion optimal verarbeiten, besonders wenn wir mit großen Datenmengen arbeiten.
 
-## SUMX: Summe mit Kontext und Berechnung
+Aber SUM hat eine wichtige Einschränkung: Die Funktion aggregiert nur, was bereits in der Spalte vorhanden ist. Wir können damit nicht rechnen, nicht transformieren, nicht situationsabhängig entscheiden, welche Werte wir addieren. SUM ist ein Hammer – und wenn alle Probleme Nägel sind, funktioniert das perfekt.
 
-SUMX ist anders. Diese Funktion ist eine "zeilenweise Aggregation". Sie iteriert über eine Tabelle, führt für jede Zeile eine Berechnung durch und summiert das Ergebnis. Das ist der entscheidende Unterschied.
+## SUMX: Wenn wir erst berechnen, dann aggregieren müssen
 
-Wo SUM eine bereits berechnete oder vorhandene Spalte aufsummiert, berechnet SUMX erst für jede Zeile, dann summiert. Das ermöglicht Berechnungen, die SUM nicht leisten kann.
+SUMX ist anders. Diese Funktion arbeitet mit zwei Argumenten: einer Tabelle und einem Ausdruck. Wir sagen SUMX sozusagen: Gehe durch diese Tabelle, berechne für jede Zeile einen Wert nach dieser Formel, und addiere dann alle Ergebnisse.
 
-Ein realistisches Szenario: Ein Einzelhandelsunternehmen möchte den Gesamtumsatz mit Rabatten berechnen. Für jede Transaktion gibt es eine Basismenge und einen Rabattsatz. Der tatsächliche Umsatz ist nicht einfach die Summe der Basismenge, sondern: Basismenge abzüglich Rabatt, dann summiert über alle Transaktionen. Mit SUM würde man zuerst eine Hilfsspalte erstellen müssen, die Menge minus Rabatt für jede Zeile berechnet. Mit SUMX wird das elegant in einer Zeile gelöst.
+Das ist mächtiger – aber auch anspruchsvoller. Mit SUMX können wir Logik einbauen. Wir können zum Beispiel sagen: Addiere die Umsätze, aber nur für Produkte, die über 100 Euro kosten. Oder: Für jede Zeile multiplizierst du zuerst die Menge mit dem Preis, dann addierst du alles auf. SUMX führt die Berechnung zuerst durch, dann aggregiert sie.
 
-## Wann führt das zu unterschiedlichen Ergebnissen?
+Ein konkretes Beispiel: Wir haben eine Tabelle mit Bestellpositionen. Jede Position hat eine Menge und einen Preis. Der Gesamtumsatz ist Menge mal Preis für jede Position, summiert über alle Positionen. Mit SUM könnten wir nicht arbeiten, weil wir die Multiplikation erst durchführen müssen. Mit SUMX schreiben wir: Für jede Zeile: Menge mal Preis, und dann summiere alles auf.
 
-Der kritische Fall tritt auf, wenn zwischen den Daten eine Viele-zu-Viele-Beziehung oder eine mehrstufige Hierarchie existiert. Stellen wir uns vor: Ein Unternehmen hat Produkte und Kategorien. Ein Produkt kann in mehreren Kategorien liegen (weil die Datenbasis nicht normalisiert ist). Wenn wir mit SUM arbeiten und versehentlich über diese denormalisierte Struktur summieren, wird jeder Wert mehrfach gezählt.
+## Der entscheidende Unterschied in der Praxis
 
-Mit SUMX können wir präziser arbeiten. Wir können die Summe auf Basis einer spezifischen Tabelle und Beziehung berechnen, ohne dass versehentliche Duplikate entstehen.
+Die Unterschiede werden besonders deutlich, wenn wir mit gefilterten Kontexten arbeiten. Stellen wir uns vor, wir bauen einen Report mit Jahren als Filter. Ein Benutzer wählt 2023 aus.
 
-Ein weiterer Fall: Wir möchten einen Durchschnittspreis pro Kategorie berechnen. Das ist nicht einfach die Summe aller Preise geteilt durch die Anzahl der Produkte – das wäre falsch, wenn Produkte unterschiedliche Verkaufsmengen haben. Mit SUMX können wir sagen: "Für jede Kategorie: Summe (Verkaufsmenge mal Preis) geteilt durch Summe (Verkaufsmenge)". Das liefert den echten gewichteten Durchschnitt.
+Bei SUM: Die Funktion berücksichtigt diesen Filter automatisch. Sie aggregiert nur die Zeilen aus 2023. Das funktioniert, solange die Filterlogik einfach ist.
 
-## Perormance: Ein wichtiger Aspekt
+Bei SUMX: Hier steuern wir selbst, worüber die Funktion iteriert. Wir können zum Beispiel sagen: Iteriere über alle Zeilen der Tabelle, aber nur über die Zeilen aus 2023. Oder wir lassen SUMX über alle Zeilen gehen und bauen die Filterlogik direkt in den Ausdruck ein. Das gibt uns mehr Kontrolle, erfordert aber auch mehr Aufmerksamkeit.
 
-Wir müssen auch ehrlich über Perormance sprechen. SUMX ist mächtiger, aber auch rechenintensiver. Die Funktion iteriert über Zeilen – das kann bei großen Datenmengen zum Leistungsproblem werden.
+## Wann SUM die richtige Wahl ist
 
-SUM ist schneller, weil Power BI diese Aggregation auf Basis des Datenmodells direkt durchführt. Wenn also SUM das gewünschte Ergebnis liefert, ist es die bessere Wahl.
+Wir sollten SUM verwenden, wenn wir einfach nur Werte aus einer Spalte addieren. Das ist der Normalfall. Eine Spalte mit Verkäufen, eine mit Kosten, eine mit Bestandsmengen – hier ist SUM schnell, zuverlässig und verständlich.
 
-Es geht um das richtige Werkzeug für das richtige Problem. Eine komplexe SUMX-Berechnung ist wertvoll, wenn sie nötig ist. Sie als Standard zu verwenden – nur um sicherzustellen, dass alles korrekt ist – führt zu unnötigen Perfomanzproblemen.
+SUM funktioniert auch gut, wenn wir mit berechneten Spalten arbeiten. Wenn wir also vorher bereits die Berechnung durchgeführt haben und in einer Spalte speichern, addieren wir diese Spalte einfach mit SUM.
 
-## Praktische Faustregeln
+## Wann SUMX notwendig ist
 
-Wir empfehlen diese Überlegung: Nutzt SUM, wenn ihr über bereits granulare Daten summiert und keine Zwischenberechnungen nötig sind. Das ist der Standard-Fall und der schnellste Weg.
+Wir brauchen SUMX, wenn die Berechnung komplexer wird. Wenn wir nicht nur eine Spalte addieren, sondern erst Werte kombinieren müssen. Oder wenn wir eine Bedingung einbauen wollen, die nur für die aktuelle Iteration gilt.
 
-Greift zu SUMX, wenn ihr für jede Zeile erst etwas berechnen müsst, bevor ihr summiert. Oder wenn ihr über eine Tabelle iterieren müsst, die nicht direkt in euer Filter-Kontext passt.
+Ein häufiges Beispiel: Wir haben eine Verkaufstabelle mit Datum, Produkt, Menge und Preis. Wir wollen den Umsatz berechnen – also Menge mal Preis. Mit SUMX schreiben wir einen Ausdruck, der für jede Zeile diese Multiplikation durchführt, und dann werden alle Ergebnisse addiert.
 
-Und prüft euer Datenmodell kritisch. Viele Probleme entstehen, weil die Beziehungen zwischen Tabellen nicht sauber definiert sind. Ein klares, normalisiertes Modell macht sowohl SUM als auch SUMX zuverlässiger.
+Andern Beispiel: Wir wollen Rabatte berücksichtigen. Vielleicht gibt es Rabattstaffeln: Bestellungen über 1000 Euro bekommen 5 Prozent Rabatt. Mit SUMX können wir diese Logik einbauen. Für jede Zeile prüfen wir, ob die Bedingung erfüllt ist, berechnen dann den Preis mit oder ohne Rabatt, und summieren auf.
 
-## Zusammenfassung
+## Die Performance-Überlegung
 
-Der Unterschied zwischen SUM und SUMX ist nicht akademisch – er hat reale Auswirkungen auf die Korrektheit eurer Reports. SUM ist die Standard-Aggregation und funktioniert schnell. SUMX bietet mehr Kontrolle und ermöglicht zeilenweise Berechnungen, kostet aber Rechenleistung.
+Ein wichtiger praktischer Punkt: SUM ist schneller als SUMX. Wenn wir mit großen Datenmengen arbeiten, kann das relevant werden. SUM kann von Power BI stark optimiert werden. SUMX muss für jede Zeile eine Berechnung durchführen, was aufwendiger ist.
 
-Die Wahl hängt davon ab, was ihr berechnen müsst und wie eure Daten strukturiert sind. Im Zweifelsfall empfehlen wir, die Anforderung genau zu analysieren: Kann ich das mit SUM erreichen und bleibst dabei performant? Dann macht das. Braucht ihr Zwischenberechnungen oder komplexere Logik pro Zeile? Dann ist SUMX der Weg.
+Das heißt nicht, dass wir SUMX vermeiden sollten. Aber wir sollten bewusst entscheiden. Wenn SUM ausreicht, verwenden wir SUM. Wenn wir die Flexibilität von SUMX brauchen, nehmen wir SUMX – und akzeptieren, dass der Report möglicherweise eine halbe Sekunde länger braucht.
 
-Wenn ihr unsicher seid, welche Aggregation für euren konkreten Report die richtige ist – oder wenn eure Berichte aktuell zu langsam laufen – [kontaktiert uns](/kontakt). Wir helfen euch, das richtige Aggregations-Setup für euer Datenmodell zu finden.
+## Die richtige Entscheidung treffen
+
+Die Faustregel ist einfach: Können wir mit SUM arbeiten? Dann tun wir das. Brauchen wir auf Zeilenebene Logik oder Berechnungen? Dann nehmen wir SUMX.
+
+In vielen Modellen kommen beide Funktionen vor – und das ist richtig so. Ein robuster Report nutzt jede Funktion dort, wo sie sinnvoll ist. Der Fehler passiert, wenn wir immer die gleiche Funktion verwenden, egal ob sie passt oder nicht. Oder wenn wir SUMX nehmen, weil es komplexer klingt – und dann ein Performance-Problem bekommen, das wir nicht erwartet haben.
+
+Wer sich unsicher ist, kann auch mit berechneten Spalten arbeiten. Wir erstellen die komplexen Berechnungen einmal in einer Spalte und addieren dann einfach mit SUM. Das ist manchmal langsamer, aber deutlich verständlicher.
+
+## Fazit
+
+SUM und SUMX sind nicht austauschbar. Sie lösen unterschiedliche Probleme. SUM ist das Werkzeug für einfache Aggregation, SUMX ist flexibler und ermöglicht Logik auf Zeilenebene. Die richtige Wahl hängt von dem ab, was wir tatsächlich berechnen müssen.
+
+Wer sein Modell aufbaut, sollte sich diese Frage bewusst stellen: Kann ich die Berechnung mit SUM machen oder brauche ich SUMX? Die Antwort führt zu besseren Reports und zu einem Modell, das einfacher zu verstehen und zu warten ist.
+
+Wenn Sie unsicher sind, wie Sie Aggregationen in Ihrem Power-BI-Modell richtig einsetzen, oder wenn Sie den Eindruck haben, dass Ihre Reports langsamer sind als sie sein sollten – wir schauen gerne gemeinsam hin. Kontaktieren Sie uns unter [/kontakt](/kontakt), und wir besprechen, wie wir helfen können.
