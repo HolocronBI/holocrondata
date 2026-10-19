@@ -1,56 +1,68 @@
 ---
 layout: ../../layouts/BlogPost.astro
 title: "Incremental Refresh in Power BI: Warum er bei grossen Datenmengen entscheidend ist"
-excerpt: "Grosse Datenmengen in Power BI führen zu langen Aktualisierungszeiten und hohen Ressourcenkosten. Incremental Refresh löst dieses Problem elegant – indem wir nur neue oder geänderte Daten laden."
-date: 2026-07-11
+excerpt: "Vollständige Datenaktualisierungen kosten Zeit und Ressourcen. Der Incremental Refresh in Power BI lädt nur neue Daten nach – und spart dabei erheblich an Speicher und Rechenleistung."
+date: 2026-10-19
 tag: Automatisierung
 readTime: 5
 ---
 
 # Incremental Refresh in Power BI: Warum er bei grossen Datenmengen entscheidend ist
 
-Wenn Datenmengen wachsen, wächst auch ein bekanntes Problem mit ihnen: Die tägliche Aktualisierung des Datenmodells wird zur Geduldsprobe. Ein typisches Szenario zeigt sich in Unternehmen mit umfangreichen Verkaufsdatenbanken, Produktionslogs oder Kundentransaktionen. Jede Nacht lädt Power BI alle Daten neu – ob sie sich geändert haben oder nicht. Das kostet Zeit, Speicher und Rechenleistung. Incremental Refresh bietet hier einen eleganten Ausweg.
+Wenn Unternehmen wachsen, wachsen auch ihre Datenmengen. Was anfangs mit täglichen Aktualisierungen problemlos funktioniert, wird irgendwann zum Engpass: Die Refresh-Prozesse dauern länger, verbrauchen mehr Speicher, belasten die Quellsysteme stärker. Viele Organisationen merken dann, dass sie ein grundsätzliches Problem haben – sie laden jede Nacht denselben Datensatz komplett neu, obwohl sich in Wirklichkeit nur ein kleiner Teil geändert hat.
 
-## Das Problem: Vollständiges Laden wird zum Engpass
+Hier setzt der Incremental Refresh an. Wir zeigen euch, warum diese Funktion bei wachsenden Datenmengen nicht optional ist, sondern notwendig.
 
-Wir sehen in vielen Organisationen ein wiederkehrendes Muster: Am Anfang funktioniert Power BI hervorragend. Das Datenmodell wird aufgebaut, Reports sind schnell erstellt, die Benutzer sind zufrieden. Doch mit jedem Monat, der verstreicht, wird die Datenbank grösser. Was anfangs eine Minute dauerte, braucht plötzlich fünf Minuten. Dann zehn. Irgendwann kann die Aktualisierung nicht mehr im Refresh-Fenster abgeschlossen werden, das IT-Team hat eingeplant.
+## Das klassische Problem: Vollständiges Neuladen
 
-Das Problem liegt in der klassischen Logik des Ladens: Power BI lädt sämtliche historischen Daten neu, auch wenn sich diese Wochen oder Monate lang nicht verändert haben. Ein häufiges Beispiel sind Verkaufsransaktionen aus dem vergangenen Jahr – die ändern sich nicht mehr, müssen aber jede Nacht erneut in den Speicher des Modells. Das ist verschwendete Energie.
+In vielen Unternehmen läuft das Szenario ähnlich ab. Ein Power BI-Dataset wird täglich aktualisiert. Der Prozess lädt die kompletten Transaktionsdaten der letzten Jahre, obwohl eigentlich nur die letzten Tage neu sind. Das führt zu mehreren Problemen gleichzeitig: Die Refresh dauert länger, die Quelldatenbank wird stärker belastet, der Speicher im Power BI-Service wird ineffizient genutzt, und die Wahrscheinlichkeit von Timeouts wächst.
 
-Besonders in Unternehmen mit Premium-Kapazitäten wird das zum finanziellen Thema: Längere Refresh-Prozesse verbrauchen mehr Kapazität, was sich direkt auf die Lizenzkosten auswirkt. Die Notwendigkeit, häufiger zu aktualisieren (um aktuellere Daten zu haben), kollidiert mit der technischen Realität, dass mehr Daten gleich längere Aktualisierungen bedeuten.
+Besonders kritisch wird es, wenn die Datenquellen langsam sind oder Lizenzen für Query-Anfragen kosten. Ein Unternehmen, das täglich 10 Millionen Zeilen komplett neu laden muss, obwohl nur 100.000 neu hinzugekommen sind, verschenkt Geld und Zeit.
 
-## Incremental Refresh: Die Lösung
+## Wie Incremental Refresh funktioniert
 
-Incremental Refresh funktioniert nach einem anderen Prinzip: Wir teilen die Daten zeitlich auf. Historische Daten, die sich nicht mehr ändern, werden einmal geladen und danach nur noch gespeichert. Neue oder kürzlich geänderte Daten werden bei jeder Aktualisierung neu geladen. Dieses Konzept reduziert die Menge der Daten, die bei jedem Refresh bewegt werden, oft um ein Vielfaches.
+Der Incremental Refresh ändert diesen Ansatz grundlegend. Statt den gesamten Datensatz neu zu laden, lädt das System nur die Daten nach, die seit der letzten Aktualisierung hinzugekommen sind oder sich geändert haben.
 
-Wie funktioniert das praktisch? Wir definieren zwei Parameter: einen für das Startdatum und einen für das Enddatum. Der Startparameter zerlegt sich in zwei Teile – einen für historische Daten (die z. B. 10 Jahre zurück gehen können) und einen für inkrementelle Daten (z. B. die letzten 30 Tage). Der Endparameter markiert das aktuelle Datum.
+Wir setzen dafür zwei Parameter ein: Einen oberen und einen unteren Zeitpunkt. Der untere Parameter definiert, wie lange die historischen Daten beibehalten werden – beispielsweise die letzten drei Jahre. Der obere Parameter legt fest, wie weit in die Zukunft vorgeladen werden soll. Beim täglichen Refresh wird dann nur ein kleines Zeitfenster aktualisiert – etwa die letzten 14 Tage plus die kommenden sieben Tage.
 
-When wir diese Parameter in der Datenquelle einsetzen, lädt Power BI zunächst alle Daten vom Startdatum bis zu einem Schneidetag, z. B. vor einem Jahr. Diese Partition wird einmal ins Modell geschrieben. Dann lädt es täglich nur Daten der letzten 30 Tage neu. Nach 30 Tagen? Diese neuen Daten werden zur historischen Partition hinzugefügt und fallen aus dem inkrementellen Bereich heraus.
+Das Ergebnis: Das System lädt die alte Historie aus dem Cache, aktualisiert nur das sich ändernde Fenster aus der Quelle und spart sich damit erheblich Datenverkehr und Rechenleistung.
 
-Das Ergebnis: Ein Refresh, der nur noch mit Kilobyte oder wenigen Megabyte statt mit Gigabyte arbeitet.
+## Wo der Ansatz wirklich Sinn macht
 
-## Praktische Auswirkungen
+Incremental Refresh ist nicht für jeden Use-Case notwendig. Ein kleines Dataset mit 50.000 Zeilen und täglichem Refresh kann durchaus traditionell geladen werden. Aber ab bestimmten Szenarien wird er kritisch.
 
-Wir sehen drei konkrete Verbesserungen bei Unternehmen, die Incremental Refresh implementieren:
+Ein Unternehmen mit umfangreicher Transaktionshistorie – etwa ein Einzelhändler mit Jahrzenten von Verkaufsdaten – merkt sofort den Unterschied. Statt jeden Tag alle historischen Daten neu zu verarbeiten, lädt das System nur neue Transaktionen nach. Ähnliches gilt für Logistik-Unternehmen, die minutengenaue Tracking-Daten speichern, oder Produktionsanlagen, die kontinuierliche Sensordaten generieren.
 
-Die Aktualisierungszeit sinkt dramatisch. Ein Report mit fünf Jahren Verkaufsdaten könnte vorher 45 Minuten brauchen, mit Incremental Refresh nur noch fünf Minuten. Das heisst: Refresh-Fenster verkürzen sich, die Power BI-Umgebung ist häufiger verfügbar, und Nutzer können aktuellere Daten mehrmals täglich laden.
+Auch zeitkritische Szenarien profitieren. Wenn Refresh-Fenster sehr kurz sind und mehrmals täglich stattfinden, reduziert der Incremental Refresh die Gesamtlast erheblich. Ein Unternehmen, das stündliche Aktualisierungen braucht, kann mit klassischem Refresh schnell an die technischen Grenzen stoßen.
 
-Die Speichernutzung optimiert sich. Das Datenmodell wird nicht grösser, weil wir nicht täglich alles neu laden. Bei grossen Datenmengen kann das die Modellgrösse um 20 bis 40 Prozent reduzieren – oder den Speicher freigeben für weitere Reports.
+## Praktische Überlegungen bei der Umsetzung
 
-Die Kosten fallen, insbesondere in Premium-Umgebungen. Kürzere, häufigere Refreshs brauchen weniger Kapazität als lange, intensive Ladevorgänge. Das Gesamtvolumen sinkt erheblich.
+Wir sehen mehrere Dinge, die bei der Einführung wichtig sind. Die Datenquelle muss eine zuverlässige Zeitstempel-Spalte haben – idealerweise mit Sekunden-Genauigkeit. Diese Spalte wird genutzt, um zu bestimmen, welche Daten neu oder verändert sind.
 
-## Was man beachten sollte
+Zweite Überlegung: Der Speicher im Power BI-Service wird trotz Incremental Refresh durch die historischen Daten belastet. Wer beispielsweise fünf Jahre Geschichte speichert, belastet trotzdem weniger als mit vollständigen täglichen Reloads – aber es bleibt eine Komponente, die man im Auge behalten sollte.
 
-Incremental Refresh ist mächtig, erfordert aber eine saubere Planung. Wir empfehlen, zunächst zu prüfen, ob die Datenquelle eine Zeit-Spalte hat, die zuverlässig anzeigt, wann ein Datensatz zuletzt geändert wurde. Das ist essentiell. Ohne sie kann Power BI nicht unterscheiden, was alt und was neu ist.
+Dritte Überlegung: Es braucht klare Regeln, wann Daten aktualisiert versus gelöscht werden. Wenn alte Partitionen zu lange gehalten werden, nützt der Incremental Refresh weniger. Wenn zu früh gelöscht wird, entstehen Lücken in der Historie.
 
-Auch die Parameter-Logik muss verständig sein. Zu kurze inkrementelle Fenster (z. B. nur ein Tag) führen dazu, dass Änderungen verspätet erfasst werden. Zu lange Fenster (z. B. ein halbes Jahr) machen den Vorteil des inkrementellen Ladens teilweise zunichte.
+## Der Performance-Effekt
 
-Und: Incremental Refresh benötigt in Power BI eine Premium- oder Embedded-Kapazität. Shared Capacity unterstützt diese Funktion nicht.
+Die Ersparnis ist oft deutlich. Ein Dataset, das mit vollständigem Reload 45 Minuten braucht, kann mit Incremental Refresh auf 5 bis 10 Minuten fallen. Das reduziert nicht nur die Wartezeit für die Datenverfügbarkeit, sondern senkt auch die Fehlerquote – lange Prozesse haben einfach mehr Fehlerquellen.
 
-## Nächste Schritte
+Auch die Quelldatenbank profitiert. Statt täglich 10 Millionen Zeilen zu verschieben, verschiebt sie nur 100.000. Das bedeutet weniger Locking, geringere CPU-Last und oft auch bessere Verfügbarkeit für andere Prozesse.
 
-Wenn Ihre Datenmengen wachsen und Refresh-Zeiten zum Problem werden, ist Incremental Refresh ein ernsthafter Kandidat für die Lösung. Die Investition in die Einrichtung amortisiert sich schnell durch eingesparte Zeit und Ressourcen.
+## Ein häufiger Anfängerfehler
 
-Wir beraten gerne bei der Architektur solcher Lösungen – von der Prüfung Ihrer Datenquellen bis zur Parametrisierung in Power BI. Sprechen Sie uns an, wenn Sie sehen möchten, wie Incremental Refresh Ihre Situation verbessern kann.
+Ein Problem, das Unternehmen immer wieder treffen: Sie konfigurieren Incremental Refresh, testen es zwei Wochen, dann schaltet das System auf den historischen Modus und lädt plötzlich wieder alles komplett neu. Das passiert, wenn die Refresh-Richtlinie nicht korrekt verstanden wird oder wenn die Partitionierung im Datenmodell nicht stimmt. Danach ist der Vorteil auf einmal weg, und keiner versteht, warum.
 
-[Kontaktieren Sie uns](/kontakt), um Ihre Datenrefresh-Strategie zu optimieren.
+## Wann sollte man starten?
+
+Wir empfehlen, über Incremental Refresh nachzudenken, wenn eines dieser Szenarien zutrifft: Die wöchentliche Datenmenge wächst kontinuierlich, Refresh-Prozesse dauern regelmäßig länger als eine Stunde, oder die Quelldatenbank beginnt, Kapazitätsprobleme zu zeigen.
+
+Es ist eine Investition in die Infrastruktur – man muss sich damit auseinandersetzen, die Datenquellen verstehen, die Partitionierung planen. Aber bei wachsenden Datenmengen ist sie oft unvermeidlich.
+
+## Fazit
+
+Incremental Refresh ist kein optionales Feature für Power BI-Profis. Es ist ein notwendiges Werkzeug für Unternehmen, die mit realistischen Datenvolumina arbeiten. Wer es nutzt, spart Zeit, Ressourcen und Fehler. Wer es nicht nutzt und stattdessen weiterhin vollständig lädt, wird irgendwann an technische Grenzen stoßen.
+
+Wenn ihr gerade in dieser Situation seid oder überlegt, wie eure Daten-Architektur skaliert werden könnte – wir helfen euch gerne, einen Plan zu entwickeln. Schreibt uns an und lasst uns eure Situation besprechen. Manchmal ist Incremental Refresh die richtige Antwort, manchmal auch ein anderer Ansatz. Das schauen wir uns gemeinsam an.
+
+[Kontaktiert uns](/kontakt) – wir finden heraus, welche Lösung für eure Datenmengen passt.
