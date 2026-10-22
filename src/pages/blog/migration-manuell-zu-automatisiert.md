@@ -1,78 +1,64 @@
 ---
 layout: ../../layouts/BlogPost.astro
 title: "Von manuell zu automatisiert: Wie ein typischer Migrationsprozess aussieht"
-excerpt: "Der Schritt von manuellen zu automatisierten Prozessen ist für viele Unternehmen notwendig, aber oft unklar. Wir zeigen, wie dieser Migrationsprozess realistisch aussieht."
-date: 2026-07-14
+excerpt: "Die Umstellung von manuellen auf automatisierte Prozesse folgt einem bewährten Muster. Wir zeigen, welche Phasen typischerweise durchlaufen werden und worauf Unternehmen achten sollten."
+date: 2026-10-22
 tag: Automatisierung
 readTime: 5
 ---
 
-## Der unbequeme Realität: Warum manuelle Prozesse irgendwann an ihre Grenzen stoßen
+## Der lange Weg zur Automatisierung
 
-Vielen Unternehmen geht es so: Die Datenverarbeitung läuft über Jahre hinweg ganz ähnlich ab. Jemand empfängt Daten, prüft sie, gibt sie in ein System ein, leitet sie weiter. Die Prozesse funktionieren, die Mitarbeiter kennen die Abläufe. Aber je größer das Unternehmen wird, desto deutlicher wird das Problem: Es entstehen Fehler durch manuelle Eingaben, Bearbeitungszeiten werden immer länger, und Mitarbeiter sitzen an repetitiven Aufgaben fest, die eigentlich auch ein Computer übernehmen könnte.
+In vielen Unternehmen läuft ein großer Teil der Datenarbeit immer noch von Hand ab. Tabellen werden ausgefüllt, Berichte zusammengestellt, Daten zwischen Systemen kopiert. Das kostet Zeit, bindet Ressourcen und ist fehleranfällig. Die gute Nachricht: Ein strukturierter Migrationsprozess hilft, diese manuellen Arbeiten Schritt für Schritt in automatisierte Workflows zu verwandeln.
 
-Der Gedanke, diese Prozesse zu automatisieren, ist verlockend. Aber viele Entscheider fragen sich: Wie fangen wir konkret an? Wie sieht so eine Migration von Hand zu Automatisierung wirklich aus? Nicht in der Theorie, sondern in der Praxis?
+Wir beschreiben hier, wie dieser typische Weg aussieht — nicht als Theorie, sondern als praktisches Muster, das Unternehmen immer wieder beschreiten.
 
-Wir beschreiben hier einen typischen Migrationsprozess, wie er in Unternehmen mit mehreren hundert Mitarbeitern tatsächlich abläuft.
+## Phase 1: Die genaue Bestandsaufnahme
 
-## Phase 1: Die Bestandsaufnahme – Was läuft denn überhaupt ab?
+Alles beginnt mit einer ehrlichen Analyse: Welche Prozesse laufen derzeit manuell ab? Ein häufiges Bild ist dieses: Ein Mitarbeiter erhält jeden Morgen Rohdaten aus mehreren Quellen, trägt sie in eine Excel-Tabelle ein, bereinigt sie nach bekannten Regeln und gibt sie an die nächste Stelle weiter. Ein anderer erstellt wöchentlich einen Bericht, indem er Zahlen aus verschiedenen Systemen zusammensucht und in ein Vorlagen-Dokument einfügt.
 
-Am Anfang steht immer eine unbequeme Wahrheit: Viele Unternehmen wissen gar nicht exakt, wie ihre Prozesse im Detail ablaufen. Ein Mitarbeiter berichtet von Schritt A bis C, aber ob es nicht auch noch undokumentierte Varianten gibt, bleibt offen.
+In dieser Phase dokumentieren wir nicht nur die Prozesse selbst, sondern auch ihre Häufigkeit, die involvierten Systeme und die Zeit, die sie binden. Das ist wichtig: Nur wenn wir verstehen, was heute wirklich passiert, können wir sinnvoll automatisieren.
 
-Wir empfehlen daher, zunächst die Prozesse wirklich zu dokumentieren. Das bedeutet: Wer empfängt welche Daten? In welchen Formaten? Welche Prüfungen erfolgen? Wo entstehen die meisten Fehler? Wie lange dauert ein durchschnittlicher Durchlauf vom Start bis zum Ende?
+Ein typisches Ergebnis dieser Analyse ist eine Liste von fünf bis zehn Prozessen, die regelmäßig wiederholt werden und für die Automatisierung in Frage kommen.
 
-Disese Phase ist anstrengend, weil sie keine sofortigen Ergebnisse bringt. Aber ohne diese Klarheit sind Automatisierungsprojekte zum Scheitern verurteilt. Ein häufiges Problem ist, dass Mitarbeiter ihre täglichen Arbeitsschritte gar nicht so detailliert beschreiben können, wie es für eine Automatisierung nötig wäre. Sie arbeiten nach Routinen, die über Jahre eingespielt sind.
+## Phase 2: Priorisierung und Machbarkeitsprüfung
 
-Es hilft, diese Phase nicht zu kurz zu machen. Ein, zwei Wochen Zeit für gründliche Dokumentation sparen später Monate an Fehlentwicklungen.
+Nicht alle Prozesse sollten gleichzeitig automatisiert werden. Wir empfehlen, nach zwei Kriterien zu priorisieren: zum einen nach dem Aufwand, den die manuelle Arbeit kostet (Zeit × Häufigkeit), und zum anderen nach der technischen Machbarkeit.
 
-## Phase 2: Die Priorisierung – Wo fangen wir an?
+Ein Prozess, der täglich zwei Stunden kostet und technisch leicht zu automatisieren ist, steht ganz oben auf der Liste. Ein Prozess, der monatlich nur 30 Minuten dauert, aber sehr komplex und mit vielen Sonderfällen behaftet ist, rückt nach hinten.
 
-Nachdem die Prozesse klar sind, zeigt sich oft: Es gibt mehr automatisierungswürdige Aufgaben als Zeit und Budget. Ein Unternehmen könnte fünf Prozesse parallel automatisieren, aber das führt zu Chaos.
+In dieser Phase werden auch erste Blockers sichtbar. Vielleicht fehlt eine API zu einem wichtigen Altsystem. Vielleicht sind die Datenqualität oder die Verfügbarkeiten von Schnittstellen nicht gut genug. Das ist völlig normal und kein Grund zu verzweifeln — es bedeutet nur, dass wir den Plan anpassen müssen.
 
-Stattdessen wählen wir einen pragmatischen Ansatz: Welcher Prozess bringt schnell sichtbare Ergebnisse? Welcher läuft am häufigsten ab und kostet damit am meisten Zeit? Wo entstehen die meisten Fehler, die zu Problemen führen?
+## Phase 3: Der Pilot — klein anfangen
 
-Ein typisches Szenario: Ein Unternehmen bearbeitet täglich hunderte Bestelldaten, die aus verschiedenen Kanälen ankommen, manuell geprüft und dann in das Warenwirtschaftssystem eingegeben werden. Das gleiche Unternehmen hat auch noch einen Prozess zur Rechnungserstellung, der noch stärker automatisiert werden könnte. Aber rational macht es mehr Sinn, mit den Bestelldaten anzufangen, weil dieser Prozess täglich läuft und damit größere Effekte bringt.
+Viele Unternehmen machen den Fehler, alle Prozesse gleichzeitig umzukrempeln. Das führt zu unnötigen Risiken und großen Koordinationsproblemen.
 
-Diese Priorisierung ist nicht technisch, sondern geschäftlich. Es geht darum, wo der erste Automatisierungsschritt den größten Return on Investment bringt.
+Besser ist es, mit einem kleineren, gut definierten Prozess zu beginnen. Das kann eine bestimmte Abteilung sein oder ein Workflow, der klar begrenzt ist. Wir wählen etwas, das bei Erfolg einen echten Nutzen bringt, aber auch bei Problemen nicht katastrophal wirkt.
 
-## Phase 3: Der Pilot – Klein anfangen, lernen, skalieren
+In dieser Pilotphase entsteht erstmals ein automatisiertes System. Das kann ein Workflow in einem Standard-Tool sein, ein selbstgeschriebenes Skript oder eine Kombination aus verschiedenen Diensten. Wichtig ist: Wir testen mit echten Daten, beobachten genau, was funktioniert und was nicht, und justieren nach.
 
-Auch wenn die Versuchung groß ist: Ein Migrationsprozess sollte nicht sofort komplett live gehen. Ein bewährter Weg ist der Piloten-Ansatz.
+Typisch dauert diese Phase zwei bis vier Wochen. Am Ende wissen wir, ob und wie der Prozess tatsächlich automatisiert werden kann.
 
-Wir starten mit einem kleinen Teil des ausgewählten Prozesses. Vielleicht nicht alle Bestelldaten, sondern erst nur die von einem bestimmten Kunden oder aus einer Produktkategorie. Die neue automatisierte Lösung läuft parallel zur manuellen Variante, mindestens zwei bis vier Wochen lang.
+## Phase 4: Lösen von Datenqualitätsproblemen
 
-In dieser Zeit passiert Folgendes: Die technische Lösung wird live getestet. Das Team sieht, wo die automatisierte Variante Fehler macht. Manchmal zeigt sich, dass die Dokumentation aus Phase 1 doch lückenhaft war – es gibt Spezialfälle, die niemand erwähnt hat. Auch die Mitarbeiter gewöhnen sich an die neue Arbeitsweise.
+Fast immer zeigen sich in der Pilotphase Datenqualitätsprobleme. Die Eingaben sind nicht immer vollständig. Werte folgen nicht einheitlichen Formaten. Duplikate existieren nebeneinander. Das ist frustrierend, aber auch völlig erwartet.
 
-Das ist kein Scheitern, sondern der normale Lernprozess. Ein häufiger Fehler ist, diesen Piloten zu kurz zu machen oder gar zu überspringen. Dann endet die Implementierung im Chaos.
+Wir gehen dann hin und bereinigen die Datenquellen systematisch. Das kann bedeuten, dass wir Validierungsregeln einbauen, die falsche oder unvollständige Einträge blockieren. Oder dass wir eine einmalige Bereinigung durchführen und dann Standards für die Zukunft setzen.
 
-## Phase 4: Die schrittweise Integration
+Ohne diesen Schritt werden automatisierte Prozesse immer wieder fehlschlagen oder falsche Ergebnisse produzieren. Mit einem soliden Fundament aus guten Daten aber wird alles stabiler.
 
-Wenn der Pilot erfolgreich war, beginnt die schrittweise Migration. Das heißt nicht: Morgen schalten wir alles um. Sondern: Wir erhöhen die Automatisierungsquote langsam.
+## Phase 5: Rollout und kontinuierliche Verbesserung
 
-Vielleicht läuft die erste Woche mit 30 Prozent automatisierten Aufträgen und 70 Prozent manuell. Die nächste Woche 50/50. Dann 70/30. So haben die Mitarbeiter Zeit, sich anzupassen, und das System kann unter realistischen Bedingungen getestet werden. Probleme zeigen sich früher, bevor sie große Schäden anrichten.
+Sobald der Pilot läuft und die Daten sauber sind, fahren wir das System hoch. Das geschieht nicht immer mit einem großen Knall, sondern oft schrittweise: erst für eine Abteilung, dann für weitere.
 
-Während dieser Phase ist die Zusammenarbeit zwischen dem Team, das die Automatisierung entwickelt, und den Mitarbeitern zentral. Es braucht Kommunikation, Schulung und das Vertrauen, dass Fehler schnell behoben werden.
+In dieser Phase entstehen auch neue Anforderungen. Die Benutzer sehen, was möglich ist, und wünschen sich weitere Verbesserungen. Eine gemeinsame Infrastruktur wird deutlich schneller auch für weitere Prozesse nutzbar. Andere Teams erkennen, dass sie ähnliche Probleme haben.
 
-## Phase 5: Vollständige Migration und Stabilisierung
+Wir bauen hier meist ein System auf, das wartbar ist und angepasst werden kann. Die Automatisierung ist nicht das Ende, sondern ein neuer Anfang — mit weniger Handarbeit, aber mit mehr Gestaltungsmöglichkeiten.
 
-Nachdem Wochen oder manchmal auch Monate vergangen sind, ist der Punkt erreicht: Die Automatisierung läuft stabil, fast alle betroffenen Daten werden automatisiert bearbeitet. Der manuelle Prozess existiert nur noch als Fallback-Option für echte Ausnahmefälle.
+## Was dieser Prozess bedeutet
 
-Aber Migration bedeutet nicht "wir sind fertig". Es bedeutet: Wir überwachen jetzt kontinuierlich, ob alles wie erwartet läuft. Treten fehlerhafte Daten auf? Wie oft? Warum? Wo können wir die Lösung noch optimieren?
+Wer diesen Weg ganz praktisch geht, merkt schnell: Es braucht nicht nur Technik, sondern auch eine klare Struktur, Geduld und die Bereitschaft, wirklich hinzuschauen.
 
-Ein häufiges Phänomen: Nach zwei Monaten stabiler Automatisierung tauchen plötzlich Datenformate auf, die bisher nicht vorkamen, oder Geschäftsanforderungen ändern sich. Die Automatisierung muss angepasst werden. Das ist normal und sollte von Anfang an eingeplant sein.
+Die typische Dauer für so einen Migrationsprozess liegt zwischen drei und neun Monaten, je nach Größe und Komplexität. Das klingt lang, ist aber der Garant dafür, dass die Automatisierung später stabil läuft und wirklich Nutzen bringt.
 
-## Was macht einen Migrationsprozess erfolgreich?
-
-Wir sehen, dass erfolgreiche Migrationen typischerweise mehrere Merkmale haben. Erstens: Sie werden nicht als IT-Projekt behandelt, sondern als Geschäftsveränderung. Die Mitarbeiter sind von Anfang an eingebunden, nicht erst am Schluss informiert.
-
-Zweitens: Es gibt Geduld. Ein Migrationsprozess dauert nicht zwei Wochen, sondern drei bis sechs Monate für mittelständische Prozesse. Schneller ist meist falsch.
-
-Drittens: Die Lösung wird regelmäßig überprüft und angepasst. Automatisierung ist nicht statisch.
-
-Und viertens: Es gibt einen klaren Ort für Probleme. Wenn etwas nicht funktioniert, wissen alle, an wen sie sich wenden, und wissen, dass das ernst genommen wird.
-
-## Der nächste Schritt
-
-Wenn es in deinem Unternehmen bereits Prozesse gibt, die nach Automatisierung schreien – zu viel Handarbeit, zu viele Fehler, zu viel Zeit – dann ist die größte Hürde oft nicht die Technik. Sie ist die Klarheit über das "Wie beginnen?" und die realistische Planung.
-
-Wir helfen Unternehmen gerne bei dieser Bestandsaufnahme und Planung. Wenn du herausfinden möchtest, welche Prozesse bei dir am meisten von einer Migration profitieren würden, [schreib uns an](/kontakt). Wir schauen uns die Situation gemeinsam an und geben eine ehrliche Einschätzung, ohne Versprechen zu machen, die wir nicht halten können.
+Falls Sie in Ihrem Unternehmen ähnliche manuelle Prozesse haben und überlegen, wie Sie damit anfangen könnten: Wir unterstützen Sie gerne bei einer ersten Analyse und der Planung. [Schreiben Sie uns](/kontakt), und wir schauen gemeinsam, wo die meisten Chancen liegen.
