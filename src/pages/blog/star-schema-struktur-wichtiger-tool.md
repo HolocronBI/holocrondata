@@ -7,7 +7,6 @@ tag: Modelle & Reports
 readTime: 5
 ---
 
-# Star Schema erklärt: Warum die Struktur wichtiger ist als das Tool
 
 Viele Unternehmen investieren große Summen in moderne Reporting-Tools, während die Daten darunter in chaotischen Strukturen liegen. Das ist wie ein luxuriöses Auto auf einer schlechten Straße: Das Tool kann nur so gut sein wie die Daten, die es bekommt.
 

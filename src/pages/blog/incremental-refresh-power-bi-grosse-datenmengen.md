@@ -7,7 +7,6 @@ tag: Automatisierung
 readTime: 5
 ---
 
-# Incremental Refresh in Power BI: Warum er bei grossen Datenmengen entscheidend ist
 
 Wenn Unternehmen wachsen, wachsen auch ihre Datenmengen. Was anfangs mit täglichen Aktualisierungen problemlos funktioniert, wird irgendwann zum Engpass: Die Refresh-Prozesse dauern länger, verbrauchen mehr Speicher, belasten die Quellsysteme stärker. Viele Organisationen merken dann, dass sie ein grundsätzliches Problem haben – sie laden jede Nacht denselben Datensatz komplett neu, obwohl sich in Wirklichkeit nur ein kleiner Teil geändert hat.
 

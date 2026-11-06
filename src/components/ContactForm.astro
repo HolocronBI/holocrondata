@@ -1,0 +1,209 @@
+---
+import { brand, type Locale } from "../config/brand";
+const { lang = "de" } = Astro.props as { lang?: Locale };
+const en = lang === "en";
+---
+
+<form
+  id="contactForm"
+  class="contact-form"
+  action={brand.formEndpoint}
+  method="POST"
+  data-lang={lang}
+>
+  <div class="field-pair">
+    <div class="field">
+      <label for="name">{en ? "Name" : "Name"} <span>*</span></label><input
+        id="name"
+        name="name"
+        autocomplete="name"
+        required
+        maxlength="120"
+      />
+    </div><div class="field">
+      <label for="email">{en ? "Email" : "E-Mail"} <span>*</span></label><input
+        id="email"
+        type="email"
+        name="email"
+        autocomplete="email"
+        required
+        maxlength="254"
+      />
+    </div>
+  </div>
+  <div class="field">
+    <label for="company"
+      >{en ? "Company" : "Unternehmen"}
+      <span class="optional">{en ? "(optional)" : "(optional)"}</span></label
+    ><input
+      id="company"
+      name="company"
+      autocomplete="organization"
+      maxlength="160"
+    />
+  </div>
+  <div class="field-pair">
+    <div class="field">
+      <label for="service">{en ? "Your topic" : "Ihr Thema"}</label><select
+        id="service"
+        name="service"
+        ><option value="Unsure"
+          >{
+            en ? "Let’s work it out together" : "Gemeinsam herausfinden"
+          }</option
+        ><option value="Data"
+          >{
+            en ? "Data quality & modelling" : "Datenqualität & Modellierung"
+          }</option
+        ><option value="BI">Power BI & Reporting</option><option value="AI"
+          >AI-Pilot</option
+        ></select>
+    </div><div class="field">
+      <label for="package"
+        >{en ? "Package" : "Paket"}
+        <span class="optional">(optional)</span></label
+      ><select id="package" name="package"
+        ><option value="">{en ? "Still open" : "Noch offen"}</option><option
+          value="Insight">Insight</option
+        ><option value="Build">Build</option><option value="Individual"
+          >Individual</option
+        ></select>
+    </div>
+  </div>
+  <div class="field">
+    <label for="message"
+      >{en ? "What would you like to improve?" : "Was möchten Sie verbessern?"}
+      <span>*</span></label
+    ><textarea
+      id="message"
+      name="message"
+      rows="4"
+      required
+      minlength="10"
+      maxlength="5000"
+      placeholder={en
+        ? "Your starting point, your goal and any existing systems…"
+        : "Ihre Ausgangslage, Ihr Ziel und gegebenenfalls vorhandene Systeme …"}
+    ></textarea>
+  </div>
+  <div class="honeypot" aria-hidden="true">
+    <label for="website">Leave empty</label><input
+      id="website"
+      name="_gotcha"
+      tabindex="-1"
+      autocomplete="off"
+    />
+  </div>
+  <input
+    type="hidden"
+    name="_subject"
+    value={`${brand.name} — Projektanfrage`}
+  />
+  <input type="hidden" name="language" value={lang} />
+  <p class="form-privacy">
+    {
+      en
+        ? "Your enquiry is sent through Formspree. See our "
+        : "Ihre Anfrage wird über Formspree übermittelt. Hinweise zur Verarbeitung finden Sie im "
+    }<a href="/datenschutz/">{en ? "privacy notice (German)" : "Datenschutz"}</a
+    >. {
+      en ? "Fields marked * are required." : "Felder mit * sind erforderlich."
+    }
+  </p>
+  <button class="button form-submit" type="submit"
+    ><span data-submit-label>{en ? "Send enquiry" : "Anfrage senden"}</span
+    ><span aria-hidden="true">↗</span></button
+  >
+  <p
+    id="form-status"
+    class="form-status"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    tabindex="-1"
+  >
+  </p>
+  <noscript
+    ><p class="form-privacy">
+      {
+        en
+          ? "After submitting, Formspree will show the result in a new page."
+          : "Nach dem Absenden zeigt Formspree das Ergebnis auf einer neuen Seite an."
+      }
+    </p></noscript
+  >
+</form>
+<script>
+  import { sendContact } from "../lib/contact.mjs";
+  const form = document.querySelector<HTMLFormElement>("#contactForm");
+  if (form) {
+    const en = form.dataset.lang === "en";
+    const select = form.querySelector<HTMLSelectElement>("#package")!;
+    const applyPackage = (value: string | null) => {
+      if (value && ["Insight", "Build", "Individual", "Scale"].includes(value))
+        select.value = value === "Scale" ? "Individual" : value;
+    };
+    applyPackage(new URLSearchParams(window.location.search).get("package"));
+    document
+      .querySelectorAll<HTMLAnchorElement>("[data-package]")
+      .forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          applyPackage(link.dataset.package || null);
+          window.location.hash = "contact";
+        });
+      });
+    const button = form.querySelector<HTMLButtonElement>('[type="submit"]')!;
+    const label = button.querySelector<HTMLElement>("[data-submit-label]")!;
+    const status = form.querySelector<HTMLElement>("#form-status")!;
+    let sending = false;
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (sending || !form.reportValidity()) return;
+      sending = true;
+      button.disabled = true;
+      form.setAttribute("aria-busy", "true");
+      label.textContent = en ? "Sending…" : "Wird gesendet …";
+      status.textContent = "";
+      status.className = "form-status";
+      let request = globalThis.fetch;
+      // Local QA only. Vite removes this branch in production builds.
+      if (import.meta.env.DEV) {
+        const test = new URLSearchParams(window.location.search).get(
+          "form-test",
+        );
+        if (test === "success" || test === "error")
+          request = async () =>
+            new Response(JSON.stringify({ ok: test === "success" }), {
+              status: test === "success" ? 200 : 422,
+              headers: { "Content-Type": "application/json" },
+            });
+      }
+      const result = await sendContact(form.action, new FormData(form), {
+        request,
+      });
+      sending = false;
+      button.disabled = false;
+      form.removeAttribute("aria-busy");
+      label.textContent = en ? "Send enquiry" : "Anfrage senden";
+      if (result.ok) {
+        form.reset();
+        status.classList.add("is-success");
+        status.textContent = en
+          ? "Thank you. Your enquiry was accepted. I will reply by email."
+          : "Vielen Dank. Ihre Anfrage wurde angenommen. Ich melde mich per E-Mail.";
+      } else {
+        status.classList.add("is-error");
+        status.textContent =
+          result.reason === "timeout"
+            ? en
+              ? "The service did not respond in time. Your enquiry may have arrived. Please wait before retrying, or contact me by email."
+              : "Der Dienst hat nicht rechtzeitig geantwortet. Ihre Anfrage könnte angekommen sein. Bitte warten Sie vor einem erneuten Versuch oder kontaktieren Sie mich per E-Mail."
+            : en
+              ? "Sending could not be confirmed. Your entries have been kept. Please try again later or use the email address beside this form."
+              : "Der Versand konnte nicht bestätigt werden. Ihre Eingaben bleiben erhalten. Bitte versuchen Sie es später erneut oder nutzen Sie die E-Mail-Adresse neben dem Formular.";
+      }
+      status.focus({ preventScroll: true });
+    });
+  }
+</script>

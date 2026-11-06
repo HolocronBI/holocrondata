@@ -7,7 +7,6 @@ tag: Modelle & Reports
 readTime: 5
 ---
 
-# Star Schema erklärt: Warum die Struktur wichtiger ist als das Tool
 
 Wenn Unternehmen anfangen, ihre Daten aufzuräumen und in ein Reporting-System zu bringen, stoßen sie schnell auf den Begriff "Star Schema". Manche Geschäftsführer hören diesen Begriff und denken sofort: Das ist ein technisches Problem, das kümmert sich der IT-Chef. Doch das ist ein Missverständnis. Ein Star Schema ist in erster Linie eine Struktur-Entscheidung – und diese Entscheidung hat unmittelbare Auswirkungen darauf, wie schnell und wie sicher Ihr Unternehmen später mit seinen Daten arbeitet.
 

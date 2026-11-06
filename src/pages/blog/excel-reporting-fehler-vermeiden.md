@@ -7,7 +7,6 @@ tag: Daten bereinigen
 readTime: 5
 ---
 
-# Die 5 häufigsten Fehler in Excel-basierten Reportings
 
 Excel ist in vielen Unternehmen das Standard-Werkzeug für Reporting. Es ist flexibel, vertraut und unmittelbar verfügbar. Gleichzeitig verstecken sich in Excel-basierten Reportings systematische Fehler, die Entscheidungen gefährden können. Wir haben die fünf kritischsten Probleme zusammengestellt, denen wir in der Praxis immer wieder begegnen.
 

@@ -7,7 +7,6 @@ tag: Daten verstehen
 readTime: 5
 ---
 
-# Datenlandschaft dokumentieren: Warum es sich lohnt, bevor man baut
 
 Wenn ein Unternehmen ein neues BI-System aufbauen oder eine Dateninfrastruktur modernisieren möchte, ist die erste Reaktion oft klar: Man fängt an zu bauen. Man sucht sich Tools aus, entwirft Datenmodelle, schreibt ETL-Prozesse. Die Energie ist hoch, der Wille groß.
 

@@ -7,7 +7,6 @@ tag: Modelle & Reports
 readTime: 5
 ---
 
-# Farbwahl und Layout in Power BI: Warum Design keine Nebensache ist
 
 Ein Dashboard mit allen relevanten Kennzahlen aufzubauen ist die eine Sache. Dass diese Kennzahlen von den richtigen Menschen tatsächlich verstanden und genutzt werden, ist die andere. Und hier zeigt sich schnell: Das Design entscheidet.
 

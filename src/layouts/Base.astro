@@ -1,25 +1,87 @@
 ---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { brand, legalReady, type Locale } from "../config/brand";
 interface Props {
   title?: string;
   description?: string;
+  lang?: Locale;
+  home?: boolean;
+  article?: boolean;
+  noindex?: boolean;
 }
 const {
-  title = 'Holocron — Business Intelligence Services',
-  description = 'Business Intelligence Beratung für den Mittelstand. Power BI, Datenmodellierung, Datenbereinigung.',
+  lang = "de",
+  home = false,
+  article = false,
+  noindex = false,
 } = Astro.props;
+const title = Astro.props.title || `${brand.name} — ${brand.descriptor}`;
+const description = Astro.props.description || brand.description[lang];
+const canonical = new URL(Astro.url.pathname, brand.siteUrl);
+const image = new URL(brand.socialImage, brand.siteUrl);
 ---
+
 <!doctype html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title}</title>
-<meta name="description" content={description}>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='4' y='4' width='24' height='24' rx='4' fill='%2309090B'/%3E%3Cpath d='M16 10v12M10 16h12' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<slot name="head" />
-</head>
-<body>
-<slot />
-</body>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#F5F6F8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={brand.logo} />
+    <link
+      rel="preload"
+      href="/fonts/manrope-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    {
+      (noindex || !legalReady) && (
+        <meta name="robots" content="noindex, nofollow" />
+      )
+    }
+    <meta property="og:type" content={article ? "article" : "website"} />
+    <meta property="og:site_name" content={brand.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content={lang === "de"
+        ? "Perlweiße Materialstudie mit Silber- und Glasdetails"
+        : "Pearl-white material study with silver and glass details"}
+    />
+    <meta property="og:locale" content={lang === "de" ? "de_DE" : "en_GB"} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {
+      home && (
+        <>
+          <link rel="alternate" hreflang="de" href={`${brand.siteUrl}/`} />
+          <link rel="alternate" hreflang="en" href={`${brand.siteUrl}/en/`} />
+          <link
+            rel="alternate"
+            hreflang="x-default"
+            href={`${brand.siteUrl}/`}
+          />
+        </>
+      )
+    }
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main"
+      >{lang === "de" ? "Zum Inhalt springen" : "Skip to content"}</a
+    >
+    <Header lang={lang} home={home} />
+    <main id="main" tabindex="-1"><slot /></main>
+    <Footer lang={lang} />
+  </body>
 </html>

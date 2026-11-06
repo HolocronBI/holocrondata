@@ -7,7 +7,6 @@ tag: Daten bereinigen
 readTime: 5
 ---
 
-# Warum saubere Rohdaten wichtiger sind als ein schönes Dashboard
 
 Es ist verlockend, sich auf die sichtbare Seite der Datenarbeit zu konzentrieren. Ein modernes Dashboard mit interaktiven Grafiken, farbigen Trends und übersichtlichen KPIs wirkt professionell und vermittelt schnell den Eindruck, dass alles unter Kontrolle ist. Doch hinter jedem aussagekräftigen Dashboard steht eine unsichtbare Arbeit, die darüber entscheidet, ob die angezeigten Zahlen tatsächlich der Realität entsprechen.
 

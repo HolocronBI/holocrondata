@@ -7,7 +7,6 @@ tag: Modelle & Reports
 readTime: 5
 ---
 
-# Power Query vs. DAX: Was wohin gehört
 
 Es ist eine Frage, die in vielen BI-Projekten auftaucht: Sollte ich diese Logik in Power Query oder in DAX implementieren? Die Antwort ist selten eindeutig, doch eine klare Aufteilung der Verantwortlichkeiten macht den Unterschied zwischen einem wartbaren und einem chaotischen System aus.
 

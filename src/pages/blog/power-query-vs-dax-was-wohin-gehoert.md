@@ -7,7 +7,6 @@ tag: Modelle & Reports
 readTime: 5
 ---
 
-# Power Query vs. DAX: Was wohin gehört
 
 Wer mit Power BI oder Excel arbeitet, stößt schnell auf die gleiche Frage: Soll ich das Problem mit Power Query oder mit DAX lösen? Beide Technologien sind mächtig, aber sie verfolgen völlig unterschiedliche Ziele. Die richtige Wahl zu treffen, ist essentiell – nicht nur für die Wartbarkeit, sondern auch für die Performance und die Stabilität des gesamten Systems.
 

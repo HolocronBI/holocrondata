@@ -7,7 +7,6 @@ tag: Datenqualitaet
 readTime: 6
 ---
 
-# Excel-Tabellenchaos beenden: Wann lohnt sich der Umstieg auf eine echte Datenbank?
 
 Ein klassisches Szenario in vielen mittelständischen Unternehmen: Der Vertriebsleiter führt seine Kundenliste in Excel, die Buchhaltung nutzt separate Dateien für Rechnungen, und im Lager wird der Bestand in einer dritten Tabelle gepflegt. Jeder optimiert sein eigenes System – das Gesamtunternehmen verliert dabei den Überblick.
 

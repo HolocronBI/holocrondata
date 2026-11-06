@@ -7,7 +7,6 @@ tag: Automatisierung
 readTime: 5
 ---
 
-# Power BI Gateway: Was es ist und wann man es braucht
 
 Wenn ein Unternehmen Power BI einführt, entstehen häufig schnell erste Fragen zur Datenanbindung. Besonders dann, wenn wichtige Datenquellen nicht in der Cloud liegen, sondern lokal im Netzwerk oder auf On-Premise-Servern gespeichert sind. Der Power BI Gateway ist die Lösung für dieses Problem – aber nicht jedes Unternehmen braucht ihn tatsächlich.
 

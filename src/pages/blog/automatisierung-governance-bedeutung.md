@@ -7,7 +7,6 @@ tag: Automatisierung
 readTime: 5
 ---
 
-# Warum Automatisierung Governance braucht und was das konkret bedeutet
 
 Wir beobachten ein häufiges Phänomen in Unternehmen: Automatisierung beginnt mit großem Enthusiasmus. Die erste Workflow-Automatisierung funktioniert, spart Zeit, und plötzlich entstehen überall im Unternehmen neue automatisierte Prozesse — ohne koordinierte Planung. Sechs Monate später zeigt sich das eigentliche Problem: Niemand hat eine vollständige Übersicht über alle laufenden Automatisierungen. Manche Prozesse sind veraltet, andere überschneiden sich, und im schlimmsten Fall führen sie zu Fehlentscheidungen oder Datenschutz-Problemen.
 

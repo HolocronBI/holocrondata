@@ -1,5 +1,7 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: 'https://holocrondata.net',
+  site: "https://holocrondata.net",
+  redirects: { "/kontakt": "/#contact" },
+  vite: { server: { allowedHosts: ["terminal.local"] } },
 });

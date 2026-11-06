@@ -1,0 +1,39 @@
+---
+import { brand, type Locale } from "../config/brand";
+const { lang = "de" } = Astro.props as { lang?: Locale };
+const en = lang === "en";
+---
+
+<footer class="site-footer wrap">
+  <div class="footer-top">
+    <a class="brand" href={en ? "/en/" : "/"}
+      ><img src={brand.logo} alt="" width="30" height="30" /><span
+        >{brand.name}</span
+      ></a
+    >
+    <p>
+      {
+        en
+          ? "Clear data. Considered decisions."
+          : "Klare Daten. Fundierte Entscheidungen."
+      }
+    </p>
+    <a class="text-link" href={`mailto:${brand.email}`}
+      >{brand.email} <span aria-hidden="true">↗</span></a
+    >
+  </div>
+  <div class="footer-bottom">
+    <span
+      >© {new Date().getFullYear()}
+      {brand.name}
+      <span class="footer-descriptor">/ {brand.descriptor}</span></span
+    >
+    <div>
+      <a href="/blog/">{en ? "Blog (German)" : "Blog"}</a><a href="/impressum/"
+        >{en ? "Legal notice (DE)" : "Impressum"}</a
+      ><a href="/datenschutz/">{en ? "Privacy (DE)" : "Datenschutz"}</a><a
+        href="#main"
+        aria-label={en ? "Back to top" : "Zurück nach oben"}>↑</a>
+    </div>
+  </div>
+</footer>

@@ -7,7 +7,6 @@ tag: Daten bereinigen
 readTime: 5
 ---
 
-# Wenn Quelldaten fehlerhaft sind: Wie man mit dem Problem umgeht ohne die Quelle zu ändern
 
 In vielen Unternehmen entsteht eine frustrierende Situation: Die Daten, auf die man sich für Analysen und Entscheidungen verlässt, sind fehlerhaft. Aber gleichzeitig lässt sich die Quelle dieser Daten nicht einfach ändern. Das kann verschiedene Gründe haben – eine veraltete ERP-System, externe Datenquellen, die man nicht kontrolliert, oder Prozesse, die so gewachsen sind, dass eine Änderung zu komplex wäre.
 

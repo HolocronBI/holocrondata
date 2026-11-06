@@ -1,347 +1,185 @@
 ---
-const allPosts = (await Astro.glob('./blog/*.md')).sort(
-  (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
+import Base from "../layouts/Base.astro";
+import type { MarkdownInstance } from "astro";
+import { brand } from "../config/brand";
+const posts = Object.values(
+  import.meta.glob<MarkdownInstance<Record<string, any>>>("./blog/*.md", {
+    eager: true,
+  }),
+).sort(
+  (a, b) =>
+    new Date(b.frontmatter.date).getTime() -
+    new Date(a.frontmatter.date).getTime(),
 );
-const featured = allPosts[0];
-const rest = allPosts.slice(1);
-const POSTS_PER_PAGE = 9;
-const totalPages = Math.ceil(rest.length / POSTS_PER_PAGE);
----
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog — Holocron</title>
-<meta name="description" content="Praktisches Wissen zu Power BI, Datenmodellierung und Business Intelligence fuer den Mittelstand.">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='4' y='4' width='24' height='24' rx='4' fill='%2309090B'/%3E%3Cpath d='M16 10v12M10 16h12' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg: #FFFFFF; --bg-muted: #FAFAFA; --fg: #09090B; --fg-muted: #71717A; --fg-light: #A1A1AA;
-  --border: #E4E4E7; --border-hover: #D4D4D8; --accent: #2563EB;
-  --font: 'Inter', -apple-system, sans-serif; --font-mono: 'JetBrains Mono', monospace;
-}
-html { scroll-behavior: smooth; }
-body { font-family: var(--font); background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; height: 56px; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-.nav-left { display: flex; align-items: center; gap: 1.25rem; }
-.logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); }
-.logo-mark { width: 24px; height: 24px; }
-.logo-mark svg { width: 100%; height: 100%; display: block; }
-.logo-text { font-weight: 700; font-size: 0.88rem; letter-spacing: -0.02em; }
-.nav-items { display: flex; align-items: center; }
-.nav-item > a { text-decoration: none; color: var(--fg-muted); font-size: 0.825rem; font-weight: 500; padding: 0.4rem 0.7rem; border-radius: 6px; transition: color 0.15s, background 0.15s; display: inline-flex; align-items: center; height: 32px; }
-.nav-item > a:hover { color: var(--fg); background: var(--bg-muted); }
-.nav-item > a.active { color: var(--fg); }
-.nav-right { display: flex; align-items: center; gap: 0.5rem; }
-.nav-cta { background: var(--fg); color: white; padding: 0.4rem 1rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: opacity 0.15s; }
-.nav-cta:hover { opacity: 0.85; }
-.page { padding-top: 56px; }
-
-/* HEADER */
-.blog-header { padding: 4rem 1.5rem 3rem; max-width: 1100px; margin: 0 auto; border-bottom: 1px solid var(--border); }
-.blog-label { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-muted); margin-bottom: 0.6rem; }
-.blog-header h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
-
-/* FEATURED */
-.featured-section { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; border-bottom: 1px solid var(--border); }
-.featured-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-light); margin-bottom: 1.5rem; }
-.featured-card { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; text-decoration: none; color: inherit; }
-.featured-card:hover .featured-title { color: var(--accent); }
-.featured-vis { background: var(--bg-muted); border: 1px solid var(--border); border-radius: 12px; aspect-ratio: 16/9; overflow: hidden; }
-.featured-vis canvas { width: 100%; height: 100%; display: block; }
-.featured-tag { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 1rem; }
-.featured-title { font-size: clamp(1.3rem, 2.5vw, 1.75rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 1rem; transition: color 0.15s; }
-.featured-excerpt { font-size: 0.9rem; color: var(--fg-muted); line-height: 1.65; margin-bottom: 1.5rem; }
-.featured-meta { font-size: 0.75rem; color: var(--fg-light); font-family: var(--font-mono); margin-bottom: 1.25rem; }
-.read-more { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: var(--fg); transition: gap 0.2s; }
-.featured-card:hover .read-more { gap: 0.7rem; }
-
-/* LIST SECTION */
-.list-section { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
-.list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-.list-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-light); }
-.list-count { font-family: var(--font-mono); font-size: 0.65rem; color: var(--fg-light); }
-
-/* COMPACT POST LIST */
-.post-list { display: flex; flex-direction: column; }
-.post-row { display: grid; grid-template-columns: 100px 1fr auto; gap: 1.5rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; transition: background 0.1s; }
-.post-row:first-child { border-top: 1px solid var(--border); }
-.post-row:hover .post-row-title { color: var(--accent); }
-.post-row-tag { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-light); white-space: nowrap; overflow: hidden; max-width: 90px; }
-.post-row-title { font-size: 0.9rem; font-weight: 500; line-height: 1.4; transition: color 0.15s; }
-.post-row-date { font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg-light); white-space: nowrap; }
-
-/* PAGINATION */
-.pagination { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 2.5rem 0 1rem; }
-.page-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 6px; font-size: 0.82rem; font-weight: 500; cursor: pointer; background: none; font-family: var(--font); color: var(--fg-muted); transition: all 0.15s; }
-.page-btn:hover { border-color: var(--fg); color: var(--fg); }
-.page-btn.active { background: var(--fg); color: white; border-color: var(--fg); }
-.page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-/* CTA */
-.cta-strip { border-top: 1px solid var(--border); padding: 4rem 1.5rem; }
-.cta-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
-.cta-text h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
-.cta-text p { font-size: 0.875rem; color: var(--fg-muted); }
-.btn-dark { background: var(--fg); color: white; padding: 0.65rem 1.4rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.875rem; transition: opacity 0.15s; white-space: nowrap; }
-.btn-dark:hover { opacity: 0.85; }
-.empty { text-align: center; padding: 5rem 1.5rem; color: var(--fg-muted); }
-.empty-mono { font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg-light); margin-bottom: 0.75rem; }
-footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; font-size: 0.78rem; color: var(--fg-light); }
-@media(max-width: 800px) { .featured-card { grid-template-columns: 1fr; gap: 1.5rem; } .post-row { grid-template-columns: 80px 1fr; } .post-row-date { display: none; } }
-@media(max-width: 640px) { .nav-items { display: none; } footer { flex-direction: column; gap: 0.5rem; text-align: center; } }
-</style>
-</head>
-<body>
-
-<nav>
-  <div class="nav-left">
-    <a href="/" class="logo">
-      <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" fill="#09090B"/><path d="M12 7v10M7 12h10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <span class="logo-text">Holocron</span>
-    </a>
-    <div class="nav-items">
-      <div class="nav-item"><a href="/#services">Leistungen</a></div>
-      <div class="nav-item"><a href="/#process">Ablauf</a></div>
-      <div class="nav-item"><a href="/#pricing">Preise</a></div>
-      <div class="nav-item"><a href="/#portfolio">Projekte</a></div>
-      <div class="nav-item"><a href="/blog" class="active">Blog</a></div>
-    </div>
-  </div>
-  <div class="nav-right">
-    <a href="/#contact" class="nav-cta">Kontakt</a>
-  </div>
-</nav>
-
-<div class="page">
-  <div class="blog-header">
-    <div class="blog-label">Blog</div>
-    <h1>Insights & Praxis-Tipps</h1>
-  </div>
-
-  {allPosts.length === 0 ? (
-    <div class="empty">
-      <div class="empty-mono">// Erste Beitraege erscheinen bald</div>
-      <p>Der Blog startet in Kuerze.</p>
-    </div>
-  ) : (
-    <>
-      {featured && (
-        <div class="featured-section">
-          <div class="featured-label">Neuester Beitrag</div>
-          <a href={featured.url} class="featured-card">
-            <div class="featured-vis" id="featuredVis"></div>
-            <div>
-              <div class="featured-tag">{featured.frontmatter.tag || 'Blog'}</div>
-              <div class="featured-title">{featured.frontmatter.title}</div>
-              <div class="featured-excerpt">{featured.frontmatter.excerpt}</div>
-              <div class="featured-meta">
-                {new Date(featured.frontmatter.date).toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' })}
-                {featured.frontmatter.readTime ? ` · ${featured.frontmatter.readTime} min` : ''}
-              </div>
-              <div class="read-more">Beitrag lesen →</div>
-            </div>
-          </a>
-        </div>
-      )}
-
-      {allPosts.length > 0 && (
-        <div class="list-section">
-          <div class="list-header">
-            <div class="list-label">Alle Beiträge</div>
-            <div class="list-count" id="pageCount"></div>
-          </div>
-          <div class="post-list" id="postList">
-            {allPosts.map((post, i) => (
-              <a href={post.url} class="post-row" data-index={i}>
-                <div class="post-row-tag">{
-                  (post.frontmatter.tag || 'Blog')
-                    .replace('Daten bereinigen', 'Bereinigung')
-                    .replace('Daten verstehen', 'Grundlagen')
-                    .replace('Modelle & Reports', 'Power BI')
-                    .replace('Automatisierung', 'Automation')
-                    .replace('Datenqualität', 'Qualität')
-                    .replace('Datenmodellierung', 'Modellierung')
-                    .replace('Report-Automation', 'Automation')
-                    .replace('BI-Strategie', 'Strategie')
-                }</div>
-                <div class="post-row-title">{post.frontmatter.title}</div>
-                <div class="post-row-date">{new Date(post.frontmatter.date).toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
-              </a>
-            ))}
-          </div>
-          <div class="pagination" id="pagination"></div>
-        </div>
-      )}
-    </>
-  )}
-
-  <div class="cta-strip">
-    <div class="cta-inner">
-      <div class="cta-text">
-        <h2>Bereit, Ihre Daten in Ordnung zu bringen?</h2>
-        <p>Wir helfen mittelstaendischen Unternehmen, verlässliche BI-Strukturen aufzubauen.</p>
-      </div>
-      <a href="/#contact" class="btn-dark">Projekt anfragen →</a>
-    </div>
-  </div>
-</div>
-
-<footer>
-  <span>© 2026 Holocron — holocrondata.net</span>
-  <span>Business Intelligence Services</span>
-</footer>
-
-<script>
-// Animated flowing curves visual
-(function() {
-  const container = document.getElementById('featuredVis');
-  if (!container) return;
-
-  const canvas = document.createElement('canvas');
-  canvas.style.width = '100%';
-  canvas.style.height = '100%';
-  canvas.style.display = 'block';
-  container.appendChild(canvas);
-
-  const ctx = canvas.getContext('2d');
-  let t = 0;
-  let animId;
-
-  function resize() {
-    const dpr = window.devicePixelRatio || 1;
-    const r = container.getBoundingClientRect();
-    canvas.width = r.width * dpr;
-    canvas.height = r.height * dpr;
-    ctx.scale(dpr, dpr);
-  }
-
-  function draw() {
-    const r = container.getBoundingClientRect();
-    const w = r.width, h = r.height;
-    ctx.clearRect(0, 0, w, h);
-
-    // Subtle grid
-    ctx.strokeStyle = 'rgba(0,0,0,0.04)';
-    ctx.lineWidth = 1;
-    for (let y = 0; y < h; y += h / 5) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-    }
-    for (let x = 0; x < w; x += w / 8) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-    }
-
-    // 3 flowing curves, different speeds and amplitudes
-    const curves = [
-      { speed: 0.4, amp: 0.18, base: 0.55, alpha: 0.18, width: 2.5, color: '37,99,235' },
-      { speed: 0.25, amp: 0.12, base: 0.45, alpha: 0.10, width: 1.5, color: '37,99,235' },
-      { speed: 0.6, amp: 0.08, base: 0.65, alpha: 0.07, width: 1, color: '9,9,11' },
-    ];
-
-    curves.forEach(c => {
-      const steps = 80;
-      const pts = [];
-      for (let i = 0; i <= steps; i++) {
-        const x = (i / steps) * w;
-        const y = h * c.base
-          + Math.sin(i * 0.18 + t * c.speed) * h * c.amp
-          + Math.sin(i * 0.07 + t * c.speed * 0.6) * h * c.amp * 0.5;
-        pts.push({ x, y });
-      }
-
-      // Fill under curve
-      const gf = ctx.createLinearGradient(0, 0, 0, h);
-      gf.addColorStop(0, `rgba(${c.color},${c.alpha})`);
-      gf.addColorStop(1, `rgba(${c.color},0)`);
-      ctx.beginPath();
-      ctx.moveTo(pts[0].x, pts[0].y);
-      for (let i = 1; i < pts.length; i++) {
-        const xc = (pts[i].x + pts[i-1].x) / 2;
-        const yc = (pts[i].y + pts[i-1].y) / 2;
-        ctx.quadraticCurveTo(pts[i-1].x, pts[i-1].y, xc, yc);
-      }
-      ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
-      ctx.fillStyle = gf; ctx.fill();
-
-      // Stroke
-      ctx.beginPath();
-      ctx.moveTo(pts[0].x, pts[0].y);
-      for (let i = 1; i < pts.length; i++) {
-        const xc = (pts[i].x + pts[i-1].x) / 2;
-        const yc = (pts[i].y + pts[i-1].y) / 2;
-        ctx.quadraticCurveTo(pts[i-1].x, pts[i-1].y, xc, yc);
-      }
-      ctx.strokeStyle = `rgba(${c.color},${c.alpha * 3})`;
-      ctx.lineWidth = c.width;
-      ctx.stroke();
-    });
-
-    // Floating data points on top curve
-    const mainCurve = curves[0];
-    [0.15, 0.35, 0.55, 0.72, 0.88].forEach(pct => {
-      const i = Math.floor(pct * 80);
-      const x = (i / 80) * w;
-      const y = h * mainCurve.base
-        + Math.sin(i * 0.18 + t * mainCurve.speed) * h * mainCurve.amp
-        + Math.sin(i * 0.07 + t * mainCurve.speed * 0.6) * h * mainCurve.amp * 0.5;
-      ctx.beginPath();
-      ctx.arc(x, y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = '#2563EB';
-      ctx.globalAlpha = 0.7;
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      ctx.beginPath();
-      ctx.arc(x, y, 6, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(37,99,235,0.15)';
-      ctx.fill();
-    });
-
-    t += 0.012;
-    animId = requestAnimationFrame(draw);
-  }
-
-  resize();
-  draw();
-  window.addEventListener('resize', () => { cancelAnimationFrame(animId); resize(); draw(); });
-})();
-
-// Pagination
-const PER_PAGE = 9;
-const rows = document.querySelectorAll('.post-row');
-const total = rows.length;
-const totalPages = Math.ceil(total / PER_PAGE);
-let currentPage = 1;
-
-function showPage(page) {
-  currentPage = page;
-  rows.forEach((row, i) => {
-    const start = (page - 1) * PER_PAGE;
-    row.style.display = (i >= start && i < start + PER_PAGE) ? 'grid' : 'none';
+const featured = posts[0];
+const date = (value: string) =>
+  new Date(value).toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
   });
-  renderPagination();
-  const el = document.getElementById('pageCount');
-  if (el) el.textContent = totalPages > 1 ? `Seite ${page} von ${totalPages}` : `${total} Beiträge`;
-}
+---
 
-function renderPagination() {
-  const el = document.getElementById('pagination');
-  if (!el || totalPages <= 1) return;
-  let html = `<button class="page-btn" onclick="showPage(${currentPage-1})" ${currentPage===1?'disabled':''}>←</button>`;
-  for (let p = 1; p <= totalPages; p++) {
-    if (p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1) {
-      html += `<button class="page-btn ${p===currentPage?'active':''}" onclick="showPage(${p})">${p}</button>`;
-    } else if (Math.abs(p - currentPage) === 2) {
-      html += `<span style="color:var(--fg-light);font-size:0.8rem;padding:0 4px;">…</span>`;
+<Base
+  title={`Wissen zu Daten & Reporting — ${brand.name}`}
+  description="Gedanken und praktische Anleitungen zu Datenqualität, Power BI, Datenmodellen und Reporting für den Mittelstand."
+>
+  <div class="page-header wrap">
+    <p class="eyebrow">JOURNAL / DATEN & ENTSCHEIDUNGEN</p><h1>
+      Zusammenhänge verstehen.
+    </h1><p>
+      Gedanken und praktische Anleitungen zu Datenqualität, Power BI und
+      Reporting.
+    </p>
+  </div>
+  <div class="wrap">
+    {
+      featured && (
+        <section class="blog-featured" aria-labelledby="featured-title">
+          <>
+            <div>
+              <>
+                <p class="eyebrow">NEUESTER BEITRAG</p>
+                <p class="mono">
+                  {featured.frontmatter.tag || "Business Intelligence"}
+                </p>
+              </>
+            </div>
+            <div>
+              <>
+                <h2 id="featured-title">
+                  <a href={featured.url}>{featured.frontmatter.title}</a>
+                </h2>
+                <p>{featured.frontmatter.excerpt}</p>
+                <div class="post-meta">
+                  <time
+                    datetime={new Date(featured.frontmatter.date)
+                      .toISOString()
+                      .slice(0, 10)}
+                  >
+                    {date(featured.frontmatter.date)}
+                  </time>
+                  {featured.frontmatter.readTime && (
+                    <span>{featured.frontmatter.readTime} Min. Lesezeit</span>
+                  )}
+                </div>
+                <a class="text-link" href={featured.url}>
+                  Beitrag lesen <span aria-hidden="true">↗</span>
+                </a>
+              </>
+            </div>
+          </>
+        </section>
+      )
     }
-  }
-  html += `<button class="page-btn" onclick="showPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>→</button>`;
-  el.innerHTML = html;
-}
-
-if (total > 0) showPage(1);
+    <section class="blog-list-section" aria-labelledby="all-posts">
+      <div class="blog-list-header">
+        <h2 id="all-posts">Alle Beiträge</h2><label
+          class="blog-search"
+          for="blog-search"
+          hidden
+          >Beiträge durchsuchen<input
+            id="blog-search"
+            type="search"
+            placeholder="Thema oder Begriff"
+            autocomplete="off"
+          /></label>
+      </div><p
+        class="blog-results"
+        id="blog-results"
+        role="status"
+        aria-live="polite"
+      >
+        {posts.length} Beiträge
+      </p><div id="post-list">
+        {
+          posts.map((post) => (
+            <a
+              class="post-row"
+              href={post.url}
+              data-search={`${post.frontmatter.title} ${post.frontmatter.tag || ""} ${post.frontmatter.excerpt || ""}`}
+            >
+              <>
+                <span class="mono">{post.frontmatter.tag || "BI"}</span>
+                <h3>{post.frontmatter.title}</h3>
+                <time
+                  datetime={new Date(post.frontmatter.date)
+                    .toISOString()
+                    .slice(0, 10)}
+                >
+                  {date(post.frontmatter.date)}
+                </time>
+                <span aria-hidden="true">↗</span>
+              </>
+            </a>
+          ))
+        }
+      </div><p id="no-results" class="empty-result" hidden>
+        Keine passenden Beiträge. Versuchen Sie einen anderen Begriff.
+      </p><nav class="blog-pagination" aria-label="Beitragsseiten" hidden>
+        <button id="previous-page" type="button">← Zurück</button><span
+          id="page-status"></span><button id="next-page" type="button"
+          >Weiter →</button>
+      </nav>
+    </section>
+    <aside class="article-cta">
+      <div>
+        <h2>Von der Frage zur Umsetzung.</h2><p>
+          Besprechen wir, was Ihre Daten im Alltag leisten sollen.
+        </p>
+      </div><a href="/#contact" class="button"
+        >Projekt besprechen <span aria-hidden="true">↗</span></a>
+    </aside>
+  </div>
+</Base>
+<script>
+  const rows = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(".post-row"),
+  );
+  const search = document.querySelector<HTMLInputElement>("#blog-search")!;
+  const previous = document.querySelector<HTMLButtonElement>("#previous-page")!;
+  const next = document.querySelector<HTMLButtonElement>("#next-page")!;
+  const status = document.querySelector<HTMLElement>("#page-status")!;
+  const results = document.querySelector<HTMLElement>("#blog-results")!;
+  const none = document.querySelector<HTMLElement>("#no-results")!;
+  const normalize = (value: string) =>
+    value
+      .toLocaleLowerCase("de")
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
+  let page = 1;
+  const size = 12;
+  const render = () => {
+    const query = normalize(search.value.trim());
+    const matches = rows.filter((row) =>
+      normalize(row.dataset.search || "").includes(query),
+    );
+    const pages = Math.max(1, Math.ceil(matches.length / size));
+    page = Math.max(1, Math.min(page, pages));
+    const visible = new Set(matches.slice((page - 1) * size, page * size));
+    rows.forEach((row) => {
+      row.hidden = !visible.has(row);
+    });
+    previous.disabled = page === 1;
+    next.disabled = page === pages;
+    status.textContent = `Seite ${page} von ${pages}`;
+    results.textContent = `${matches.length} ${matches.length === 1 ? "Beitrag" : "Beiträge"}`;
+    none.hidden = matches.length > 0;
+  };
+  document.querySelector<HTMLElement>(".blog-search")!.hidden = false;
+  document.querySelector<HTMLElement>(".blog-pagination")!.hidden = false;
+  search.addEventListener("input", () => {
+    page = 1;
+    render();
+  });
+  previous.addEventListener("click", () => {
+    page--;
+    render();
+  });
+  next.addEventListener("click", () => {
+    page++;
+    render();
+  });
+  render();
 </script>
-</body>
-</html>
