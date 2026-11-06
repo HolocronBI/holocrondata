@@ -41,4 +41,4 @@ Der Nutzer hat nach Sichtung der Vorschau den Blog abgewählt und ein neues Logo
 
 Ein eigenständiges SVG-Signet ersetzt das Plus-Zeichen und die Holocron-Wortmarke in Header und Footer. Der Name bleibt offen; Titel und Metadaten verwenden zwischenzeitlich die Leistungsbeschreibung. E-Mail, Domain, Kontaktformular und der unveröffentlichte Entwurfsstatus bleiben unverändert.
 
-Impressum und Datenschutzhinweise sind unabhängig von einem Blog erforderlich. Anbieter- und Datenschutzangaben müssen vor dem Livegang vervollständigt werden. Die Vorschau ist trotz `noindex` öffentlich erreichbar; `noindex` stellt keinen Zugriffsschutz dar.
+Impressum und Datenschutzhinweise sind unabhängig von einem Blog erforderlich. Anbieter- und Datenschutzangaben müssen vor dem Livegang vervollständigt werden. `noindex` stellt keinen Zugriffsschutz dar. Der gehostete Vercel-Preview verlangte im abschließenden Testbrowser einen Login; die tatsächliche Zugriffsbeschränkung hängt von Vercel ab.

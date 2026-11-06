@@ -13,7 +13,8 @@ Auf anschließenden Nutzerwunsch wurden Blogübersicht, 127 Artikel, Layout, Gen
 - `npm run check:site`: 110 interne Links/Assets/Anker; keine Blognavigation oder Artikel, Weiterleitungsregeln geprüft, neuer Favicon-Pfad, kein alter Markenname in den Startseiten. QA-Harness und Mock-Transport fehlen im Produktionsbuild.
 - Browserprüfung des neuen Headers und Signets bei 1440, 768, 390 (EN) und 320 px: keine horizontalen Überläufe, keine kaputten geladenen Bilder, lokale Schrift geladen. Mobiles Menü enthält keinen Bloglink; Escape schließt es und gibt den Fokus zurück.
 - Impressum und Datenschutz über Footerlinks im Browser erfolgreich geöffnet; Datenschutzdarstellung mit neuem Header visuell geprüft. Der frühere Browserblock trat bei dieser Prüfung nicht mehr auf.
-- Screenshot der aktualisierten Startseite: `docs/images/pearl-logo-preview.jpg`.
+- Screenshot der aktualisierten lokalen Startseite: `docs/images/pearl-logo-preview.jpg`.
+- Vercel meldet für Commit `4da6844` einen erfolgreichen Preview-Build. Die gehostete Vorschau verlangte im Testbrowser einen Vercel-Login; die visuelle Prüfung erfolgte lokal, keine Anmeldung oder Änderung des Zugriffsschutzes.
 
 ## Prüfungen der ursprünglichen Überarbeitung (vor Blogentfernung)
 
