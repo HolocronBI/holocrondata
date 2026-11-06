@@ -1,78 +1,60 @@
 ---
 layout: ../../layouts/BlogPost.astro
-title: "Welche Daten ein Unternehmen tatsächlich braucht und welche nicht"
-excerpt: "Nicht alle Daten sind wertvoll. Wir zeigen, wie Sie unterscheiden, welche Informationen echte Geschäftsfragen beantworten und welche nur Speicherplatz verschwenden."
-date: 2026-07-29
+title: "Welche Daten ein Unternehmen tatsaechlich braucht und welche nicht"
+excerpt: "Nicht alle Daten sind wertvoll. Wir zeigen, wie Unternehmen zwischen relevanten Informationen und unnötigen Ballast unterscheiden und so ihre Datenstrategie schärfen."
+date: 2026-11-06
 tag: Daten verstehen
 readTime: 5
 ---
 
-## Das Überangebot an Daten ist ein echtes Problem
+## Das Problem der Datenmenge
 
-In vielen Unternehmen herrscht eine merkwürdige Logik: Wenn wir die Daten sammeln können, sammeln wir sie auch. Die Technik ermöglicht es, immer mehr zu erfassen — Klicks, Zugriffe, Suchvorgänge, Zeitstempel, Geräte-Informationen, Verhaltensweisen. Und weil es möglich ist, wird es getan.
+Viele Unternehmen sammeln Daten wie andere Menschen Briefmarken: weil es möglich ist, nicht weil es einen klaren Zweck erfüllt. Das Ergebnis sind Datenspeicher, die mit Informationen überquellen, deren Nutzen unklar bleibt. Gleichzeitig fehlen oft gerade die Daten, die Entscheidungen wirklich voranbringen.
 
-Das Ergebnis sind Data Warehouses, die wie übervolle Lagerhallen wirken. Niemand weiss genau, was drin ist, niemand nutzt die meisten Bestände, aber alle zahlen für die Lagerung. Das kostet nicht nur Geld — es kostet vor allem Zeit und Klarheit.
+Wir sehen immer wieder Unternehmen, die ihre Systeme mit technischen Metriken vollstellen—Datenbankgröße, Server-Auslastung, Query-Zeiten—während grundlegende Geschäftsfragen unbeantwortet bleiben: Wie profitabel ist eigentlich ein einzelner Kunde? Welche Produkte verlieren an Bedeutung? Wo entsteht der größte finanzielle Schaden durch Ineffizienz?
 
-Wir erleben regelmäßig, dass Unternehmen mit hunderten von Datenpunkten arbeiten, aber nur eine Handvoll davon tatsächlich für Entscheidungen heranziehen. Der Rest ist Ballast.
+Dieses Ungleichgewicht kostet Zeit und Geld. Größere Datenmengen bedeuten höhere Speicherkosten, längere Verarbeitungszeiten und komplexere Systeme. Vor allem aber kosten sie Aufmerksamkeit—die knappe Ressource, die Entscheider für das Wesentliche brauchen.
 
-## Der Unterschied zwischen verfügbar und wertvoll
+## Was macht Daten tatsaechlich relevant?
 
-Bevor wir über einzelne Daten sprechen, muss eine grundlegende Frage beantwortet sein: Was wollen wir wirklich wissen?
+Eine Faustregel: Daten sind relevant, wenn sie eine Frage beantworten, die das Geschäft voranbringt. Das klingt einfach, aber die Praxis ist anders. Häufig werden Daten gesammelt, weil:
 
-Das klingt trivial, ist aber der Kern des Problems. Viele Unternehmen sammeln Daten, ohne diese Frage klar zu haben. Sie sammeln, weil es geht. Später hoffen sie, dass die Daten irgendwie nützlich werden.
+Die Datenquelle gerade zugänglich ist. Ein ERP-System liefert bestimmte Kennzahlen, also werden sie auch erfasst, auch wenn niemand sie wirklich braucht.
 
-Es funktioniert besser andersherum: Zuerst kommen die Fragen. Dann kommen die Daten.
+Es sich anfühlt wie Vorsicht. Besser alles haben, als später etwas zu vermissen—dieser Gedanke führt zu gigantischen Datenfriedhöfen.
 
-Ein häufiges Beispiel ist die Erfassung von Nutzerverhalten auf einer Website oder in einer Anwendung. Viele Unternehmen tracken alles: Mausposition, Scroll-Tiefe, Verweilzeiten auf einzelnen Elementen, Klickfolgen. Das ist technisch möglich und wird oft automatisch gemacht. Aber braucht man das wirklich?
+Es technisch möglich ist. Sensoren, APIs, Logsysteme machen es leicht, riesige Mengen zu sammeln. Dass man etwas tun kann, bedeutet aber nicht, dass man es tun sollte.
 
-Die ehrliche Antwort hängt ab von der konkreten Frage. Wenn es um die Optimierung einer Checkout-Quote geht, kann Scroll-Tiefe relevant sein. Wenn es um die Häufigkeit von Besuchen geht, ist sie irrelevant. Und wenn keine Frage beantwortet werden soll, sondern nur gesammelt wird, dann ist sie definitiv Verschwendung.
+Es eine alte Gewohnheit ist. Berichte, die seit Jahren laufen, werden weitergepflegt, obwohl sie längst überholt sind.
 
-## Welche Daten sind wertvoll?
+Wir empfehlen stattdessen ein anderes Vorgehen: Mit den Entscheidern anfangen und rückwärts arbeiten. Welche Entscheidungen müssen wir treffen? Was müssen wir wissen, um sie gut zu treffen? Nur dann wird klar, welche Daten wirklich notwendig sind.
 
-Wir sehen, dass Daten dann wertvoll sind, wenn sie eine konkrete Geschäftsfrage beantworten.
+## Typische Kandidaten fuer den Datenmist
 
-In einem Handelsunternehmen könnte das so aussehen: Welche Produkte werden am häufigsten zusammen gekauft? Dafür braucht es Transaktionsdaten — Kundennummer, Produktgruppe, Kaufdatum, Betrag. Das ist wertvoll. Die genaue Tageszeit des Kaufs ist wahrscheinlich nicht wertvoll, es sei denn, es gibt eine spezifische Hypothese darüber, dass Tageszeit mit Produktauswahl korreliert.
+In der Praxis lohnt sich oft ein kritischer Blick auf bestimmte Datentypen:
 
-In einem Dienstleistungsunternehmen ist oft ein ganz anderer Datensatz wertvoll: Welche Projekttypen sind profitabel, welche nicht? Das erfordert Projektdaten, Kostenerfassung, Stundenabrechnung. Daten über die Raumtemperatur am Arbeitsplatz sind nicht wertvoll, obwohl die Technik auch diese erfassen könnte.
+Historische Detaildaten können schnell überflüssig werden. Ein Unternehmen speichert beispielsweise jede einzelne Lagerbewegung von vor drei Jahren—täglich, stündlich aktualisiert. Der aktuelle Lagerbestand ist relevant; die Frage, ob am 15. April um 14:27 Uhr ein Paket ankam, nicht mehr. Hier genügen aggregierte Zusammenfassungen.
 
-Die Faustregel ist einfach: Daten sind wertvoll, wenn sie in eine Entscheidung fließen.
+Metriken auf der falschen Ebene entstehen häufig, wenn Systeme granulare Daten liefern, aber niemand sie auf dieser Detailstufe analysiert. Ein Unternehmen könnte täglich messen, wie lange jeder einzelne Sachbearbeiter durchschnittlich braucht, ein bestimmtes Formular auszufüllen. Relevant ist wahrscheinlich: Wie lange dauert der Prozess insgesamt? Gibt es Engpässe? Das ist eine Ebene höher aggregiert.
 
-## Was sollte man nicht sammeln?
+Doppelte Datenquellen werden übersehen. Das Customer-Relationship-Management und das Abrechnungssystem speichern beide die Kundenadressen—und niemand merkt, dass sie teilweise voneinander abweichen. Das kostet Aufwand in der Verwaltung, ohne dass ein klarer Nutzen entsteht.
 
-Ebenso wichtig wie zu wissen, was man braucht, ist zu wissen, was man ignorieren kann.
+Privacy-lastige Daten, die nicht nötig sind. Ein Onlineshop könnte theoretisch alle Klicks eines Besuchers speichern. Ob das sinnvoll ist, ist eine andere Frage—rechtlich und geschäftlich.
 
-Daten, die Sie nicht nutzen werden, sollten Sie nicht erfassen. Das spart Speicher, Komplexität und oft auch rechtliche Probleme (Stichwort Datenschutz). Ein Unternehmen, das Kundendaten erfasst, sollte sich fragen: Welche dieser Informationen unterstützen tatsächlich eine geschäftliche Entscheidung? Der Name ist oft relevant. Das Geburtsdatum braucht es nur, wenn es für etwas Konkretes nötig ist — sonst ist es ein Sicherheitsrisiko ohne Nutzen.
+## Die konstruktive Gegenfrage
 
-Viele Unternehmen sammeln auch historische Daten, weil sie "irgendwann nützlich sein könnten". Das ist selten eine gute Rechtfertigung. Echte Bedarf entsteht durch aktuelle Fragen, nicht durch hypothetische Zukunftsszenarien.
+Wir empfehlen einen pragmatischen Weg. Für jeden bestehenden Datenfluss sollte mindestens einmal pro Jahr die Frage gestellt werden: Was passiert, wenn wir das nicht mehr messen? Wer würde es merken? Würde sich eine wichtige Entscheidung ändern?
 
-Ein anderes häufiges Problem: Daten sammeln, weil die Konkurrenz es tut. Das ist kein strategischer Grund. Es führt dazu, dass Datenbestände entstehen, die teuer zu unterhalten sind, aber nicht genutzt werden.
+Wenn die Antwort "wahrscheinlich nicht" ist, ist das ein klares Zeichen. Diese Daten können reduziert, aggregiert oder ganz eingestellt werden.
 
-## Wie man entscheidet
+Gleichzeitig gibt es oft blinde Flecken—Daten, die man collect sollte, es aber nicht tut. Diese zu identifizieren ist ebenfalls wichtig. Ein Einzelhandelunternehmen könnte beispielsweise wissen, welche Produkte zusammen gekauft werden, um die Ladengestaltung zu optimieren. Wenn diese Information fehlt, ist es ein Hinweis auf eine Datenlücke, die geschlossen werden sollte.
 
-Wir empfehlen einen strukturierten Ansatz:
+## Praktisches Vorgehen
 
-Erst sollten alle Stakeholder zusammenkommen und aufschreiben: Was sind die Fragen, die wir regelmäßig stellen? Welche Metriken brauchen wir für Entscheidungen? Was berichten wir an die Geschäftsführung, an Kunden, an Partner?
+Wir empfehlen, mit einer Datenbestandsaufnahme zu beginnen—nicht technisch, sondern geschäftlich. Welche Daten werden tatsächlich für Entscheidungen verwendet? Welche liegen herum und werden ignoriert? Welche Fragen bleiben unbeantwortet, weil die Daten fehlen?
 
-Aus dieser Liste ergibt sich dann direkt, welche Daten notwendig sind. Alles andere ist Kandidat für Eliminierung.
+Aus dieser Analyse ergibt sich dann ein schlanker Datenstapel: nur das, was wirklich nutzt. Das spart Kosten, macht Systeme schneller und reduziert die Komplexität deutlich. Vor allem aber schärft es den Fokus: Auf die Daten, die zählen.
 
-Zweiter Schritt: Eine regelmäßige Überprüfung. Quartal für Quartal sollten sich Entscheider die Datenbestände anschauen und fragen: Haben wir das benutzt? War es hilfreich? Brauchen wir das noch?
+Datum ist nicht gleich Datum. Ein Unternehmen, das das versteht und danach handelt, hat einen echten Vorteil. Es trifft schneller bessere Entscheidungen und verschwendet weniger Ressourcen auf unnötige Komplexität.
 
-Dieser Prozess ist nicht glamourös, aber er ist effektiv. Er reduziert Komplexität, spart Kosten und macht Datenarbeit schneller.
-
-## Das Paradox der modernen Datenkultur
-
-Es gibt einen interessanten Widerspruch: Einerseits wird überall von "datengetriebenen Entscheidungen" gesprochen. Andererseits sammeln Unternehmen Daten, ohne zu wissen, warum.
-
-Datengetrieben sein heisst nicht, viele Daten zu haben. Es heisst, die richtigen Daten für die richtigen Fragen zu haben. Die Menge ist irrelevant. Die Qualität und Relevanz entscheiden.
-
-Wir sehen immer wieder, dass Unternehmen mit kleinen, gut gepflegten Datenbeständen schneller und besser Entscheidungen treffen als solche mit gigantischen, unübersichtlichen Lagern.
-
-## Fazit
-
-Daten sind kein Selbstzweck. Sie sind ein Mittel, um Fragen zu beantworten und Entscheidungen zu treffen.
-
-Wer weiss, welche Fragen wichtig sind, weiss auch, welche Daten wichtig sind. Alles andere kostet nur Geld und verursacht Verwirrung.
-
-Wenn Sie unsicher sind, welche Ihrer Daten tatsächlich wertvoll sind, ist das ein guter Anlass, das gemeinsam anzuschauen. Oft lohnt sich eine ehrliche Bestandsaufnahme — und danach geht vieles leichter von der Hand.
-
-[Kontaktieren Sie uns](/kontakt) — wir helfen Ihnen, Klarheit in Ihre Datenbestände zu bringen.
+Wenn Sie merken, dass Ihre Datenlandschaft aus dem Ruder gelaufen ist—zu viel Ballast, zu wenig klare Aussagekraft—kann ein strukturierter Blick von außen helfen. Gerne schauen wir gemeinsam mit Ihnen, welche Daten wirklich zählen und wo Sie aufräumen können. [Schreiben Sie uns](/kontakt)—unverbindlich und ohne Druck.
