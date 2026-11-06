@@ -2,6 +2,8 @@
 
 ## Ergebnis
 
+Der Nutzer hat den aktuellen Designstand einschließlich des reduzierten Logos am 06.11.2026 bestätigt. Header, Footer und Favicon sind bereits entsprechend umgesetzt und in der Branch-Vorschau bereitgestellt. Die Designfreigabe ändert den weiterhin offenen Produktions-Livegang und die unten dokumentierten fehlenden Anbieterangaben nicht.
+
 Startseite auf BI- und AI-Beratung für Mittelstand, Finance und Controlling ausgerichtet; neue Pearl/Silver/Glass-CI, lokale Schriftdateien, optimiertes Materialmotiv, eigene DE-/EN-Seiten, gemeinsame Komponenten, klarer Kontaktweg und ein neues SVG-Signet ohne Wortmarke. Der Name bleibt austauschbar. Die alte ungenutzte Root-HTML-Datei wurde nach Prüfung des Astro-Builds entfernt.
 
 Auf anschließenden Nutzerwunsch wurden Blogübersicht, 127 Artikel, Layout, Generator und täglicher Workflow aus dem Feature-Branch entfernt. Alte Blog-URLs werden in Vercel zur Startseite weitergeleitet; im lokalen Build existiert nur die Weiterleitung der Übersicht. Alte `/kontakt`-Links führen weiterhin zum Kontaktbereich. Der Workflow auf `main` bleibt bis zur Übernahme der Änderung bestehen.

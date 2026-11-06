@@ -1,5 +1,7 @@
 # Pearl / Silver / Glass
 
+**Designstand am 06.11.2026 vom Nutzer bestätigt:** Pearl-/Glass-Website mit dem reduzierten, abstrakten Signet aus zwei versetzten Flächen. Diese Fassung ist die Grundlage für die weitere Umsetzung. Der Firmenname bleibt offen.
+
 Grundlage: Corporate-Identity-Pearl-Glass-v0.2.pdf, überarbeitete Fassung vom 06.11.2026 ohne Baum- oder Naturmotiv.
 
 | Rolle | Farbe |

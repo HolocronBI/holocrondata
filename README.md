@@ -1,6 +1,6 @@
 # BI & AI Consulting — Pearl / Glass
 
-Astro-Website für BI- und AI-Beratung. Neue CI: Pearl / Silver / Glass. Der Markenname bleibt offen und zentral konfigurierbar. Ein namenunabhängiges Silber-Glas-Signet ersetzt die bisherige Wortmarke.
+Astro-Website für BI- und AI-Beratung. Neue CI: Pearl / Silver / Glass. Der Markenname bleibt offen und zentral konfigurierbar. Ein namenunabhängiges, abstraktes Signet ersetzt die bisherige Wortmarke. Der Nutzer hat diesen Designstand am 06.11.2026 bestätigt.
 
 **Stand: geprüfter Entwurf im Feature-Branch. Nicht nach `main` übernehmen, bevor die offenen Anbieterangaben und Rechtstexte vervollständigt sind.** Die bestehende Produktivseite wird dadurch nicht geändert.
 
