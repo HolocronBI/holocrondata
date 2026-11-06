@@ -1,6 +1,33 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "installCommand": "npm install",
-  "framework": "astro"
+  "installCommand": "npm ci",
+  "framework": "astro",
+  "redirects": [
+    {
+      "source": "/impressum.html",
+      "destination": "/impressum/",
+      "permanent": true
+    },
+    {
+      "source": "/datenschutz.html",
+      "destination": "/datenschutz/",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/kontakt",
+      "destination": "/#contact",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
 }

@@ -1,0 +1,56 @@
+---
+import Base from "../layouts/Base.astro";
+import { brand, brandLabel, legalReady } from "../config/brand";
+---
+
+<Base title={`Impressum — ${brandLabel}`} noindex>
+  <div class="article-wrap">
+    <header class="article-head">
+      <p class="eyebrow">RECHTLICHES</p><h1>Impressum</h1>
+    </header>
+    {
+      !legalReady && (
+        <p class="legal-notice">
+          <>
+            <strong>
+              Entwurf – noch nicht zur Veröffentlichung freigegeben.
+            </strong>
+            <br />
+          </>
+          Die vollständigen Anbieterangaben und die ladungsfähige Anschrift
+          müssen vor dem Livegang ergänzt und geprüft werden.
+        </p>
+      )
+    }
+    <div class="article-body legal-contacts">
+      <h2>Anbieter</h2><p>{brandLabel}</p>{
+        brand.legal.provider && (
+          <address class="legal-address">
+            {brand.legal.provider}
+            <br />
+            {brand.legal.address.join("\n")}
+          </address>
+        )
+      }<h2>Kontakt</h2><p>
+        E-Mail: <a href={`mailto:${brand.email}`}>{brand.email}</a>
+      </p>{
+        brand.legal.vatId && (
+          <>
+            <>
+              <h2>Umsatzsteuer-ID</h2>
+              <p>{brand.legal.vatId}</p>
+            </>
+          </>
+        )
+      }{
+        !legalReady && (
+          <p>
+            Weitere erforderliche Angaben, insbesondere zur verantwortlichen
+            Person und gegebenenfalls zu Registereinträgen, werden anhand der
+            tatsächlichen Unternehmensform vervollständigt.
+          </p>
+        )
+      }
+    </div>
+  </div>
+</Base>

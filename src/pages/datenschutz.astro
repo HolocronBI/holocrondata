@@ -1,0 +1,97 @@
+---
+import Base from "../layouts/Base.astro";
+import { brand, brandLabel, legalReady } from "../config/brand";
+---
+
+<Base title={`Datenschutzhinweise — ${brandLabel}`} noindex>
+  <div class="article-wrap">
+    <header class="article-head">
+      <p class="eyebrow">RECHTLICHES</p><h1>Datenschutzhinweise</h1>
+    </header>
+    {
+      !legalReady && (
+        <p class="legal-notice">
+          <>
+            <strong>Entwurf – vor dem Livegang zu vervollständigen.</strong>
+            <br />
+          </>
+          Die verantwortliche Person, Anschrift, vertraglichen Vereinbarungen
+          mit Dienstleistern und tatsächlichen Aufbewahrungsfristen sind noch zu
+          bestätigen.
+        </p>
+      )
+    }
+    <div class="article-body legal-contacts">
+      <h2>Verantwortlich und erreichbar</h2><p>
+        {brand.legal.provider || brandLabel}<br />{
+          brand.legal.address.join(", ")
+        }<br /><a href={`mailto:${brand.email}`}>{brand.email}</a>
+      </p>
+      <h2>Aufruf der Website und Hosting</h2><p>
+        Die Website wird über Vercel bereitgestellt. Bei einem Aufruf werden zur
+        Auslieferung und zum technischen Betrieb unter anderem IP-Adresse,
+        Zeitpunkt, angeforderte Adresse sowie Browser- und
+        Verbindungsinformationen verarbeitet. Die Bereitstellung einer
+        funktionsfähigen und sicheren Website dient unserem berechtigten
+        Interesse gemäß Art. 6 Abs. 1 lit. f DSGVO.
+      </p><p>
+        Informationen zum Anbieter finden Sie in den <a
+          href="https://vercel.com/legal/privacy-notice"
+          >Datenschutzhinweisen von Vercel</a
+        >. Die eingesetzte Vertragsgrundlage, eventuelle Drittlandübermittlungen
+        und die für dieses Projekt geltenden Protokollierungs- und Löschfristen
+        müssen vor Veröffentlichung bestätigt werden.
+      </p>
+      <h2>Kontaktformular und E-Mail</h2><p>
+        Beim Absenden des Formulars werden Name, E-Mail-Adresse, Nachricht sowie
+        freiwillig angegebene Unternehmens-, Themen- und Paketangaben an
+        Formspree übermittelt. Hinzu kommen technisch erforderliche
+        Verbindungsdaten. Formspree nimmt die Anfrage entgegen und verarbeitet
+        sie für die Weiterleitung an unsere Kontaktadresse. Beim bloßen Anzeigen
+        des Formulars wird durch unseren Website-Code keine Verbindung zu
+        Formspree hergestellt.
+      </p><p>
+        Formspree weist auf eine Verarbeitung in den USA und gegebenenfalls
+        weiteren Ländern hin. Informationen dazu enthält die <a
+          href="https://formspree.io/legal/privacy-policy/"
+          >Datenschutzerklärung von Formspree</a
+        >. Der konkrete Auftragsverarbeitungsvertrag und die
+        Übermittlungsgrundlage müssen durch den Betreiber vor Veröffentlichung
+        bestätigt werden.
+      </p><p>
+        Anfragen werden zur Bearbeitung Ihres Anliegens verwendet. Bei
+        vorvertraglichen oder vertraglichen Anfragen ist Art. 6 Abs. 1 lit. b
+        DSGVO einschlägig, bei sonstigen Anfragen das berechtigte Interesse an
+        der Beantwortung gemäß Art. 6 Abs. 1 lit. f DSGVO. Bei einer direkten
+        E-Mail erfolgt die Verarbeitung auch über den Anbieter des angegebenen
+        Outlook-Postfachs. Bitte übermitteln Sie keine vertraulichen Datensätze
+        oder besonderen Kategorien personenbezogener Daten über das Formular.
+      </p><p>
+        Anfragedaten werden nur so lange benötigt, wie die Bearbeitung und
+        gegebenenfalls gesetzliche Aufbewahrungspflichten es erfordern. Konkrete
+        Löschroutinen für Postfach und Formspree-Konto sind vor Veröffentlichung
+        festzulegen.
+      </p>
+      <h2>Schriftarten, Bilder und Browser-Speicher</h2><p>
+        Schriften und Bilder werden mit der Website ausgeliefert. Es werden
+        keine Schriftdateien von Google Fonts nachgeladen. Der Website-Code
+        bindet keine Analyse- oder Werbetracker ein und legt keine Cookies oder
+        Einträge in localStorage an. Zusätzliche Einstellungen des Hosting- oder
+        Formulardienstes sind vor Veröffentlichung separat zu prüfen.
+      </p>
+      <h2>Ihre Rechte</h2><p>
+        Im Rahmen der gesetzlichen Voraussetzungen können Sie Auskunft,
+        Berichtigung, Löschung, Einschränkung der Verarbeitung und
+        Datenübertragbarkeit verlangen. Soweit die Verarbeitung auf berechtigten
+        Interessen beruht, können Sie aus Gründen Ihrer besonderen Situation
+        widersprechen. Eine erteilte Einwilligung können Sie mit Wirkung für die
+        Zukunft widerrufen. Außerdem besteht ein Beschwerderecht bei einer
+        Datenschutzaufsichtsbehörde.
+      </p><p>
+        Für Fragen zu Ihren Daten verwenden Sie bitte die oben genannte
+        Kontaktadresse.
+      </p>
+      <p class="mono">ENTWURFSSTAND / 06.11.2026</p>
+    </div>
+  </div>
+</Base>

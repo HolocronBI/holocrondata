@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.vercel/
+public/__qa.html
+qa-output/
