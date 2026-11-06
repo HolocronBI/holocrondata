@@ -16,7 +16,11 @@ let linkChecks = 0;
 for (const [path, html] of cache) {
   // Astro's static redirect documents intentionally have no site layout.
   if (/http-equiv="refresh"/i.test(html)) {
-    assert.match(html, /url=\/#contact/i, `Known legacy redirect: ${path}`);
+    const destination = path.endsWith("/kontakt/index.html")
+      ? "/#contact"
+      : path.endsWith("/blog/index.html") ? "/" : null;
+    assert.ok(destination, `Known legacy redirect: ${path}`);
+    assert.ok(html.includes(`url=${destination}`), `Redirect destination: ${path}`);
     continue;
   }
   assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1, `One h1: ${path}`);
@@ -57,16 +61,18 @@ for (const [path, html] of cache) {
     linkChecks++;
   }
 }
-const posts = readdirSync("src/pages/blog").filter((name) =>
-  name.endsWith(".md"),
-);
-for (const post of posts)
-  assert.ok(
-    existsSync(join(root, "blog", post.replace(/\.md$/, ""), "index.html")),
-    `Preserved blog URL: ${post}`,
-  );
+assert.ok(!existsSync("src/pages/blog"), "Removed blog article routes");
+assert.ok(!existsSync("src/pages/blog.astro"), "Removed blog index");
+assert.ok(!existsSync(".github/workflows/daily-blog-post.yml"), "Removed blog generation workflow from this branch");
+assert.ok(!existsSync("scripts/generate-post.mjs"), "Removed blog generator");
+assert.deepEqual(readdirSync(join(root, "blog")), ["index.html"], "Only the legacy redirect remains");
+const redirects = JSON.parse(readFileSync("vercel.json", "utf8")).redirects;
+assert.ok(redirects.some(({ source, destination, permanent }) => source === "/blog/:path*" && destination === "/" && permanent), "Vercel redirects old article URLs");
 for (const locale of ["", "en/"]) {
   const html = readFileSync(join(root, locale, "index.html"), "utf8");
+  assert.doesNotMatch(html, /href="\/blog(?:\/|")/, "No blog navigation");
+  assert.doesNotMatch(html, /Holocron/, "No provisional wordmark or title");
+  assert.match(html, /href="\/favicon.svg"/, "Dedicated small-size favicon");
   assert.match(html, /action="https:\/\/formspree\.io\/f\/mbdqjadp"/);
   for (const id of [
     "problem",
@@ -92,5 +98,5 @@ assert.ok(
   "QA harness must not be shipped",
 );
 console.log(
-  `PASS: ${htmlFiles.length} HTML pages, ${posts.length} preserved blog URLs, ${linkChecks} internal links/assets/anchors, metadata and production form guards.`,
+  `PASS: ${htmlFiles.length} HTML pages, blog removed with legacy redirects, ${linkChecks} internal links/assets/anchors, metadata and production form guards.`,
 );

@@ -22,15 +22,12 @@ const links = [
     <a
       class="brand"
       href={root}
-      aria-label={`${brand.name} — ${en ? "Home" : "Startseite"}`}
+      aria-label={`${brand.descriptor} — ${en ? "Home" : "Startseite"}`}
     >
-      <img src={brand.logo} width="30" height="30" alt="" /><span
-        >{brand.name}</span
-      >
+      <img src={brand.logo} width="112" height="48" alt="" />
     </a>
     <div class="nav-links" id="navigation">
       {links.map(([id, label]) => <a href={`${root}#${id}`}>{label}</a>)}
-      <a href="/blog/" lang="de">{en ? "Blog (DE)" : "Blog"}</a>
       <a class="mobile-contact" href={`${root}#contact`}
         >{en ? "Discuss a project" : "Projekt besprechen"} ↗</a
       >

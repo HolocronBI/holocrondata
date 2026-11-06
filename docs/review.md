@@ -4,16 +4,16 @@ Ausgangspunkt: `main` bei `a8c3e3cea8abbf1c5bb98fbde7facf1bde12e86e`. Quellcode 
 
 | Entscheidung | Befund und Umsetzung |
 |---|---|
-| Behalten | Astro, statischer Build, bestehende Kontaktadresse und Formspree-ID, nachvollziehbarer Projektablauf, Preisanker 750 / 2.000 EUR, 127 Markdown-Beiträge und ihre URLs. |
+| Behalten | Astro, statischer Build, bestehende Kontaktadresse und Formspree-ID, nachvollziehbarer Projektablauf, Preisanker 750 / 2.000 EUR. Die zunächst erhaltenen Blogartikel wurden auf anschließenden Nutzerwunsch entfernt. |
 | Überarbeiten | Allgemeine Hero-Aussage durch konkreten Nutzen ersetzt. Datenbasis, BI-Reporting und abgegrenzte AI-Piloten bilden drei Angebote. Ein Haupt-CTA führt zur Projektanfrage. |
 | Überarbeiten | Persönliche Zusammenarbeit mit vorhandener Berufsrolle BI Analyst beschrieben; keine erfundenen Abschlüsse, Zertifikate, Kunden oder Referenzen. |
 | Überarbeiten | Vorhandenes Cockpit nur als ausdrücklich gekennzeichnetes Ansichtsbeispiel. Die bislang nicht ausgelieferte Bilddatei liegt nun in `public/images/`. |
 | Überarbeiten | Pakete nennen Voraussetzungen, Korrekturrunden, Leistungsgrenzen und separat zu vereinbarende Leistungen. Keine neuen verbindlichen Beträge. Scale in Individual umbenannt; alter Query-Wert Scale wird weiterhin verstanden. |
 | Überarbeiten | Lizenz-FAQ: Pro ist in Microsoft 365 E5 / Office 365 E5 enthalten; Lizenzbedarf hängt von Nutzung/Kapazität ab. Keine pauschale Microsoft-365-Inklusivbehauptung. |
 | Überarbeiten | Statt pauschaler Datenschutzgarantien werden Datenzugriffe, Speicherorte, Dienste und Vereinbarungen vor Projektstart geklärt. |
-| Überarbeiten | Neue gemeinsame CI für Startseiten, Blog, Artikel, 404 und Rechtsseiten. DE und EN werden statisch gerendert. Blog/Rechtstexte bleiben ausdrücklich deutsch. |
+| Überarbeiten | Neue gemeinsame CI für Startseiten, 404 und Rechtsseiten. DE und EN werden statisch gerendert; Rechtstexte bleiben ausdrücklich deutsch. |
 | Überarbeiten | Kontaktformular mit Pflichtfeldern, nativer Validierung, Pending-Zustand, verständlichem Erfolg/Fehler, Timeout und Erhalt der Eingaben bei Fehlern. Tests verwenden Mocks. |
-| Überarbeiten | Reproduzierbare Installation via Lockfile, Node 24 und Astro 7.4.7. Konkreter Anlass: npm audit meldete in Astro 4.16.19 / Abhängigkeiten sechs Findings, davon eines kritisch. Keine zusätzliche UI-Bibliothek. `Astro.glob` durch `import.meta.glob` ersetzt. |
+| Überarbeiten | Reproduzierbare Installation via Lockfile, Node 24 und Astro 7.4.7. Konkreter Anlass: npm audit meldete in Astro 4.16.19 / Abhängigkeiten sechs Findings, davon eines kritisch. Keine zusätzliche UI-Bibliothek. |
 | Entfernen | Unbelegte 12+-Stunden-Ersparnis, Echtzeit-/Alert-Zusagen ohne Nachweis, feste Antwortzeit und pauschale Projektdauer. |
 | Entfernen | Bewegte Werkzeuglisten, Canvas-Dekoration, Tilt/Spotlight, animierte Preise und ungenutzte Root-HTML-Doppelversion. |
 
@@ -35,8 +35,10 @@ Geprüft am 06.11.2026:
 - DSGVO, insbesondere Art. 6, 13, 15–22: https://eur-lex.europa.eu/eli/reg/2016/679/oj
 - Astro Upgrade: https://docs.astro.build/en/guides/upgrade-to/v7/ und /v6/
 
-## Bestehende Automation
+## Folgeänderung: Blog und Identität
 
-Die alte README beschrieb fälschlich Blog-PRs. Der tatsächliche Workflow committet täglich direkt nach main. Ablauf und Artikel wurden bewusst erhalten; die Dokumentation wurde korrigiert. Eine spätere Umstellung auf redaktionelle Freigabe wäre ein eigener Auftrag.
+Der Nutzer hat nach Sichtung der Vorschau den Blog abgewählt und ein neues Logo nach dem Silber-Glas-Motiv gewünscht. Blogübersicht, 127 Artikel, Layout, Generator und täglicher Workflow werden deshalb im Feature-Branch entfernt; alte Blog-URLs werden in Vercel zur Startseite weitergeleitet. Die Historie bewahrt die Artikel. Auf `main` bleibt der bisherige Workflow bis zur Übernahme der Änderung bestehen.
 
-Ergänzung aus der Build-Prüfung: 13 Artikel enthielten exakt denselben Titel zusätzlich als Markdown-H1. Nur diese Doppelungen wurden entfernt; Artikeltext und URLs bleiben erhalten. Die bereits vorhandenen `/kontakt`-Verweise werden jetzt zum Kontaktabschnitt weitergeleitet.
+Ein eigenständiges SVG-Signet ersetzt das Plus-Zeichen und die Holocron-Wortmarke in Header und Footer. Der Name bleibt offen; Titel und Metadaten verwenden zwischenzeitlich die Leistungsbeschreibung. E-Mail, Domain, Kontaktformular und der unveröffentlichte Entwurfsstatus bleiben unverändert.
+
+Impressum und Datenschutzhinweise sind unabhängig von einem Blog erforderlich. Anbieter- und Datenschutzangaben müssen vor dem Livegang vervollständigt werden. Die Vorschau ist trotz `noindex` öffentlich erreichbar; `noindex` stellt keinen Zugriffsschutz dar.

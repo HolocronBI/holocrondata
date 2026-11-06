@@ -2,22 +2,20 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { brand, legalReady, type Locale } from "../config/brand";
+import { brand, brandLabel, legalReady, type Locale } from "../config/brand";
 interface Props {
   title?: string;
   description?: string;
   lang?: Locale;
   home?: boolean;
-  article?: boolean;
   noindex?: boolean;
 }
 const {
   lang = "de",
   home = false,
-  article = false,
   noindex = false,
 } = Astro.props;
-const title = Astro.props.title || `${brand.name} — ${brand.descriptor}`;
+const title = Astro.props.title || brandLabel;
 const description = Astro.props.description || brand.description[lang];
 const canonical = new URL(Astro.url.pathname, brand.siteUrl);
 const image = new URL(brand.socialImage, brand.siteUrl);
@@ -32,7 +30,7 @@ const image = new URL(brand.socialImage, brand.siteUrl);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href={brand.logo} />
+    <link rel="icon" type="image/svg+xml" href={brand.favicon} />
     <link
       rel="preload"
       href="/fonts/manrope-latin.woff2"
@@ -45,8 +43,8 @@ const image = new URL(brand.socialImage, brand.siteUrl);
         <meta name="robots" content="noindex, nofollow" />
       )
     }
-    <meta property="og:type" content={article ? "article" : "website"} />
-    <meta property="og:site_name" content={brand.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={brandLabel} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

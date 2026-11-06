@@ -1,9 +1,9 @@
 ---
 import Base from "../layouts/Base.astro";
-import { brand, legalReady } from "../config/brand";
+import { brand, brandLabel, legalReady } from "../config/brand";
 ---
 
-<Base title={`Impressum — ${brand.name}`} noindex>
+<Base title={`Impressum — ${brandLabel}`} noindex>
   <div class="article-wrap">
     <header class="article-head">
       <p class="eyebrow">RECHTLICHES</p><h1>Impressum</h1>
@@ -23,7 +23,7 @@ import { brand, legalReady } from "../config/brand";
       )
     }
     <div class="article-body legal-contacts">
-      <h2>Anbieter</h2><p>{brand.name} · {brand.descriptor}</p>{
+      <h2>Anbieter</h2><p>{brandLabel}</p>{
         brand.legal.provider && (
           <address class="legal-address">
             {brand.legal.provider}

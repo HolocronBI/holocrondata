@@ -7,9 +7,8 @@ const en = lang === "en";
 <footer class="site-footer wrap">
   <div class="footer-top">
     <a class="brand" href={en ? "/en/" : "/"}
-      ><img src={brand.logo} alt="" width="30" height="30" /><span
-        >{brand.name}</span
-      ></a
+      aria-label={`${brand.descriptor} — ${en ? "Home" : "Startseite"}`}
+      ><img src={brand.logo} alt="" width="112" height="48" /></a
     >
     <p>
       {
@@ -23,13 +22,9 @@ const en = lang === "en";
     >
   </div>
   <div class="footer-bottom">
-    <span
-      >© {new Date().getFullYear()}
-      {brand.name}
-      <span class="footer-descriptor">/ {brand.descriptor}</span></span
-    >
+    <span>{`© ${new Date().getFullYear()} ${brand.descriptor}`}</span>
     <div>
-      <a href="/blog/">{en ? "Blog (German)" : "Blog"}</a><a href="/impressum/"
+      <a href="/impressum/"
         >{en ? "Legal notice (DE)" : "Impressum"}</a
       ><a href="/datenschutz/">{en ? "Privacy (DE)" : "Datenschutz"}</a><a
         href="#main"

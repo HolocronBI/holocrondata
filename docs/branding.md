@@ -18,7 +18,11 @@ Materialstudie: vorhandenes, eigenständig generiertes Motiv übernommen, als We
 
 Bewegung: UI 200 ms, Materialbewegung 9 s. `prefers-reduced-motion` setzt Bewegung und weiches Scrollen aus. Keine versteckten Scroll-Reveal-Inhalte oder Canvas-Dauerschleifen. Silber erscheint als Material, nicht als niedrig kontrastierende Textfarbe.
 
-`brand.ts` zentralisiert die vorläufige Identität. Das einfache Plus-Zeichen führt die bestehende neutrale Markierung fort; es ist kein fertig entwickeltes neues Logo. Ein späterer Name benötigt keine neue Seitenstruktur. Logo und Favicon verwenden denselben zentralen Pfad; Social-Motiv ist namenunabhängig.
+`brand.ts` zentralisiert die Identität; `name` bleibt bis zur Namensentscheidung leer. `brandLabel` verwendet zwischenzeitlich „BI & AI Consulting“ für Titel und Metadaten. Kontaktadresse und bestehende Domain bleiben erhalten.
+
+Das eigenständige SVG-Signet in `public/brand/mark.svg` abstrahiert die Materialstudie: eine aufsteigende, gefaltete Silberfläche mit einer transparent wirkenden Innenfläche, dunkler Unterkante und schmaler Iris-Kante. Kein Bildausschnitt, keine Wortmarke. Header und Footer verwenden dasselbe Signet (112 × 48 px, mobil 84 × 36 px, auf sehr schmalen Ansichten 70 × 30 px). Der Startseitenlink erhält einen zugänglichen Textnamen.
+
+`public/favicon.svg` ist eine kontrastreichere, vereinfachte Variante auf Carbon für kleine Tab-Symbole. Logo und Favicon sind getrennt zentral konfiguriert; beide SVGs haben transparente bzw. definierte Hintergründe, keine Fremdressourcen und keine zusätzliche Laufzeit. Social-Motiv und Seitenstruktur bleiben namenunabhängig.
 
 Schriftquellen:
 - https://github.com/google/fonts/tree/main/ofl/manrope

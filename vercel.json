@@ -23,6 +23,11 @@
       "source": "/kontakt",
       "destination": "/#contact",
       "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/",
+      "permanent": true
     }
   ]
 }

@@ -1,13 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
 import ContactForm from "./ContactForm.astro";
-import { brand, type Locale } from "../config/brand";
+import { brand, brandLabel, type Locale } from "../config/brand";
 import { homeContent } from "../content/home";
 const { lang = "de" } = Astro.props as { lang?: Locale };
 const c = homeContent[lang];
 ---
 
-<Base title={`${c.title} — ${brand.name}`} lang={lang} home>
+<Base title={`${c.title} — ${brandLabel}`} lang={lang} home>
   <section class="hero wrap" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="eyebrow">

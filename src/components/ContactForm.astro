@@ -1,5 +1,5 @@
 ---
-import { brand, type Locale } from "../config/brand";
+import { brand, brandLabel, type Locale } from "../config/brand";
 const { lang = "de" } = Astro.props as { lang?: Locale };
 const en = lang === "en";
 ---
@@ -97,7 +97,7 @@ const en = lang === "en";
   <input
     type="hidden"
     name="_subject"
-    value={`${brand.name} — Projektanfrage`}
+    value={`${brandLabel} — Projektanfrage`}
   />
   <input type="hidden" name="language" value={lang} />
   <p class="form-privacy">

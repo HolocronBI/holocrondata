@@ -2,11 +2,20 @@
 
 ## Ergebnis
 
-Startseite auf BI- und AI-Beratung für Mittelstand, Finance und Controlling ausgerichtet; neue Pearl/Silver/Glass-CI, lokale Schriftdateien, optimiertes Materialmotiv, eigene DE-/EN-Seiten, gemeinsame Komponenten, klarer Kontaktweg und gepflegte Blogdarstellung. Der Name bleibt austauschbar. Die alte ungenutzte Root-HTML-Datei wurde nach Prüfung des Astro-Builds entfernt.
+Startseite auf BI- und AI-Beratung für Mittelstand, Finance und Controlling ausgerichtet; neue Pearl/Silver/Glass-CI, lokale Schriftdateien, optimiertes Materialmotiv, eigene DE-/EN-Seiten, gemeinsame Komponenten, klarer Kontaktweg und ein neues SVG-Signet ohne Wortmarke. Der Name bleibt austauschbar. Die alte ungenutzte Root-HTML-Datei wurde nach Prüfung des Astro-Builds entfernt.
 
-Alle 127 Artikel und ihre URLs bleiben erhalten. In 13 Artikeln wurde ausschließlich die mit dem Layout-Titel identische, doppelte H1 entfernt. Alte `/kontakt`-Links bekommen eine Weiterleitung zum Kontaktbereich. Die bestehende tägliche Blog-Automation bleibt unverändert.
+Auf anschließenden Nutzerwunsch wurden Blogübersicht, 127 Artikel, Layout, Generator und täglicher Workflow aus dem Feature-Branch entfernt. Alte Blog-URLs werden in Vercel zur Startseite weitergeleitet; im lokalen Build existiert nur die Weiterleitung der Übersicht. Alte `/kontakt`-Links führen weiterhin zum Kontaktbereich. Der Workflow auf `main` bleibt bis zur Übernahme der Änderung bestehen.
 
-## Durchgeführte Prüfungen
+## Erneute Prüfung nach Logo-/Blogänderung
+
+- Produktionsbuild: 7 HTML-Dateien (5 Inhaltsseiten, 2 statische Weiterleitungen).
+- `npm test`: 10 Tests erfolgreich.
+- `npm run check:site`: 110 interne Links/Assets/Anker; keine Blognavigation oder Artikel, Weiterleitungsregeln geprüft, neuer Favicon-Pfad, kein alter Markenname in den Startseiten. QA-Harness und Mock-Transport fehlen im Produktionsbuild.
+- Browserprüfung des neuen Headers und Signets bei 1440, 768, 390 (EN) und 320 px: keine horizontalen Überläufe, keine kaputten geladenen Bilder, lokale Schrift geladen. Mobiles Menü enthält keinen Bloglink; Escape schließt es und gibt den Fokus zurück.
+- Impressum und Datenschutz über Footerlinks im Browser erfolgreich geöffnet; Datenschutzdarstellung mit neuem Header visuell geprüft. Der frühere Browserblock trat bei dieser Prüfung nicht mehr auf.
+- Screenshot der aktualisierten Startseite: `docs/images/pearl-logo-preview.jpg`.
+
+## Prüfungen der ursprünglichen Überarbeitung (vor Blogentfernung)
 
 - Abhängigkeiten reproduzierbar mit `npm ci` über den Installationshelfer installiert; Lockfile eingecheckt.
 - Produktionsbuild mit Astro 7.4.7 / Node 24 erfolgreich: 134 HTML-Seiten einschließlich der Kontakt-Weiterleitung.
@@ -30,4 +39,4 @@ Der Nutzer hat ausdrücklich **„Zunächst ohne Veröffentlichung“** gewählt
 4. Nach Prüfung `brand.legal.reviewed` setzen und `npm run check:release` erfolgreich ausführen. Der Check meldet gegenwärtig die drei erwarteten offenen Anbieter-/Prüfpunkte. Die Seiten bleiben bis dahin `noindex, nofollow`.
 5. Vercel-Projekteinstellungen und kanonische Domain beim späteren Livegang bestätigen. Ein Vercel-Preview kann beim Branch-Push automatisch entstehen; das ist keine Freigabe für die Produktion.
 
-Keine Lighthouse-Messung, kein vollständiges WCAG-Audit, keine Live-Zustellprüfung und keine vollständige redaktionelle Faktenprüfung der 127 älteren Blogartikel durchgeführt. Diese Einschränkungen ändern nichts am geprüften statischen Build und den oben konkret aufgeführten Funktionstests.
+Keine Lighthouse-Messung, kein vollständiges WCAG-Audit und keine Live-Zustellprüfung durchgeführt. Diese Einschränkungen ändern nichts am geprüften statischen Build und den oben konkret aufgeführten Funktionstests.

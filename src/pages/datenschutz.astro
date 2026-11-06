@@ -1,9 +1,9 @@
 ---
 import Base from "../layouts/Base.astro";
-import { brand, legalReady } from "../config/brand";
+import { brand, brandLabel, legalReady } from "../config/brand";
 ---
 
-<Base title={`Datenschutzhinweise — ${brand.name}`} noindex>
+<Base title={`Datenschutzhinweise — ${brandLabel}`} noindex>
   <div class="article-wrap">
     <header class="article-head">
       <p class="eyebrow">RECHTLICHES</p><h1>Datenschutzhinweise</h1>
@@ -23,7 +23,7 @@ import { brand, legalReady } from "../config/brand";
     }
     <div class="article-body legal-contacts">
       <h2>Verantwortlich und erreichbar</h2><p>
-        {brand.legal.provider || brand.name}<br />{
+        {brand.legal.provider || brandLabel}<br />{
           brand.legal.address.join(", ")
         }<br /><a href={`mailto:${brand.email}`}>{brand.email}</a>
       </p>
