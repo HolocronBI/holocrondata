@@ -281,14 +281,15 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 44px;
   min-height: 44px;
   text-decoration: none;
   flex-shrink: 0;
 }
 .brand img {
   display: block;
-  width: 112px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
 .nav-links,
@@ -1482,7 +1483,7 @@ p {
     gap: 12px;
   }
   .brand img {
-    width: 84px;
+    width: 36px;
     height: 36px;
   }
   .nav-actions {
@@ -1862,10 +1863,6 @@ p {
   }
   .nav-actions {
     gap: 1px;
-  }
-  .brand img {
-    width: 70px;
-    height: 30px;
   }
   .language-switch > a {
     min-width: 27px;

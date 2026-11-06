@@ -1,36 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 72" fill="none">
-  <defs>
-    <linearGradient id="silver" x1="62" y1="19" x2="96" y2="66" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#A6A9BC"/>
-      <stop offset=".22" stop-color="#E2E4ED"/>
-      <stop offset=".46" stop-color="#FFFFFF"/>
-      <stop offset=".63" stop-color="#D2D5E2"/>
-      <stop offset=".83" stop-color="#B1B3C7"/>
-      <stop offset="1" stop-color="#F5F6F8"/>
-    </linearGradient>
-    <linearGradient id="fold" x1="102" y1="15" x2="112" y2="54" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#A5A7BB"/>
-      <stop offset=".4" stop-color="#F5F6F8"/>
-      <stop offset=".58" stop-color="#FFFFFF"/>
-      <stop offset="1" stop-color="#C7C5DE"/>
-    </linearGradient>
-    <linearGradient id="glass" x1="53" y1="43" x2="94" y2="30" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#9BA6B9"/>
-      <stop offset=".22" stop-color="#EEF6FC" stop-opacity=".85"/>
-      <stop offset=".55" stop-color="#FFFFFF" stop-opacity=".2"/>
-      <stop offset="1" stop-color="#B0BCD3"/>
-    </linearGradient>
-    <linearGradient id="edge" x1="7" y1="61" x2="144" y2="30" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#7E8490"/>
-      <stop offset=".6" stop-color="#282A35"/>
-      <stop offset="1" stop-color="#444051"/>
-    </linearGradient>
-  </defs>
-  <!-- Three continuous surfaces: dark underside, pearl foil and glass fold. -->
-  <path d="M5 63C36 59 64 60 85 55C107 49 126 47 137 37C147 29 153 18 163 7C156 29 149 44 137 49C123 55 109 51 90 58C66 66 32 63 5 65Z" fill="url(#edge)"/>
-  <path d="M5 63C33 52 53 44 76 37C90 33 95 20 107 16C121 11 140 13 163 7C150 32 143 41 129 45C113 49 102 50 84 55C65 61 33 60 5 63Z" fill="url(#silver)" stroke="#8F93A6" stroke-width=".6" stroke-linejoin="round"/>
-  <path d="M5 63C38 54 70 47 88 39C96 35 98 23 107 16C121 11 140 13 163 7C150 32 143 41 129 45C113 49 102 50 84 55C65 61 33 60 5 63Z" fill="url(#fold)"/>
-  <path d="M47 47C55 32 71 28 96 27C88 38 72 42 47 47Z" fill="url(#glass)" stroke="#ABB5C8" stroke-width=".8"/>
-  <path d="M48 46C61 38 80 36 96 27M6 63C39 54 69 48 88 39C97 34 98 23 107 16" stroke="white" stroke-opacity=".85" stroke-width=".85"/>
-  <path d="M129 45C143 40 152 25 162 8" stroke="#6750CF" stroke-width="1.65" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Two offset planes; the diagonal negative space suggests a fold. -->
+  <path d="M10 35V22C10 15.373 15.373 10 22 10H50L25 35H10Z" fill="#181A20"/>
+  <path d="M54 29V42C54 48.627 48.627 54 42 54H14L39 29H54Z" fill="#5E6573"/>
 </svg>

@@ -6,14 +6,20 @@ Startseite auf BI- und AI-Beratung für Mittelstand, Finance und Controlling aus
 
 Auf anschließenden Nutzerwunsch wurden Blogübersicht, 127 Artikel, Layout, Generator und täglicher Workflow aus dem Feature-Branch entfernt. Alte Blog-URLs werden in Vercel zur Startseite weitergeleitet; im lokalen Build existiert nur die Weiterleitung der Übersicht. Alte `/kontakt`-Links führen weiterhin zum Kontaktbereich. Der Workflow auf `main` bleibt bis zur Übernahme der Änderung bestehen.
 
-## Erneute Prüfung nach Logo-/Blogänderung
+## Logo vereinfacht nach Nutzerfeedback
+
+Die bildnahe Silberform wurde durch ein abstraktes, kompaktes Zeichen aus zwei versetzten Flächen in Carbon und Slate ersetzt. Die diagonale Negativfuge deutet eine Faltung an. Header/Footer: 40 px, mobil 36 px; Klickfläche mindestens 44 px. Favicon verwendet dasselbe Zeichen.
+
+Produktionsbuild und Sitecheck (7 HTML-Dateien, 110 interne Links/Assets/Anker) erfolgreich. Desktop und 320-px-Ansicht im Browser geprüft: kein horizontaler Überlauf, Bilder und Schrift geladen. Kein Formularcode verändert; keine zusätzlichen Transporttests erforderlich. Aktueller Screenshot: `docs/images/subtle-logo-preview-20261106.jpg`.
+
+## Vorherige Prüfung nach Logo-/Blogänderung
 
 - Produktionsbuild: 7 HTML-Dateien (5 Inhaltsseiten, 2 statische Weiterleitungen).
 - `npm test`: 10 Tests erfolgreich.
 - `npm run check:site`: 110 interne Links/Assets/Anker; keine Blognavigation oder Artikel, Weiterleitungsregeln geprüft, neuer Favicon-Pfad, kein alter Markenname in den Startseiten. QA-Harness und Mock-Transport fehlen im Produktionsbuild.
 - Browserprüfung des neuen Headers und Signets bei 1440, 768, 390 (EN) und 320 px: keine horizontalen Überläufe, keine kaputten geladenen Bilder, lokale Schrift geladen. Mobiles Menü enthält keinen Bloglink; Escape schließt es und gibt den Fokus zurück.
 - Impressum und Datenschutz über Footerlinks im Browser erfolgreich geöffnet; Datenschutzdarstellung mit neuem Header visuell geprüft. Der frühere Browserblock trat bei dieser Prüfung nicht mehr auf.
-- Screenshot der aktualisierten lokalen Startseite: `docs/images/pearl-logo-preview.jpg`.
+- Der damalige Screenshot wurde durch die aktuelle Logoansicht oben ersetzt.
 - Vercel meldet für Commit `4da6844` einen erfolgreichen Preview-Build. Die gehostete Vorschau verlangte im Testbrowser einen Vercel-Login; die visuelle Prüfung erfolgte lokal, keine Anmeldung oder Änderung des Zugriffsschutzes.
 
 ## Prüfungen der ursprünglichen Überarbeitung (vor Blogentfernung)

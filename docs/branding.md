@@ -20,9 +20,11 @@ Bewegung: UI 200 ms, Materialbewegung 9 s. `prefers-reduced-motion` setzt Bewegu
 
 `brand.ts` zentralisiert die Identität; `name` bleibt bis zur Namensentscheidung leer. `brandLabel` verwendet zwischenzeitlich „BI & AI Consulting“ für Titel und Metadaten. Kontaktadresse und bestehende Domain bleiben erhalten.
 
-Das eigenständige SVG-Signet in `public/brand/mark.svg` abstrahiert die Materialstudie: eine aufsteigende, gefaltete Silberfläche mit einer transparent wirkenden Innenfläche, dunkler Unterkante und schmaler Iris-Kante. Kein Bildausschnitt, keine Wortmarke. Header und Footer verwenden dasselbe Signet (112 × 48 px, mobil 84 × 36 px, auf sehr schmalen Ansichten 70 × 30 px). Der Startseitenlink erhält einen zugänglichen Textnamen.
+Das SVG-Signet in `public/brand/mark.svg` ist ein zurückhaltendes, abstraktes Zeichen aus zwei versetzten Flächen. Eine diagonale Negativfuge deutet eine Faltung an; weich gerundete Außenkanten verbinden Präzision mit der Materialwelt. Die Farben Carbon und Slate bleiben flächig. Kein Verlauf, keine spiegelnden Details und keine nachgezeichnete Silhouette des Hero-Motivs.
 
-`public/favicon.svg` ist eine kontrastreichere, vereinfachte Variante auf Carbon für kleine Tab-Symbole. Logo und Favicon sind getrennt zentral konfiguriert; beide SVGs haben transparente bzw. definierte Hintergründe, keine Fremdressourcen und keine zusätzliche Laufzeit. Social-Motiv und Seitenstruktur bleiben namenunabhängig.
+Header und Footer verwenden das kompakte Signet mit 40 × 40 px, mobil 36 × 36 px. Die tatsächliche Form besitzt innen Freiraum. Der Startseitenlink bleibt mindestens 44 × 44 px groß und erhält einen zugänglichen Textnamen. Das Hero-Materialmotiv bleibt unverändert.
+
+`public/favicon.svg` übernimmt dasselbe Zeichen auf Pearl für einen lesbaren Hintergrund in hellen und dunklen Browser-Tabs. Logo und Favicon sind getrennt zentral konfiguriert; beide SVGs bestehen aus einfachen Flächen, ohne Fremdressourcen oder zusätzliche Laufzeit. Social-Motiv und Seitenstruktur bleiben namenunabhängig.
 
 Schriftquellen:
 - https://github.com/google/fonts/tree/main/ofl/manrope
