@@ -1,70 +1,80 @@
 ---
 layout: ../../layouts/BlogPost.astro
 title: "Wie man herausfindet, ob die eigenen Daten vertrauenswürdig sind"
-excerpt: "Viele Unternehmen treffen Entscheidungen auf Basis von Daten, die sie nie wirklich überprüft haben. Wir zeigen, wie man Datenlücken und Fehler aufdeckt."
-date: 2026-08-02
+excerpt: "Viele Unternehmen treffen Entscheidungen auf Basis von Daten, die sie nie wirklich überprüft haben. Wir zeigen, wie man Datenqualität systematisch bewertet."
+date: 2026-11-10
 tag: Daten verstehen
 readTime: 5
 ---
 
-## Das Problem, das niemand gerne zugeben will
+# Wie man herausfindet, ob die eigenen Daten vertrauenswürdig sind
 
-Wenn ein Geschäftsführer eine strategische Entscheidung trifft, verlässt er sich auf Zahlen. Ein Bericht sagt, dass die Kundenzufriedenheit bei 87 Prozent liegt. Die Verkaufszahlen zeigen ein Wachstum von 15 Prozent im letzten Quartal. Ein Dashboard warnt vor sinkenden Margen. Aber wie sicher ist man wirklich, dass diese Zahlen stimmen?
+Wenn ein Geschäftsführer eine Entscheidung trifft, stützt er sich oft auf Zahlen aus Systemen, die das Unternehmen seit Jahren nutzt. Niemand hinterfragt, ob diese Zahlen wirklich stimmen. Das ist ein systematisches Risiko, das viele Unternehmen unterschätzen.
 
-Wir sehen in vielen Unternehmen ein unbewusstes Problem: Die Daten werden wie Fakten behandelt, obwohl niemals überprüft wurde, ob sie tatsächlich zuverlässig sind. Ein fehlerhafter Datenimport, veraltete Filter, eine missverstandene Berechnungslogik — und schon basieren wichtige Entscheidungen auf falschen Grundlagen.
+Daten sind nur dann eine zuverlässige Grundlage für Entscheidungen, wenn wir wissen, wie sie entstanden sind, wer sie erfasst hat und welche Lücken oder Fehler darin stecken könnten. Vertrauenswürdige Daten sind nicht automatisch vorhanden – sie müssen aktiv überprüft werden.
 
-Das ist nicht fahrlässig. Es ist normal. Weil die meisten Unternehmen gar nicht wissen, wie man überprüft, ob Daten vertrauenswürdig sind.
+## Das Problem der unsichtbaren Fehler
 
-## Was bedeutet Datenvertrauenswürdigkeit überhaupt?
+Ein typisches Szenario: Der Vertriebsleiter präsentiert die Umsatzzahlen des letzten Quarters. Die Zahlen sehen gut aus und werden für die Jahresplanung verwendet. Erst später stellt sich heraus, dass zwei Außendienstmitarbeiter ihre Daten nicht regelmäßig ins System eingegeben haben, oder dass eine Produktkategorie doppelt erfasst wurde.
 
-Vertrauenswürdigkeit bedeutet nicht, dass Daten perfekt sind. Keine Datenmenge ist es. Vertrauenswürdigkeit bedeutet, dass man die Schwachstellen kennt und bewusst damit umgeht.
+Solche Fehler entstehen oft nicht durch böse Absicht, sondern weil Menschen Daten manuell erfassen, Systeme nicht korrekt konfiguriert sind, oder weil es keine klaren Regeln gibt, wie Daten aussehen müssen. Ein fehlender Name in einer Kundenliste wirkt harmlos – führt aber dazu, dass eine ganze Kundengruppe in Analysen fehlt.
 
-Wir sprechen hier von drei Dimensionen: Erstens die Genauigkeit — werden die Werte richtig erfasst und gespeichert? Zweitens die Vollständigkeit — fehlen relevante Datensätze oder Felder? Drittens die Konsistenz — stimmen die Daten übereinein, wenn man sie aus verschiedenen Quellen betrachtet?
+Wir sehen ein grundsätzliches Problem: In vielen Unternehmen wird angenommen, dass Daten, die aus einem etablierten System kommen, automatisch richtig sind. Dabei ist das Gegenteil oft wahr.
 
-Ein häufiges Beispiel: Ein Unternehmen speichert Kundenadresse in drei verschiedenen Systemen. Das CRM, das ERP-System und die Dokumentenverwaltung. Wenn ein Kunde umzieht und die Adresse nur in einem System aktualisiert wird, haben wir ein Konsistenzproblem. Das System, das die alten Daten noch kennt, wird falsche Geschäftsentscheidungen unterstützen.
+## Die vier Dimensionen der Datenqualität
 
-## Wie man Daten konkret überprüft
+Um zu prüfen, ob Daten vertrauenswürdig sind, müssen wir sie auf mehreren Ebenen betrachten.
 
-### Die einfache Plausibilitätsprüfung
+**Vollständigkeit** bedeutet, dass alle erforderlichen Informationen vorhanden sind. Wenn ein Verkaufsauftrag keinen Kundennamen hat, kann das System später diesen Auftrag nicht korrekt zuordnen. Eine unvollständige Adressliste führt dazu, dass Marketing-Kampagnen einen Teil der Zielgruppe gar nicht erreichen.
 
-Das erste, das man machen sollte, ist banal: Nachdenken. Ein Bericht zeigt, dass die durchschnittliche Auftragsbearbeitungszeit 2 Tage beträgt. Weiß der Leiter des Versands das auch? Oder sagt sein Bauchgefühl, dass es eher 5 Tage sind? Wenn diese Zahlen stark auseinanderklaffen, ist das ein klares Warnsignal.
+**Genauigkeit** beschreibt, ob die Daten tatsächlich der Realität entsprechen. Ein Produkt, das mit dem falschen Preis in der Datenbank eingetragen ist, führt zu Kalkulationsfehlern. Ein Angestellter, dessen Geburtsdatum falsch ist, kann Altersabhängige Leistungen nicht korrekt nutzen.
 
-Wir empfehlen, regelmäßig mit denjenigen zu sprechen, die die Prozesse kennen. Die Personalleiter, die Schichtleiter, die Verkäufer. Sie haben ein intuitives Verständnis, ob eine Kennzahl realistisch ist oder völlig falsch liegen muss.
+**Konsistenz** bedeutet, dass die gleiche Information überall im Unternehmen gleich dargestellt wird. Wenn die Kundennummer in der Buchhaltung anders geschrieben wird als im CRM-System, können Abfragen nicht korrekt funktionieren. Das gleiche Produkt, das in einem System "Schreibtisch Typ A" heißt und in einem anderen "Schreibtisch_A", führt zu doppelten Einträgen in Analysen.
 
-### Datenquellen überprüfen
+**Aktualität** bedeutet, dass Daten zeitnah aktualisiert werden. Eine Kundenliste, die sechs Monate alt ist, enthält veraltete Kontaktinformationen. Ein Lagerbestand, der nur einmal pro Woche aktualisiert wird, kann zu Überbuchungen führen.
 
-Woher kommen die Daten? Werden sie manuell eingegeben oder automatisch erfasst? Ein Verkäufer, der seine Abschlüsse selbst ins System einträgt, hat möglicherweise Anreize, die Zahlen zu beschönigen. Ein automatischer Sensor hat andere Fehlerquellen — aber meist sind diese bekannt und berechenbar.
+## Wie man Datenqualität praktisch überprüft
 
-Viele Unternehmen nutzen Excel-Listen, die von Hand in die Kernensysteme übertragen werden. Das ist eine klassische Fehlerquelle. Jede manuelle Übertragung ist eine Gelegenheit für Tippfehler, Formatierungsprobleme oder dass Zeilen versehentlich doppelt eingegeben werden.
+Die erste Maßnahme besteht darin, die Datenquellen zu identifizieren. Jede Datei, die für Entscheidungen verwendet wird, stammt irgendwo her. Wer hat diese Daten erfasst? Mit welchen Prozessen? Gibt es Dokumentation darüber, wie die Daten entstehen sollen?
 
-### Zeitliche Konsistenz überprüfen
+Often stellt sich heraus, dass niemand genau weiß, wie eine bestimmte Liste zustande kommt. Das ist bereits ein Warnsignal.
 
-Ein einfacher Test: Man nimmt einen Bericht von heute und einen von vor drei Monaten. Für die gleiche Periode sollten die Zahlen identisch sein. Wenn sie unterschiedlich sind, wurde etwas nachträglich korrigiert oder die Berechnungslogik hat sich geändert. Das sollte dokumentiert sein. Wenn es nicht dokumentiert ist, ist das ein Vertrauensproblem.
+Die zweite Maßnahme ist, Stichproben zu nehmen. Wir wählen zufällig zehn oder zwanzig Datensätze aus und überprüfen sie manuell gegen die Realität. Stimmt die Kundennummer? Passt der Umsatz zu dem, was wir in den Rechnungen sehen? Gibt es Einträge, die gar nicht mehr aktuell sind? Diese manuelle Kontrolle dauert ein, zwei Stunden und zeigt oft schnell, wo die Probleme liegen.
 
-Ähnlich: Summenwerte überprüfen. Wenn ein Bericht sagt, dass insgesamt 500 Kundenaufträge bearbeitet wurden, sollte das gleich sein, wenn man alle Einzelaufträge addiert. Wenn es nicht stimmt, gibt es einen Fehler in der Datenlogik.
+Die dritte Maßnahme ist, nach Anomalien zu suchen. Gibt es Datensätze, die ungewöhnlich aussehen? Ein Kunde mit Umsatz -100.000 Euro? Ein Mitarbeiter mit einem Eintritt vor 1980? Ein Lagerbestand, der negative Zahlen enthält? Diese Anomalien deuten auf Fehler hin.
 
-### Extremwerte suchen
+Die vierte Maßnahme ist, Daten zu vergleichen. Wenn zwei Systeme die gleichen Informationen enthalten sollen – zum Beispiel die Kundenliste im CRM und die Kundenliste in der Buchhaltung – sollten sie identisch sein. Unterschiede bedeuten, dass mindestens ein System falsch oder veraltet ist.
 
-Ein häufiges Zeichen für fehlerhafte Daten sind Ausreißer, die keinen Sinn ergeben. Ein Kunde, der 10 Millionen Euro Umsatz in einem Monat generiert, obwohl der nächstgrößte Kunde 100.000 Euro bringt — das könnte ein echtes Geschäftsresultat sein. Oder es ist ein Dateneingabefehler, bei dem eine 100 zu einer 100.000.000 wurde.
+## Wer trägt Verantwortung?
 
-Solche Anomalien sollten systematisch untersucht werden, nicht einfach als Teil der Realität hingenommen.
+Häufig gibt es keine klare Verantwortung für Datenqualität. Der Vertriebsleiter sagt, er gibt die Daten korrekt ein. Der Systemadministrator sagt, er kümmert sich nur um die Technik. Die Buchhaltung sagt, sie nutzt die Daten, die sie von anderen bekommt.
 
-## Die unbequeme Wahrheit
+In dieser Situation entstehen Qualitätsprobleme systematisch. Eine Verbesserung braucht Klarheit: Wer definiert, wie Daten aussehen müssen? Wer überprüft die Qualität regelmäßig? Wer korrigiert Fehler?
 
-In einem idealen Unternehmen gibt es eine Person oder ein Team, das sich um Datenqualität kümmert. Das erfordert Zeit und Struktur. Es ist nicht glamourös. Es bringt keine Berichte und Dashboards hervor, die Entscheidern gut aussehen.
+Wir empfehlen, eine Person oder ein kleines Team zu bestimmen, das sich um Datenqualität kümmert. Das müssen keine Spezialisten sein – wichtiger ist, dass es regelmäßig, systematisch und mit klarem Fokus geschieht.
 
-Aber es ist die Grundlage dafür, dass alle anderen Berichte und Dashboards tatsächlich nützlich sind.
+## Die Fragen, die wir stellen
 
-Wir empfehlen, damit zu beginnen, die kritischsten Kennzahlen zu identifizieren. Die Zahlen, auf deren Basis echte finanzielle oder strategische Entscheidungen getroffen werden. Für diese Kennzahlen sollte man dokumentieren: Wo kommen die Daten her? Wie werden sie berechnet? Wer überprüft sie regelmäßig? Welche bekannten Fehlerquellen gibt es?
+Wenn ein Unternehmen überprüfen möchte, ob seine Daten vertrauenswürdig sind, können diese Fragen helfen:
 
-Diese Dokumentation ist nicht lästig. Sie ist beruhigend. Sie gibt dem Entscheider die Sicherheit, dass er nicht auf Sand baut.
+Wo kommen diese Daten her? Wer erfasst sie? Wie oft werden sie aktualisiert? Gibt es Regeln, wie Daten aussehen müssen? Wer überprüft, ob diese Regeln eingehalten werden? Wie lange liegen die ältesten Einträge zurück? Gibt es Datensätze, die offensichtlich falsch sind? Wann wurde die Qualität dieser Daten zuletzt überprüft? Vertrauen die Menschen im Unternehmen diesen Daten?
 
-## Ein anfänglicher Schritt
+Die Antworten auf diese Fragen zeigen schnell, wo die Schwachstellen liegen.
 
-Wenn Sie unsicher sind, wie es um die Datenqualität in Ihrem Unternehmen bestellt ist, empfehlen wir einen pragmatischen Start: Wählen Sie drei wichtige Kennzahlen aus. Fragen Sie diejenigen, die diese Prozesse verantworten, ob die Zahlen realistisch sind. Überprüfen Sie die Datenquelle. Kontrollieren Sie, ob die gleiche Periode in verschiedenen Reports die gleiche Zahl ergibt.
+## Der richtige Umgang mit unvollkommenen Daten
 
-Das dauert einen Nachmittag und gibt oft schon einen klaren Überblick darüber, wo wirkliche Probleme liegen.
+Es ist unrealistisch, perfekte Daten zu haben. Jedes Unternehmen hat Qualitätsprobleme. Die Frage ist nicht, ob Daten fehlerhafte Bereiche haben, sondern ob wir diese Bereiche kennen und berücksichtigen.
 
-Wenn Sie dabei feststellen, dass die Situation komplexer ist als erwartet, und Sie Unterstützung möchten, um ein fundiertes Verständnis für die Vertrauenswürdigkeit Ihrer Daten zu entwickeln, sprechen Sie gerne mit uns. Wir helfen Ihnen, die richtigen Fragen zu stellen und einen realistischen Plan für verbesserte Datenqualität zu entwickeln.
+Wenn wir wissen, dass die Kundenliste in einem bestimmten Segment veraltet ist, können wir das bei einer Analyse berücksichtigen. Wenn wir wissen, dass ein Lagerbestand für eine bestimmte Produktkategorie unzuverlässig ist, können wir das Risiko einkalkulieren. Blindheit ist das eigentliche Problem.
 
-[Kontaktieren Sie uns](/kontakt)
+Daher ist die erste Verbesserung nicht, perfekte Daten zu schaffen, sondern ehrlich zu dokumentieren, wo die Qualitätsprobleme liegen.
+
+## Nächste Schritte
+
+Wir empfehlen, klein anzufangen. Nehmen Sie eine wichtige Datei, die für Entscheidungen verwendet wird – zum Beispiel die Kundenliste, den Lagerbestand oder die Umsatzplanung. Laden Sie die Daten und schauen Sie sich sie an. Gibt es offensichtliche Fehler? Wann wurden sie zuletzt aktualisiert? Wer ist verantwortlich? Können Sie die Qualität mit einfachen Mitteln überprüfen?
+
+Diese kleine Übung zeigt oft schnell, wo Handlungsbedarf besteht. Das ist der erste Schritt zu Daten, auf denen wir wirklich aufbauen können.
+
+Wenn Sie unsicher sind, wo Sie anfangen sollen, oder ob Ihre Daten die Grundlage für wichtige Entscheidungen bilden sollten – wir helfen gerne. Kontaktieren Sie uns, und wir schauen gemeinsam mit Ihnen, was in Ihren Daten steckt.
+
+[Kontakt](/kontakt)
