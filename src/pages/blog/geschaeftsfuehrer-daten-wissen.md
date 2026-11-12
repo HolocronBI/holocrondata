@@ -1,78 +1,68 @@
 ---
 layout: ../../layouts/BlogPost.astro
-title: "Was ein Geschäftsführer wirklich über seine Daten wissen sollte"
-excerpt: "Daten sind wertvoll – aber nur wenn man sie versteht. Wir zeigen, worauf es für Entscheider ankommt und warum die richtige Perspektive wichtiger ist als die Menge."
-date: 2026-08-04
+title: "Was ein Geschaeftsfuehrer wirklich ueber seine Daten wissen sollte"
+excerpt: "Daten sind das Fundament guter Entscheidungen. Doch viele Geschaeftsführer wissen nicht, worauf sie achten sollten. Wir zeigen, welche Fragen Sie stellen müssen."
+date: 2026-11-12
 tag: Daten verstehen
 readTime: 5
 ---
 
-## Die unbequeme Wahrheit über Daten im Mittelstand
+## Warum Datenkompetenz für Geschäftsführer unverzichtbar ist
 
-Viele Geschäftsführer sitzen auf einem Berg von Daten und wissen nicht, was sie damit anfangen sollen. Das klingt paradox – denn Informationen sind ein großer Vorteil. Aber genau hier liegt das Problem: Daten allein sind wertlos. Erst die richtige Interpretation macht sie wertvoll.
+Wir erleben immer wieder folgendes Szenario: Ein Geschäftsführer sitzt im Vorstandszimmer und muss eine wichtige Entscheidung treffen. Der Controller präsentiert Grafiken, die Verkaufsleitung spricht von Trends, die Produktionsleitung warnt vor Engpässen. Am Ende verlässt sich der Geschäftsführer auf sein Bauchgefühl – weil er nicht sicher ist, ob die Zahlen wirklich stimmen und was sie tatsächlich bedeuten.
 
-Wir sehen immer wieder, dass Unternehmen Systeme einführen, die Tausende von Datenpunkten sammeln, aber nie jemand wirklich versteht, was diese bedeuten. Ein Geschäftsführer bekommt dann Berichte voller Zahlen – und muss trotzdem nach Bauchgefühl entscheiden.
+Das ist kein Mangel an Intelligenz. Es ist ein Mangel an Datenkompetenz. Und hier liegt der Unterschied zwischen Geschäftsführern, die ihre Unternehmen systematisch vorantreiben, und solchen, die reagieren, statt zu agieren.
 
-Das muss nicht so sein.
+Wir sprechen nicht davon, dass Sie Data Scientist werden müssen. Wir sprechen davon, die richtigen Fragen zu stellen.
 
-## Unterschied zwischen Daten und Information
+## Die erste Frage: Woher kommen diese Daten wirklich?
 
-Zunächst eine grundsätzliche Klarheit: Daten und Informationen sind nicht dasselbe.
+Ein häufiges Problem ist, dass Daten aus verschiedenen Systemen kommen und niemand genau weiß, wie sie zusammenpassen. Ein Unternehmen erfasst Verkaufszahlen im CRM-System, die Lagerverwaltung läuft über eine separate Software, die Buchhaltung hat ihre eigene Datenbank. Wenn der Controller dann einen Bericht erstellt, kombiniert er diese Quellen – aber niemand hat systematisch überprüft, ob die Definitionen übereinstimmen.
 
-Daten sind Rohmaterial – Nummern, Texte, Zeitstemper. Ein Beispiel: In Ihrem ERP-System steht, dass am letzten Donnerstag 150 Einheiten eines bestimmten Produkts verkauft wurden. Das ist eine Datenpunkt. Interessant, aber noch nicht aussagekräftig.
+Ein praktisches Beispiel: Zwei Systeme erfassen beide "Umsatz". Das eine zählt den Moment, in dem eine Bestellung aufgegeben wird, das andere zählt den Moment, in dem die Ware versendet wird. Wenn Sie diese beiden Zahlen vergleichen, sehen Sie Unterschiede, die nichts mit der Realität zu tun haben – sondern mit unterschiedlichen Definitionen.
 
-Eine Information entsteht erst, wenn wir diese Daten in Kontext setzen. Wenn wir wissen, dass diese 150 Einheiten 20 Prozent über dem Durchschnitt der letzten zwölf Wochen liegen – und dass genau an diesem Tag eine Marketingkampagne gestartet ist – dann haben wir Information. Jetzt können wir etwas damit anfangen.
+Wir empfehlen Geschäftsführern, diese Frage zu stellen: "Wo genau stammt diese Zahl ab, und wurde sie auf ihrem Weg zu meinem Schreibtisch verändert oder neu berechnet?" Wenn Ihr Team das nicht in wenigen Sätzen beantworten kann, haben Sie ein Problem.
 
-Als Geschäftsführer müssen Sie wissen, welche Daten in Ihrem Unternehmen wirklich zu Informationen werden können – und bei welchen Sie nur Rauschen sammeln.
+## Die zweite Frage: Wie vollständig sind meine Daten?
 
-## Die vier Kategorien, die zählen
+Daten sind selten vollständig. Manche Prozesse im Unternehmen laufen noch analog ab, oder sie wurden nie systematisch erfasst. Das zeigt sich oft daran, dass wichtige Informationen fehlen.
 
-Wir empfehlen, Daten in vier grundsätzliche Kategorien zu denken:
+Stellen Sie sich vor, Ihr Vertrieb arbeitet teilweise mit dem CRM-System und teilweise mit Tabellenkalkulationen und E-Mail-Listen. Der Bericht, den Sie erhalten, enthält nur die Daten aus dem CRM – die anderen Geschäfte sind völlig unsichtbar. Sie treffen Entscheidungen auf Basis von nur 60 Prozent der Realität.
 
-**Finanzielle Daten** sind der Klassiker. Umsatz, Gewinn, Cashflow – das versteht jeder Geschäftsführer sofort. Aber es lohnt sich, tiefer zu schauen: Nicht nur der Gesamtumsatz ist interessant, sondern welche Produkte welchen Gewinn bringen, welche Kundengruppen profitabel sind, wie sich der Deckungsbeitrag entwickelt. Häufig zeigt sich erst hier, wo echte Probleme oder Chancen liegen.
+Ein ehrliches Gespräch mit Ihren Teamleitern ist hier unverzichtbar. Die Frage lautet: "Welche Geschäftsvorgänge oder Informationen erfassen wir gar nicht systematisch?" Die Antwort wird Sie überraschen. Und dann können Sie entscheiden: Ist das ein Risiko, das wir akzeptieren, oder müssen wir das beheben?
 
-**Operative Daten** beschreiben, wie die Maschinen laufen. Produktionsmengen, Fehlerquoten, Durchlaufzeiten, Materialverschwendung. Ein Mittelständler mit mehreren Produktionsanlagen muss wissen, welche Anlage effizient arbeitet und welche ein Kostentreiber ist – und warum.
+## Die dritte Frage: Wer ändert diese Daten, und warum?
 
-**Kundendaten** zeigen, wer Sie eigentlich beliefert. Nicht nur Namen und Adressen, sondern: Wie lange arbeiten Sie mit diesem Kunden zusammen? Wie häufig bestellt er? Wie groß sind typischerweise die Bestellmengen? Welche Produkte kauft er? Diese Informationen helfen sehr schnell, Ihre Kundenbase zu verstehen – und zu erkennen, auf welche Kunden Ihre Geschäftsmodell wirklich angewiesen ist.
+Daten sind nicht in Stein gemeißelt. Sie werden korrigiert, angepasst, bereinigt. Das ist oft notwendig – aber es ist auch ein Risiko für Manipulation, ob gewollt oder ungewollt.
 
-**Marktdaten** sind das schwierigste Feld – aber auch das wichtigste für strategische Entscheidungen. Was passiert bei Ihren Wettbewerbern? Wie entwickeln sich Rohstoffpreise? Welche Trends zeigen sich in Ihrer Branche? Oft fehlen Unternehmen diese Informationen völlig, weil sie nur auf die internen Zahlen schauen.
+Das Problem zeigt sich besonders bei manuellen Korrektionen. Ein Sachbearbeiter in der Buchhaltung stellt fest, dass eine Rechnung falsch verbucht wurde. Er ändert den Eintrag. Das ist sinnvoll. Aber wenn diese Änderungen nicht protokolliert werden, verlieren Sie den Überblick über die Datenqualität. Ist das ein Ausreißer oder ein systematisches Problem?
 
-## Warum viele Unternehmen scheitern
+Wir empfehlen, dass Geschäftsführer wissen, welche Daten ihre Teams noch anfassen dürfen und welche Änderungen dokumentiert sein müssen. Das klingt aufwendig, ist aber der einzige Weg, um Vertrauen in die Zahlen zu haben.
 
-Ein häufiges Problem ist, dass zu viel gemessen wird, ohne zu wissen, warum. Ein Unternehmen sammelt beispielsweise täglich Messwerte von jeder Maschine – 50, 100, manchmal 500 Datenpunkte pro Tag. Nach einigen Monaten hat man Millionen von Einträgen. Aber: Niemand weiß, welche dieser Messungen tatsächlich etwas über die Gesundheit der Produktion aussagen. Welche Werte sind Warnsignale? Welche sind irrelevant? Wenn diese Frage nicht geklärt ist, ist die ganze Sammlung wertlos.
+## Die vierte Frage: Sind das die Zahlen, die wirklich zählen?
 
-Anders herum gibt es auch das gegenteilige Problem: Unternehmen, die zu wenig messen. Sie verlassen sich komplett auf monatliche Auswertungen oder – noch schlimmer – auf Schätzungen von langjährigen Mitarbeitern. Das funktioniert eine Zeit lang. Aber sobald die Märkte volatiler werden oder die Konkurrenz intensiver, wird diese Blindheit zum Nachteil.
+Viele Unternehmen messen das, was einfach zu messen ist – nicht das, was wirklich wichtig ist. Ein Softwareunternehmen könnte Anzahl der installierten Lizenzen messen. Das ist leicht. Aber eine bessere Frage wäre: Wie viele dieser Lizenzen werden wirklich aktiv genutzt? Wie zufrieden sind die Nutzer? Wie hoch ist die Retention Rate?
 
-## Datenqualität schlägt Datenmenge
+Wir sehen oft, dass Geschäftsführer von Metriken umgeben sind, die technisch korrekt, aber strategisch irrelevant sind. Sie haben 200 Kennzahlen im Dashboard und verstehen keine davon wirklich.
 
-Hier ist eine Grundregel, die wir unterstreichen würden: Lieber zehn verlässliche Metriken als hundert fragwürdige.
+Unser Vorschlag: Beschränken Sie sich auf 5 bis 10 Metriken, die wirklich strategisch zählen. Was muss passieren, damit Ihr Unternehmen erfolgreich ist? Welche drei bis fünf Zahlen zeigen, ob Sie auf dem richtigen Weg sind? Das sind die Zahlen, die Sie verstehen müssen.
 
-Das bedeutet auch, dass Sie wissen sollten, wie vertrauenswürdig Ihre Daten sind. Kommt die Zahl aus einem System, das regelmäßig aktualisiert wird? Oder wird sie manuell eingegeben – mit Fehlerpotenzial? Werden die Daten von verschiedenen Abteilungen unterschiedlich interpretiert? (Ein häufiges Problem: Die Vertriebsabteilung zählt eine Bestellung anders als die Buchhaltung, weil sie unterschiedliche Definitionen verwenden.)
+## Die fünfte Frage: Wie schnell erhalte ich diese Informationen?
 
-Ein sauberes, zentrales Verständnis dessen, was Sie messen und wie Sie es messen, ist wertvoll. Eine chaotische Sammlung von Daten aus verschiedenen Quellen schafft nur Verwirrung.
+Daten verlieren an Wert, wenn sie zu spät ankommen. Ein Bericht, der zwei Wochen nach Monatsende verfügbar ist, hilft Ihnen nicht, schnell auf Probleme zu reagieren.
 
-## Das richtige Dashboard für Ihre Rolle
+Das bedeutet nicht, dass alles in Echtzeit sein muss. Aber es bedeutet: Sie müssen wissen, wie alt Ihre Zahlen sind. Wenn Sie heute eine Entscheidung treffen, basieren diese auf Daten von gestern, von vor einer Woche oder von vor einem Monat? Das macht einen großen Unterschied.
 
-Als Geschäftsführer brauchen Sie nicht alle Daten. Sie brauchen die *richtigen* Daten. Das sind typischerweise:
+## Was Sie jetzt tun können
 
-- Eine kleine Zahl von Kennziffern, die zeigen, ob das Unternehmen in die richtige Richtung läuft (Umsatz, Gewinn, Cashflow, Auftragseingänge)
-- Ein bis zwei operative Metriken, die schnell Probleme erkennen lassen (Wenn Sie ein Produktionsunternehmen sind: vielleicht Liefertreue und Ausschussquote. Wenn Sie Dienstleistung verkaufen: vielleicht Projektzufriedenheit und Auslastung.)
-- Ein oder zwei Kundenkennziffern, um zu verstehen, wie stabil Ihr Geschäft ist
+Wir empfehlen, folgende Gespräche zu führen:
 
-Das ist deutlich weniger, als Ihre IT-Abteilung messen kann. Das ist Absicht. Zu viele Informationen führen zu Lähmung, nicht zu besseren Entscheidungen.
+Fragen Sie Ihren Controller oder IT-Leiter: "Können Sie mir in 30 Minuten erklären, woher unsere wichtigsten Zahlen stammen und wie sicher wir uns sein können, dass sie stimmen?"
 
-## Was Sie im Gespräch mit Ihrem Team fragen sollten
+Fragen Sie Ihre Teamleiter: "Welche wichtigen Informationen über Ihren Bereich erfassen wir nicht systematisch?"
 
-Wenn Sie heute noch nicht so klar sehen, wie Sie gerne möchten – das ist völlig normal. Der erste Schritt ist das Gespräch. Fragen Sie Ihre Controller, Ihren Produktionsleiter, Ihren Vertriebschef:
+Fragen Sie sich selbst: "Welche fünf Zahlen brauchte ich wirklich, um mein Unternehmen zu führen?"
 
-"Welche drei Kennziffern brauchst du, um wirklich zu wissen, wie es in deinem Bereich läuft?" Nicht: "Was könntest du noch messen?" Sondern: "Was brauchst du zum Entscheiden?"
+Diese Fragen sind unbequem. Die Antworten werden vielleicht aufzeigen, dass Ihre Datenlage schwächer ist, als Sie dachten. Das ist aber besser, als auf einer Illusion von Sicherheit zu handeln.
 
-Oft zeigt sich dabei schnell, dass die nötigen Daten teilweise gar nicht systematisch verfügbar sind. Dass Daten aus verschiedenen Quellen nicht zusammenpassen. Dass Definitionen unklar sind. Diese Erkenntnisse sind wertvoll – sie zeigen Ihnen, wo es anfangen muss.
-
-## Die Zukunft
-
-Wir glauben, dass Unternehmen mit dieser Klarheit – also wirklich verstehen, welche Daten wichtig sind und warum – enormen Vorteil haben werden. Sie können schneller reagieren. Sie treffen bessere Entscheidungen. Sie wissen, wo Probleme entstehen, bevor sie teuer werden.
-
-Das ist nicht glamourös und nicht hochkomplex. Es ist einfach gutes Management mit besserer Information.
-
-Wenn Sie überlegen, wie Sie diesen Weg in Ihrem Unternehmen beginnen, oder wenn Sie eine externe Perspektive auf Ihre Datenlage bekommen möchten – wir helfen gerne weiter. [Sprechen Sie mit uns](/kontakt) darüber, wo Ihr Unternehmen heute steht und welche nächsten Schritte Sinn machen.
+Wenn Sie diese Themen angehen möchten und nicht sicher sind, wie Sie vorgehen sollen, sprechen Sie mit uns. Wir helfen mittelständischen Unternehmen, ihre Daten in den Griff zu bekommen – nicht mit technischen Lösungen allein, sondern mit klaren Prozessen und ehrlichen Gesprächen. Sie können uns jederzeit kontaktieren, wenn Sie wissen möchten, wie das für Ihr Unternehmen aussehen könnte.
